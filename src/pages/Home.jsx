@@ -43,36 +43,12 @@ const Home = () => {
                             <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-2xl font-medium leading-relaxed">
                                 NATIVESHINE LTD provides world-class cleaning and restoration for corporate environments, high-end residences, and industrial facilities.
                             </p>
-                            <div className="flex flex-col sm:flex-row gap-6 items-center">
-                                <Button onClick={openQuote} variant="primary" size="xl" className="w-full sm:w-auto">
-                                    Start Your Project
-                                </Button>
-                                <button className="flex items-center space-x-3 text-white font-black uppercase tracking-widest text-sm hover:text-primary-light transition-colors py-4">
-                                    <PlayCircle className="w-8 h-8 text-primary-light" />
-                                    <span>Watch Our Process</span>
-                                </button>
-                            </div>
+                            
                         </motion.div>
                     </div>
                 </div>
 
-                {/* Hero Stats (Corporate Style) */}
-                <div className="absolute bottom-12 left-0 right-0 z-20 hidden lg:block">
-                    <div className="container mx-auto px-6">
-                        <div className="flex space-x-16 border-t border-white/10 pt-10">
-                            {[
-                                { label: 'Active Projects', value: '150+' },
-                                { label: 'Certified Staff', value: '250+' },
-                                { label: 'Years Experience', value: '20+' },
-                            ].map((stat, i) => (
-                                <div key={i}>
-                                    <div className="text-2xl font-black text-white mb-1 tracking-tight">{stat.value}</div>
-                                    <div className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+        
             </section>
 
             {/* Why Choose Us */}
