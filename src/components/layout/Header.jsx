@@ -1,96 +1,109 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Phone, Mail } from 'lucide-react';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { services } from '../../data/services';
-import { useQuote } from '../../context/QuoteContext';
-import logo from '../../assets/logo.png';
+import { Menu, X } from 'lucide-react';
 
-const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
+import { servicesData } from '../../data/servicesData';
+
+const Header = ({ onOpenQuote }) => {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState(null);
-    const { openQuote } = useQuote();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isServicesOpen, setIsServicesOpen] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const toggleMenu = () => setIsOpen(!isOpen);
-
     const navLinks = [
-        { name: 'Home', path: '/' },
+        { name: 'Home', path: '/', hash: '#top' },
         { name: 'About', path: '/about' },
-        { name: 'Services', path: '/services', dropdown: services },
-        { name: 'Contact', path: '/contact' },
+        { name: 'Services', path: '/', hash: '#services', dropdown: true },
+        { name: 'Contact', path: '/contact' }
     ];
 
+    const handleNavClick = (e, link) => {
+        if (link.hash) {
+            if (location.pathname === '/') {
+                e.preventDefault();
+                const element = document.querySelector(link.hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // If not on home, navigating to / + hash will work if we have smooth scroll in CSS
+                // But specifically for 'Home' we might want to just go to /
+                if (link.name === 'Home') {
+                    navigate('/');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+        }
+        setIsMobileMenuOpen(false);
+    };
+
+    const getLinkClass = (isActive) =>
+        `text-[11px] font-black uppercase tracking-[0.2em] transition-all px-4 py-2 rounded-md ${isActive
+            ? 'bg-[#0ea5e9] text-white'
+            : 'text-slate-600 hover:text-[#000]'
+        }`;
+
     return (
-        <header
-            className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${isScrolled
-                    ? 'bg-white/90 backdrop-blur-md shadow-lg py-3'
-                    : 'bg-secondary-dark py-6'
-                }`}
-        >
-            <div className="container mx-auto px-6 flex justify-between items-center h-full">
-                {/* Logo & Brand */}
-                <Link to="/" className="flex items-center group h-full">
-                    <div className="flex items-center gap-3 h-full">
-                        <img
-                            src={logo}
-                            alt="NativeShine Logo"
-                            className={`h-10 md:h-12 w-auto transition-all duration-300 ${isScrolled ? 'brightness-100' : 'brightness-0 invert'}`}
-                        />
-                        <div className={`text-xl md:text-2xl font-black tracking-tight transition-colors duration-300 ${isScrolled ? 'text-secondary-dark' : 'text-white'}`}>
-                            NATIVESHINE <span className="text-primary">LTD</span>
-                        </div>
-                    </div>
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white/95 py-4'}`}>
+            <div className="container mx-auto px-6 flex items-center justify-between">
+                <Link to="/" className="flex items-center gap-4 group">
+                    <img src="/logo.png" alt="NativeShine" className="h-16 w-auto transition-transform group-hover:scale-105" />
+                    <span className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter uppercase border-l-2 border-slate-100 pl-4 py-1">
+                        NativeShine <span className="text-[#0ea5e9]">LTD</span>
+                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden lg:flex items-center space-x-10 h-full">
+                <nav className="hidden lg:flex items-center gap-6">
                     {navLinks.map((link) => (
                         <div
                             key={link.name}
-                            className="relative flex items-center h-full group"
-                            onMouseEnter={() => link.dropdown && setActiveDropdown(link.name)}
-                            onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
+                            className="relative group py-2"
+                            onMouseEnter={() => link.dropdown && setIsServicesOpen(true)}
+                            onMouseLeave={() => link.dropdown && setIsServicesOpen(false)}
                         >
-                            <Link
-                                to={link.path}
-                                className={`text-sm font-bold uppercase tracking-widest flex items-center transition-all duration-300 py-2 ${isScrolled ? 'text-secondary hover:text-primary' : 'text-white/90 hover:text-white'
-                                    }`}
+                            <NavLink
+                                to={link.path + (link.hash || '')}
+                                onClick={(e) => handleNavClick(e, link)}
+                                end={link.path === '/'}
+                                className={({ isActive }) => {
+                                    // For Home and Services which share the same path but have different hashes
+                                    const isHashMatch = link.hash ? location.hash === link.hash : !location.hash;
+                                    const trulyActive = isActive && isHashMatch;
+                                    return getLinkClass(trulyActive);
+                                }}
                             >
                                 {link.name}
-                                {link.dropdown && (
-                                    <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-300 ${activeDropdown === link.name ? 'rotate-180' : ''}`} />
-                                )}
-                            </Link>
+                            </NavLink>
 
-                            {/* Dropdown Indicator */}
-                            <div className={`absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full`}></div>
-
+                            {/* Dropdown Menu */}
                             {link.dropdown && (
                                 <AnimatePresence>
-                                    {activeDropdown === link.name && (
+                                    {isServicesOpen && (
                                         <motion.div
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: 10 }}
-                                            transition={{ duration: 0.2 }}
-                                            className="absolute left-0 top-full mt-0 w-64 bg-white rounded-b-lg shadow-2xl py-4 border-x border-b border-slate-100 overflow-hidden"
+                                            className="absolute top-full left-0 w-80 bg-white shadow-2xl border border-slate-100 mt-2 py-0 z-[60]"
                                         >
-                                            {link.dropdown.map((item) => (
+                                            {servicesData.map((service) => (
                                                 <Link
-                                                    key={item.id}
-                                                    to={`/services/${item.slug}`}
-                                                    className="block px-6 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary transition-all duration-300 font-bold"
+                                                    key={service.slug}
+                                                    to={`/services/${service.slug}`}
+                                                    className="block px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-[#0ea5e9] hover:text-white transition-all duration-200 border-b border-slate-50 last:border-0"
+                                                    onClick={() => setIsServicesOpen(false)}
                                                 >
-                                                    {item.title}
+                                                    {service.title}
                                                 </Link>
                                             ))}
                                         </motion.div>
@@ -100,99 +113,61 @@ const Header = () => {
                         </div>
                     ))}
                     <button
-                        onClick={openQuote}
-                        className={`font-black py-2.5 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md uppercase tracking-widest text-xs ${isScrolled
-                                ? 'bg-primary text-white hover:bg-primary-dark outline-none'
-                                : 'bg-white text-primary hover:bg-slate-100 outline-none'
-                            }`}
+                        onClick={onOpenQuote}
+                        className="bg-[#0ea5e9] text-white px-8 py-3 rounded-md font-black text-xs uppercase tracking-widest hover:bg-slate-900 transition-all shadow-lg shadow-cyan-500/20 active:scale-95 ml-4"
                     >
                         Get a Quote
                     </button>
                 </nav>
 
-                {/* Mobile menu button */}
-                <div className="lg:hidden flex items-center h-full">
-                    <button
-                        onClick={toggleMenu}
-                        className={`p-2 rounded-lg transition-colors duration-300 ${isScrolled ? 'text-secondary-dark bg-slate-100' : 'text-white bg-white/10'}`}
-                    >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
-                </div>
+                {/* Mobile Menu Button */}
+                <button
+                    className="lg:hidden p-2 text-slate-900"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                </button>
             </div>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Navigation */}
             <AnimatePresence>
-                {isOpen && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={toggleMenu}
-                            className="fixed inset-0 bg-secondary-dark/60 backdrop-blur-md z-40 lg:hidden"
-                        ></motion.div>
-                        <motion.div
-                            initial={{ x: '100%' }}
-                            animate={{ x: 0 }}
-                            exit={{ x: '100%' }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white z-50 shadow-2xl lg:hidden flex flex-col p-8 overflow-y-auto"
-                        >
-                            <div className="flex justify-between items-center mb-12">
-                                <div className="h-10 flex items-center gap-2">
-                                    <img src={logo} alt="Logo" className="h-full" />
-                                    <span className="font-black text-secondary-dark tracking-tighter">NATIVESHINE</span>
-                                </div>
-                                <button onClick={toggleMenu} className="p-2 bg-slate-100 rounded-lg text-secondary-dark"><X className="w-6 h-6" /></button>
-                            </div>
-                            <nav className="flex flex-col space-y-6">
-                                {navLinks.map((link) => (
-                                    <div key={link.name}>
-                                        <Link
-                                            to={link.path}
-                                            onClick={toggleMenu}
-                                            className="text-lg font-black text-secondary-dark hover:text-primary transition-colors duration-300 flex justify-between items-center"
-                                        >
-                                            {link.name}
-                                        </Link>
-                                        {link.dropdown && (
-                                            <div className="mt-4 ml-4 flex flex-col space-y-3 border-l-2 border-slate-100 pl-4">
-                                                {link.dropdown.map((item) => (
-                                                    <Link
-                                                        key={item.id}
-                                                        to={`/services/${item.slug}`}
-                                                        onClick={toggleMenu}
-                                                        className="text-sm font-bold text-slate-500 hover:text-primary transition-colors duration-300"
-                                                    >
-                                                        {item.title}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </nav>
-                            <div className="mt-auto pt-12">
-                                <button
-                                    onClick={() => { openQuote(); toggleMenu(); }}
-                                    className="w-full bg-primary text-white font-black py-5 rounded-lg mb-8 shadow-lg hover:bg-primary-dark transition-all duration-300 text-sm uppercase tracking-widest"
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="absolute top-full left-0 right-0 bg-white border-t border-slate-100 p-6 lg:hidden shadow-xl"
+                    >
+                        <nav className="flex flex-col gap-4">
+                            {navLinks.map((link) => (
+                                <NavLink
+                                    key={link.name}
+                                    to={link.path + (link.hash || '')}
+                                    onClick={(e) => handleNavClick(e, link)}
+                                    end={link.path === '/'}
+                                    className={({ isActive }) => {
+                                        const isHashMatch = link.hash ? location.hash === link.hash : !location.hash;
+                                        const trulyActive = isActive && isHashMatch;
+                                        return `text-sm font-black uppercase tracking-widest p-4 rounded-md transition-all ${trulyActive
+                                                ? 'bg-[#0ea5e9] text-white shadow-lg'
+                                                : 'text-slate-900 hover:text-[#000]'
+                                            }`;
+                                    }}
                                 >
-                                    Get a Quote
-                                </button>
-                                <div className="space-y-4">
-                                    <div className="flex items-center text-slate-500 text-sm font-bold">
-                                        <Phone className="w-5 h-5 mr-3 text-primary" />
-                                        <span>020 1234 5678</span>
-                                    </div>
-                                    <div className="flex items-center text-slate-500 text-sm font-bold">
-                                        <Mail className="w-5 h-5 mr-3 text-primary" />
-                                        <span>info@nativeshine.co.uk</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </>
+                                    {link.name}
+                                </NavLink>
+                            ))}
+                            <button
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    onOpenQuote();
+                                }}
+                                className="bg-[#0ea5e9] text-white py-4 text-center font-black uppercase tracking-widest text-xs rounded-md shadow-lg shadow-cyan-500/20 mt-2"
+                            >
+                                Get a Quote
+                            </button>
+                        </nav>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </header>

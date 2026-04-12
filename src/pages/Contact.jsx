@@ -1,128 +1,150 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { servicesData } from '../data/servicesData';
 
 const Contact = () => {
-    return (
-        <div className="w-full">
-            {/* Header */}
-            <section className="bg-secondary-dark pt-32 pb-24 relative overflow-hidden">
-                <div className="container mx-auto px-6 relative z-10 text-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <h1 className="text-sm font-black text-primary-light uppercase tracking-[0.4em] mb-6">Global Contact</h1>
-                        <h2 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter">
-                            Connect with Our <span className="text-primary-light">Experts</span>.
-                        </h2>
-                        <p className="text-xl text-slate-400 font-medium leading-relaxed max-w-2xl mx-auto">
-                            Available 24/7 for specialist consultations and emergency restoration services across Greater London.
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        service: '',
+        message: ''
+    });
 
-            <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="flex flex-col lg:flex-row gap-20">
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const whatsappMessage = `Hello NativeShine, I would like a quote for ${formData.service || 'a service'}. My name is ${formData.name}.`;
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+        const whatsappUrl = `https://wa.me/447477134380?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
+    };
+
+    return (
+        <div className="bg-white font-sans">
+            {/* Hero Section Placeholder (Reduced as per previous user edit) */}
+            <section className="py-5 pb-20">
+                <div className="container mx-auto px-6 max-w-7xl">
+                    <div className="flex flex-col lg:flex-row gap-16">
                         {/* Form Side */}
-                        <div className="w-full lg:w-3/5">
-                            <div className="bg-slate-50 p-10 md:p-16 rounded-[3rem] border border-slate-100">
-                                <h3 className="text-3xl font-black text-secondary-dark mb-10 tracking-tight">Send a Secure Message</h3>
-                                <form className="space-y-8">
+                        <div className="lg:w-2/3">
+                            <div className="bg-white p-12 lg:p-16 border border-slate-100 shadow-xl rounded-sm">
+                                <h3 className="text-3xl font-black text-slate-900 mb-8 uppercase tracking-tighter font-montserrat">
+                                    Submit an <span className="text-[#0ea5e9]">Enquiry</span>
+                                </h3>
+                                <form onSubmit={handleSubmit} className="space-y-8">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div className="space-y-4">
-                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Full Identity</label>
-                                            <input required type="text" placeholder="Johnathan Doe" className="w-full px-6 py-4 rounded-xl bg-white border border-slate-100 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-sm" />
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">Full Name</label>
+                                            <input
+                                                required
+                                                type="text"
+                                                className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all"
+                                                placeholder="Enter name..."
+                                                value={formData.name}
+                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            />
                                         </div>
-                                        <div className="space-y-4">
-                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Professional Email</label>
-                                            <input required type="email" placeholder="j.doe@organisation.com" className="w-full px-6 py-4 rounded-xl bg-white border border-slate-100 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-sm" />
+                                        <div className="space-y-3">
+                                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">Email Address</label>
+                                            <input
+                                                required
+                                                type="email"
+                                                className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all"
+                                                placeholder="email@address.com"
+                                                value={formData.email}
+                                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            />
                                         </div>
                                     </div>
-                                    <div className="space-y-4">
-                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Inquiry Specification</label>
-                                        <select className="w-full px-6 py-4 rounded-xl bg-white border border-slate-100 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-sm">
-                                            <option>Bespoke Maintenance Contract</option>
-                                            <option>Industrial Restoration Project</option>
-                                            <option>Emergency Facility Support</option>
-                                            <option>General Corporate Inquiry</option>
-                                        </select>
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">Service Required</label>
+                                        <div className="relative">
+                                            <select
+                                                required
+                                                className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all appearance-none cursor-pointer"
+                                                value={formData.service}
+                                                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                                            >
+                                                <option value="">Select Service Required</option>
+                                                {servicesData.map(service => (
+                                                    <option key={service.id} value={service.title}>{service.title}</option>
+                                                ))}
+                                            </select>
+                                            <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+                                                <Send size={14} className="rotate-90" />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="space-y-4">
-                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Project Particulars</label>
-                                        <textarea required rows="5" placeholder="Define the scope of your requirements..." className="w-full px-6 py-4 rounded-xl bg-white border border-slate-100 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-bold text-sm"></textarea>
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">Message Details</label>
+                                        <textarea
+                                            required
+                                            rows="6"
+                                            className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all resize-none"
+                                            placeholder="How can we help you?"
+                                            value={formData.message}
+                                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                        ></textarea>
                                     </div>
-                                    <Button variant="primary" size="lg" className="w-full py-6 text-sm uppercase tracking-[0.2em]">
-                                        Transmit Message <Send className="ml-4 w-4 h-4" />
-                                    </Button>
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-[#0ea5e9] text-white py-6 font-black text-xs uppercase tracking-[0.4em] rounded-sm hover:bg-slate-900 transition-all flex items-center justify-center gap-3 shadow-xl shadow-cyan-500/20 active:scale-95"
+                                    >
+                                        Send Message <Send size={18} />
+                                    </button>
                                 </form>
                             </div>
                         </div>
 
                         {/* Info Side */}
-                        <div className="w-full lg:w-2/5">
-                            <div className="space-y-16">
-                                <div>
-                                    <h4 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-10">Direct Channels</h4>
-                                    <div className="space-y-8">
-                                        <div className="flex items-center group">
-                                            <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mr-6 group-hover:bg-primary transition-colors duration-500">
-                                                <Phone className="w-6 h-6 text-primary group-hover:text-white" />
-                                            </div>
-                                            <div>
-                                                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Corporate Hotline</div>
-                                                <div className="text-xl font-black text-secondary-dark">020 1234 5678</div>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center group">
-                                            <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mr-6 group-hover:bg-primary transition-colors duration-500">
-                                                <Mail className="w-6 h-6 text-primary group-hover:text-white" />
-                                            </div>
-                                            <div>
-                                                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Electronic Mail</div>
-                                                <div className="text-xl font-black text-secondary-dark">hello@nativeshine.co.uk</div>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center group">
-                                            <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mr-6 group-hover:bg-primary transition-colors duration-500">
-                                                <MessageCircle className="w-6 h-6 text-primary group-hover:text-white" />
-                                            </div>
-                                            <div>
-                                                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Rapid WhatsApp</div>
-                                                <div className="text-xl font-black text-secondary-dark">+44 7123 456789</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div className="lg:w-1/3 space-y-8">
+                            <div className="p-12 bg-slate-900 text-white rounded-sm shadow-2xl relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-8 transform rotate-12 opacity-5 translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform">
+                                    <MessageCircle size={160} />
                                 </div>
-
-                                <div>
-                                    <h4 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-10">Primary Office</h4>
-                                    <div className="flex items-start group">
-                                        <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mr-6 shrink-0 group-hover:bg-primary transition-colors duration-500">
-                                            <MapPin className="w-6 h-6 text-primary group-hover:text-white" />
+                                <h3 className="text-2xl font-black mb-10 uppercase tracking-tighter italic border-b border-white/10 pb-4 font-montserrat">
+                                    Direct <span className="text-[#0ea5e9]">Contact</span>
+                                </h3>
+                                <div className="space-y-10 relative z-10">
+                                    <div className="flex gap-6 group cursor-pointer items-center">
+                                        <div className="w-14 h-14 bg-white/5 flex items-center justify-center text-[#0ea5e9] transform group-hover:bg-[#0ea5e9] group-hover:text-white transition-all ring-1 ring-white/10 group-hover:ring-transparent">
+                                            <Phone size={24} />
                                         </div>
                                         <div>
-                                            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">London Headquarters</div>
-                                            <div className="text-lg font-black text-secondary-dark leading-relaxed">
-                                                St Magnus House, 3 Lower Thames St<br />London, EC3R 6HE, United Kingdom
-                                            </div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-[#0ea5e9] mb-1">Head Office</p>
+                                            <p className="font-black text-xl tracking-tighter">020 1234 5678</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-6 group cursor-pointer items-center">
+                                        <div className="w-14 h-14 bg-white/5 flex items-center justify-center text-[#0ea5e9] transform group-hover:bg-[#0ea5e9] group-hover:text-white transition-all ring-1 ring-white/10 group-hover:ring-transparent">
+                                            <Mail size={24} />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-[#0ea5e9] mb-1">Enquiries</p>
+                                            <p className="font-black text-xl tracking-tighter">info@nativeshine.co.uk</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-6 group cursor-pointer items-center border-t border-white/5 pt-10">
+                                        <div className="w-14 h-14 bg-[#0ea5e9]/10 flex items-center justify-center text-[#0ea5e9] transform group-hover:bg-[#0ea5e9] group-hover:text-white transition-all ring-1 ring-[#0ea5e9]/20">
+                                            <MessageCircle size={24} />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-[#0ea5e9] mb-1">Fast Response</p>
+                                            <p className="font-black text-xl tracking-tighter">+44 7123 456789</p>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                {/* Mini Map Placeholder */}
-                                <div className="h-64 bg-slate-100 rounded-[2.5rem] overflow-hidden border border-slate-200 relative">
-                                    <div className="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-0.086,51.508,13,0/600x300?access_token=pk.xxx')] bg-cover opacity-50 grayscale"></div>
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="p-4 bg-white shadow-2xl rounded-2xl text-center">
-                                            <div className="w-3 h-3 bg-primary rounded-full mx-auto animate-ping mb-2"></div>
-                                            <span className="text-[10px] font-black uppercase tracking-widest">Operational Hub</span>
-                                        </div>
-                                    </div>
+                            <div className="p-12 bg-white border border-slate-100 rounded-sm shadow-xl flex items-center gap-8">
+                                <div className="w-16 h-16 bg-[#0ea5e9]/5 flex items-center justify-center text-[#0ea5e9] shrink-0">
+                                    <MapPin size={32} />
+                                </div>
+                                <div className="space-y-1">
+                                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em] mb-2">Our Location</h4>
+                                    <p className="text-sm text-slate-500 font-bold leading-relaxed">
+                                        128 Berkeley Square, Mayfair, <br /> London W1J 6EB
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -17,7 +17,11 @@
 }
 
 @layer base {
-  :root {
+  html {
+    scroll-behavior: smooth;
+}
+
+:root {
     font-family: var(--font-sans);
     line-height: 1.5;
     font-weight: 400;
