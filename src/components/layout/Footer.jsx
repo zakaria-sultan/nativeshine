@@ -49,7 +49,7 @@ const Footer = () => {
                     {/* Column 1: Branding */}
                     <div className="flex flex-col space-y-6">
                         <Link to="/" className="flex items-center gap-4 group">
-                            <img src="/logo.png" alt="NativeShine" className="h-16 w-auto transition-transform group-hover:scale-105" />
+                            <img src="/logo.jpeg" alt="NativeShine" className="h-16 w-auto transition-transform group-hover:scale-105" />
                             <span className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter uppercase border-l-2 border-slate-100 pl-4 py-1">
                                 NativeShine <span className="text-[#0ea5e9]">LTD</span>
                             </span>
