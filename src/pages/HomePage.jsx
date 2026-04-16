@@ -48,8 +48,8 @@ const HomePage = () => {
 
     return (
         <div className="bg-white">
-            {/* Hero Slider */}
-            <section id="top" className="-mt-32 relative h-screen bg-slate-900 overflow-hidden">
+            {/* Hero Slider - Adjusted for Mobile Viewport */}
+            <section id="top" className="-mt-32 relative h-[70vh] md:h-screen bg-slate-900 overflow-hidden">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentSlide}
@@ -59,7 +59,7 @@ const HomePage = () => {
                         transition={{ duration: 1.5, ease: "easeOut" }}
                         className="absolute inset-0"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
                         <img
                             src={slides[currentSlide].image}
                             alt={slides[currentSlide].title}
@@ -70,22 +70,22 @@ const HomePage = () => {
 
                 <div className="relative z-20 h-full container mx-auto px-6 flex flex-col justify-center">
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
+                        initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
-                        className="max-w-2xl bg-white/10 backdrop-blur-sm p-10 border-l-8 border-[#00AEEF]"
+                        className="max-w-2xl bg-white/10 backdrop-blur-md p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] mt-20 md:mt-0"
                     >
-                        <h4 className="text-[#00AEEF] font-black uppercase tracking-[0.3em] text-sm mb-4">
+                        <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] md:text-sm mb-3 md:mb-4">
                             {slides[currentSlide].subtitle}
                         </h4>
-                        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight uppercase tracking-tighter">
+                        <h1 className="text-2xl md:text-6xl font-black text-white mb-4 md:mb-6 leading-tight uppercase tracking-tighter font-montserrat">
                             {slides[currentSlide].title}
                         </h1>
-                        <p className="text-lg text-slate-200 mb-8 leading-relaxed font-medium">
+                        <p className="text-sm md:text-lg text-slate-200 mb-6 md:mb-8 leading-relaxed font-medium line-clamp-3 md:line-clamp-none">
                             {slides[currentSlide].description}
                         </p>
-                        <button className="bg-[#0ea5e9] text-white px-10 py-4 font-black text-sm uppercase tracking-widest hover:bg-white hover:text-[#00AEEF] transition-all flex items-center gap-3 shadow-lg shadow-cyan-500/20">
-                            Read More <ArrowRight size={18} />
+                        <button className="bg-[#0ea5e9] text-white px-6 py-3 md:px-10 md:py-4 font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:text-[#0ea5e9] transition-all flex items-center gap-3 shadow-lg shadow-cyan-500/20 active:scale-95">
+                            Read More <ArrowRight size={16} />
                         </button>
                     </motion.div>
                 </div>
@@ -150,83 +150,17 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* Intro Section */}
-            <section className="py-24 bg-[#F9F9F9]">
-                <div className="container mx-auto px-6 max-w-7xl">
-                    <div className="flex flex-col lg:flex-row gap-20">
-                        {/* Left Sidebar - Testimonials */}
-                        <aside className="lg:w-1/3">
-                            <div className="sticky top-40 space-y-8">
-                                <div className="bg-white p-10 shadow-sm border border-slate-100 rounded-sm">
-                                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#0ea5e9] mb-10 border-b-2 border-[#00AEEF]/10 pb-4">
-                                        TESTIMONIALS
-                                    </h3>
-                                    <div className="space-y-12">
-                                        <div className="relative">
-                                            <div className="flex mb-4 text-[#C0C0C0]">
-                                                {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
-                                            </div>
-                                            <p className="text-slate-600 italic leading-relaxed mb-6 font-medium">
-                                                "The transformation of our office lobby was incredible. NativeShine Services restored our limestone floors to their original glory."
-                                            </p>
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-sm flex items-center justify-center font-black text-[#00AEEF]">JW</div>
-                                                <div>
-                                                    <p className="font-bold text-sm text-slate-900">John Walker</p>
-                                                    <p className="text-xs text-slate-400 font-bold">Property Manager, Savills</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </aside>
-
-                        {/* Right Content */}
-                        <div className="lg:w-2/3">
-                            <div className="bg-white p-12 lg:p-16 border border-slate-100 shadow-sm">
-                                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-10 leading-tight uppercase tracking-tighter font-montserrat">
-                                    Experience Excellence with <br />
-                                    <span className="text-[#0ea5e9]">NativeShine Services</span>
-                                </h2>
-                                <div className="space-y-8 text-lg text-slate-500 leading-relaxed font-medium">
-                                    <p>
-                                        With over two decades of heritage in the restoration industry, NativeShine Services has established itself as London's premier provider of architectural surface care. Our commitment to excellence is reflected in every project we undertake, from heritage landmarks to modern commercial developments.
-                                    </p>
-                                    <p>
-                                        We specialize in the restoration and maintenance of various surfaces including stone, brick, marble, and wood. Our team utilizes the most advanced technologies, including the DOFF steam cleaning system and TORC abrasive systems, ensuring the highest standards of cleanliness and preservation.
-                                    </p>
-                                </div>
-
-                                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    {[
-                                        "ISO 9001 Certified Quality",
-                                        "Fully Insured & Accredited",
-                                        "London-Wide Service Coverage",
-                                        "Eco-Friendly Restoration Methods",
-                                        "Heritage Specialist Team",
-                                        "24/7 Support for Partners"
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-center gap-4 group cursor-default">
-                                            <div className="w-10 h-10 rounded-sm bg-[#00AEEF]/5 flex items-center justify-center text-[#00AEEF] group-hover:bg-[#00AEEF] group-hover:text-white transition-all transform group-hover:rotate-12">
-                                                <CheckCircle2 size={20} />
-                                            </div>
-                                            <span className="font-black text-sm text-slate-700 uppercase tracking-wide">{item}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* OUR SERVICES - 4 COLUMN GRID */}
-            <section id="services" className="py-24 bg-white w-full px-4 md:px-8">
-                <div className="mb-16 text-center">
-                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter">OUR SPECIALIST SERVICES</h2>
-                    <p className="text-[#0ea5e9] font-black uppercase tracking-[0.3em] text-xs mt-4 italic">Excellence as Standard</p>
-                    <div className="w-32 h-2 bg-[#00AEEF] mt-8 mx-auto"></div>
+            <section id="services" className="py-16 md:py-24 bg-white w-full px-6 md:px-12">
+                <div className="mb-12 md:mb-20 text-center max-w-4xl mx-auto">
+                    <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">
+                        OUR SPECIALIST SERVICES
+                    </h2>
+                    <p className="text-[#f97316] font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mt-4 italic">
+                        Excellence as Standard
+                    </p>
+                    <div className="w-20 md:w-32 h-1.5 md:h-2 bg-[#f97316] mt-6 md:mt-8 mx-auto"></div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">

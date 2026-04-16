@@ -6,9 +6,12 @@ import ServicePageTemplate from './pages/ServicePageTemplate';
 import About from './pages/About';
 import Contact from './pages/Contact';
 
+import ScrollToTop from './components/common/ScrollToTop';
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
