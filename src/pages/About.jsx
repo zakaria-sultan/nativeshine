@@ -6,7 +6,7 @@ const About = () => {
     return (
         <div className="bg-white">
             {/* Hero Section */}
-            <section className="-mt-32 pt-48 pb-24 bg-[#F9F9F9] border-b border-slate-100">
+            <section className="-mt-24 pt-36 pb-12 bg-[#F9F9F9] border-b border-slate-100">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl">
                         <h4 className="text-[#00AEEF] font-black uppercase tracking-[0.3em] text-sm mb-6">Our Heritage</h4>
@@ -22,7 +22,7 @@ const About = () => {
             </section>
 
             {/* Mission & Vision */}
-            <section className="py-24">
+            <section className="py-12">
                 <div className="container mx-auto px-6 max-w-7xl">
                     <div className="flex flex-col lg:flex-row gap-20 items-center">
                         <div className="lg:w-1/2">
@@ -57,9 +57,9 @@ const About = () => {
             </section>
 
             {/* Values */}
-            <section className="py-24 bg-[#F9F9F9]">
+            <section className="py-12 bg-[#F9F9F9]">
                 <div className="container mx-auto px-6 max-w-7xl text-center">
-                    <h2 className="text-3xl font-black text-slate-900 mb-20 uppercase tracking-tighter">OUR CORE VALUES</h2>
+                    <h2 className="text-3xl font-black text-slate-900 mb-10 uppercase tracking-tighter">OUR CORE VALUES</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
                         {[
                             { icon: Users, title: "Specialist Experts", text: "A team of highly vetted technicians with deep domain knowledge in stone and heritage care." },

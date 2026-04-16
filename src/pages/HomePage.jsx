@@ -49,7 +49,7 @@ const HomePage = () => {
     return (
         <div className="bg-white">
             {/* Hero Slider - Adjusted for Mobile Viewport */}
-            <section id="top" className="-mt-32 relative h-[70vh] md:h-screen bg-slate-900 overflow-hidden">
+            <section id="top" className="-mt-24 relative h-[65vh] md:h-screen bg-slate-900 overflow-hidden">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentSlide}
@@ -73,7 +73,7 @@ const HomePage = () => {
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
-                        className="max-w-2xl bg-white/10 backdrop-blur-md p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] mt-20 md:mt-0"
+                        className="max-w-2xl bg-white/10 backdrop-blur-md p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] mt-8 md:mt-0"
                     >
                         <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] md:text-sm mb-3 md:mb-4">
                             {slides[currentSlide].subtitle}
@@ -109,7 +109,7 @@ const HomePage = () => {
             </section>
 
             {/* Infinite Text Marquee */}
-            <section className="py-12 bg-white border-y border-slate-100 overflow-hidden flex items-center">
+            <section className="py-6 bg-white border-y border-slate-100 overflow-hidden flex items-center">
                 <div className="relative flex whitespace-nowrap">
                     <motion.div
                         className="flex items-center"
@@ -152,8 +152,8 @@ const HomePage = () => {
 
 
             {/* OUR SERVICES - 4 COLUMN GRID */}
-            <section id="services" className="py-16 md:py-24 bg-white w-full px-6 md:px-12">
-                <div className="mb-12 md:mb-20 text-center max-w-4xl mx-auto">
+            <section id="services" className="py-10 md:py-16 bg-white w-full px-6 md:px-12">
+                <div className="mb-8 md:mb-14 text-center max-w-4xl mx-auto">
                     <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">
                         OUR SPECIALIST SERVICES
                     </h2>
