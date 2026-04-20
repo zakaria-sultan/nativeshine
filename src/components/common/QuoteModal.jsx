@@ -55,7 +55,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
                     className="relative w-full max-w-lg bg-white shadow-2xl overflow-hidden rounded-sm"
                 >
                     {isSubmitted ? (
-                        <div className="p-12 text-center py-24">
+                        <div className="p-8 text-center py-8">
                             <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white mx-auto mb-6 animate-bounce">
                                 <Check size={40} />
                             </div>

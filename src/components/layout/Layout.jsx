@@ -8,10 +8,9 @@ const Layout = ({ children }) => {
 
     return (
         <>
-            {/* Fixed header is outside the min-h-screen flex column so it does not steal flex space / break mt-auto math */}
             <Header onOpenQuote={() => setIsQuoteModalOpen(true)} />
-            <div className="ns-layout-shell flex min-h-screen flex-col bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#00AEEF] selection:text-white">
-                <main className="ns-layout-main flex w-full flex-1 flex-col pt-20 md:pt-24 lg:pt-28">
+            <div className="flex min-h-0 flex-col bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#00AEEF] selection:text-white">
+                <main className="block w-full pt-20 md:pt-24 lg:pt-28">
                     {children}
                 </main>
                 <Footer className="shrink-0" />

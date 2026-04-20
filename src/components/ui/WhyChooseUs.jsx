@@ -31,9 +31,9 @@ const reasons = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-8 bg-white">
       <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-8">
           <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">
             Core Values
           </h2>

@@ -5,22 +5,13 @@ import { servicesData } from "../data/servicesData";
 import {
   ChevronRight,
   ChevronLeft,
-  Star,
-  CheckCircle2,
   ArrowRight,
   X,
   Maximize2,
 } from "lucide-react";
 
-// Import local assets
 import n1 from "../assets/n1.jpeg";
 import n2 from "../assets/n2.jpeg";
-import n3 from "../assets/n3.jpeg";
-import n4 from "../assets/n4.jpeg";
-import n5 from "../assets/n5.jpeg";
-import n6 from "../assets/n6.jpeg";
-import n7 from "../assets/n7.jpeg";
-import n8 from "../assets/n8.jpeg";
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -51,11 +42,11 @@ const HomePage = () => {
     "STRATEGIC PARTNERSHIPS COMING SOON  • NEW COLLABORATIONS UNDERWAY • ";
 
   return (
-    <div className="flex w-full flex-1 flex-col bg-white">
-      {/* Hero: fixed height on small screens so it does not dominate the viewport; md+ keeps a tall hero */}
+    <div className="flex w-full flex-col bg-white">
+      {/* Hero: fixed height (550px) for all viewports — avoids vh/md blowups with width=1280 meta */}
       <section
         id="top"
-        className="ns-hero-home -mt-24 relative bg-slate-900 overflow-hidden flex flex-col"
+        className="h-[550px] -mt-24 relative bg-slate-900 overflow-hidden flex flex-col"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -70,12 +61,12 @@ const HomePage = () => {
             <img
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
-              className="ns-hero-bg w-full h-full object-cover"
+              className="ns-hero-bg w-full h-full object-cover object-top"
             />
           </motion.div>
         </AnimatePresence>
 
-        <div className="ns-hero-home-inner relative z-20 h-full flex flex-col justify-center pb-24 pt-20 sm:pb-20 sm:pt-20 md:pb-16 md:pt-16 container mx-auto px-4 sm:px-6">
+        <div className="relative z-20 h-full flex flex-col justify-center py-8 container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -126,7 +117,7 @@ const HomePage = () => {
       </section>
 
       {/* Infinite Text Marquee — flush to hero (no top margin) */}
-      <section className="ns-home-marquee mt-0 py-5 sm:py-6 bg-white border-y border-slate-100 overflow-hidden flex items-center">
+      <section className="mt-0 py-8 bg-white border-y border-slate-100 overflow-hidden flex items-center">
         <div className="relative flex whitespace-nowrap">
           <motion.div
             className="flex items-center"
@@ -174,9 +165,9 @@ const HomePage = () => {
       {/* OUR SERVICES - 4 COLUMN GRID */}
       <section
         id="services"
-        className="ns-home-services ns-page-last py-8 md:py-14 lg:py-16 bg-white w-full px-4 sm:px-6 md:px-12"
+        className="ns-page-last pt-8 pb-0 mb-0 bg-white w-full px-4 sm:px-6 md:px-12"
       >
-        <div className="mb-8 md:mb-14 text-center max-w-4xl mx-auto">
+        <div className="mb-8 text-center max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">
             OUR SPECIALIST SERVICES
           </h2>
@@ -186,32 +177,37 @@ const HomePage = () => {
           <div className="w-20 md:w-32 h-1.5 md:h-2 bg-[#f97316] mt-6 md:mt-8 mx-auto"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
           {servicesData.map((service, i) => (
             <Link
               key={service.slug}
               to={`/services/${service.slug}`}
-              className="aspect-[3/4] relative overflow-hidden group cursor-pointer bg-slate-900 rounded-sm shadow-xl"
+              aria-label={`${service.title} — open service page`}
+              className="aspect-[3/4] relative overflow-hidden group cursor-pointer bg-slate-900 rounded-sm shadow-xl block"
             >
               <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-all duration-700 transform group-hover:scale-110"
+                src={service.imageThumbnail}
+                alt=""
+                className="w-full h-full object-cover object-center opacity-85 group-hover:opacity-70 transition-all duration-700 transform group-hover:scale-105"
               />
 
-              {/* Service Content */}
-              <div className="absolute inset-0 p-10 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/20 to-transparent">
-                <span className="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] mb-4 block translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                  Service 0{i + 1}
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10"
+                aria-hidden
+              />
+
+              <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6 md:p-7 z-10">
+                <span className="text-white/70 text-[10px] font-black uppercase tracking-[0.25em] mb-2 block drop-shadow-md">
+                  Service {String(i + 1).padStart(2, "0")}
                 </span>
-                <h4 className="text-white text-2xl font-black uppercase tracking-tight mb-6 group-hover:text-[#0ea5e9] transition-colors duration-300 leading-tight">
+                <h4 className="text-white text-lg sm:text-xl md:text-2xl font-black uppercase tracking-tight mb-3 group-hover:text-[#0ea5e9] transition-colors duration-300 leading-snug max-w-[95%] text-balance drop-shadow-lg">
                   {service.title}
                 </h4>
-                <div className="w-12 h-1 bg-[#0ea5e9] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 mb-8"></div>
+                <div className="w-12 h-1 bg-[#0ea5e9] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 mb-3" />
 
-                <div className="flex items-center gap-3 text-white text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                  Exploration{" "}
-                  <ArrowRight size={14} className="text-[#0ea5e9]" />
+                <div className="flex items-center gap-2 text-white text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 drop-shadow-md">
+                  View service{" "}
+                  <ArrowRight size={14} className="text-[#0ea5e9] shrink-0" />
                 </div>
               </div>
             </Link>

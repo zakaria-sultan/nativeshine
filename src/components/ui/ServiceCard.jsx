@@ -14,7 +14,7 @@ const ServiceCard = ({ service, index }) => {
         >
             <div className="relative h-64 overflow-hidden">
                 <img
-                    src={service.image}
+                    src={service.imageThumbnail}
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />

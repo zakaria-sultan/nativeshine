@@ -1,19 +1,34 @@
-import n1 from '../assets/n1.jpeg';
-import n2 from '../assets/n2.jpeg';
-import n3 from '../assets/n3.jpeg';
-import n4 from '../assets/n4.jpeg';
-import n5 from '../assets/n5.jpeg';
-import n6 from '../assets/n6.jpeg';
-import n7 from '../assets/n7.jpeg';
-import n8 from '../assets/n8.jpeg';
+/**
+ * Service content + image URLs.
+ *
+ * Images live under public/images/services/ (served as /images/services/...).
+ * Replace files in place — same filenames — to swap in final photography:
+ *   {slug}-thumbnail.jpg  → homepage / nav cards
+ *   {slug}-hero.jpg       → service page header background
+ *   galleries/{slug}/gallery-1.jpg … gallery-3.jpg → “Our recent works” grid
+ *
+ * Optional high-res: use .png with same base name and update paths below.
+ */
+
+const base = "/images/services";
+
+function imagesFor(slug) {
+  return {
+    imageThumbnail: `${base}/${slug}-thumbnail.png`,
+    imageHero: `${base}/${slug}-hero.png`,
+    imageGallery: [1, 2, 3].map(
+      (n) => `${base}/galleries/${slug}/gallery-${n}.png`,
+    ),
+  };
+}
 
 export const servicesData = [
-    {
-        id: 'front-of-house',
-        title: 'Front of House',
-        slug: 'front-of-house',
-        image: n1,
-        content: `
+  {
+    id: "front-of-house",
+    title: "Front of House",
+    slug: "front-of-house",
+    ...imagesFor("front-of-house"),
+    content: `
       They say “first impressions count” — we believe they define everything.
       Before a word is spoken or a service is delivered, your environment speaks on your behalf. The moment someone enters your premises, they form an immediate and lasting perception of your standards, your professionalism, and your attention to detail. That moment is not just important — it is critical.
 
@@ -30,14 +45,14 @@ export const servicesData = [
       Because at NativeShine, we don’t follow standards — we set them.
 
       Excellence. Without compromise.
-    `
-    },
-    {
-        id: 'back-of-house',
-        title: 'Back of House',
-        slug: 'back-of-house',
-        image: n2,
-        content: `
+    `,
+  },
+  {
+    id: "back-of-house",
+    title: "Back of House",
+    slug: "back-of-house",
+    ...imagesFor("back-of-house"),
+    content: `
       Back of house areas sit at the very core of any successful premises. While they may not always be visible to customers, they play a critical role in ensuring that operations run smoothly, efficiently, and to the highest standard. Maintaining exceptional cleanliness in these spaces is essential, as it directly impacts the quality, safety, and consistency of the services you deliver.
 
       These areas are often highly multifunctional, accommodating everything from staff movement and storage to food preparation, equipment handling, and operational coordination. Due to this complexity, it is vital to partner with a cleaning provider that offers a broad range of specialist skills and understands the unique demands of each environment. A well-maintained back of house allows your team to perform at their best, minimising disruption, reducing risks, and supporting seamless day-to-day operations.
@@ -49,14 +64,14 @@ export const servicesData = [
       Research consistently shows that employees who work in a clean, safe, and well-maintained environment are not only happier, but also more focused, motivated, and productive. By investing in high-quality cleaning services, you are not only protecting your business standards but also supporting the wellbeing and performance of your team.
 
       With NativeShine Cleaning Ltd, you can rely on a dependable partner committed to delivering excellence, professionalism, and results you can trust — no matter the size or complexity of your premises.
-    `
-    },
-    {
-        id: 'kitchen',
-        title: 'Kitchen Cleaning',
-        slug: 'kitchen-cleaning',
-        image: n3,
-        content: `
+    `,
+  },
+  {
+    id: "kitchen",
+    title: "Kitchen Cleaning",
+    slug: "kitchen-cleaning",
+    ...imagesFor("kitchen-cleaning"),
+    content: `
       There is no working environment more critical to maintain than the kitchen. It is the heart of any hospitality operation — where standards, safety, and reputation are defined every day.
 
       At NativeShine Cleaning Ltd, we understand that a clean kitchen is essential to delivering quality service and maintaining trust. Our experienced Back of House teams are fully trained to handle all aspects of kitchen cleaning, ensuring a safe, compliant, and efficient working environment.
@@ -71,14 +86,14 @@ export const servicesData = [
       With NativeShine Cleaning Ltd, your kitchen is maintained to the highest professional standard — clean, compliant, and always ready to perform.
 
       Excellence as Standard.
-    `
-    },
-    {
-        id: 'spa',
-        title: 'Spa & Gymnasium',
-        slug: 'spa-gymnasium',
-        image: n4,
-        content: `
+    `,
+  },
+  {
+    id: "spa",
+    title: "Spa & Gymnasium",
+    slug: "spa-gymnasium",
+    ...imagesFor("spa-gymnasium"),
+    content: `
       When clients enter your spa or gymnasium, they expect a clean, calm, and hygienic environment that supports their wellbeing.
 
       At NativeShine Cleaning Ltd, we ensure your facilities consistently meet these high expectations. Our specialist teams maintain a fresh, safe, and professionally presented space, allowing you and your staff to focus on delivering exceptional client care.
@@ -90,14 +105,14 @@ export const servicesData = [
       With NativeShine Cleaning Ltd, your space remains clean, safe, and ready to perform.
 
       Excellence as Standard.
-    `
-    },
-    {
-        id: 'windows',
-        title: 'Window Cleaning',
-        slug: 'window-cleaning',
-        image: n5,
-        content: `
+    `,
+  },
+  {
+    id: "windows",
+    title: "Window Cleaning",
+    slug: "window-cleaning",
+    ...imagesFor("window-cleaning"),
+    content: `
       At NativeShine Cleaning Ltd, we provide reliable internal and external window cleaning for all property types, from single-storey to high-rise buildings.
 
       Using safe and effective methods, our team delivers a consistently clear, streak-free finish with attention to detail and professionalism.
@@ -105,14 +120,14 @@ export const servicesData = [
       Flexible, efficient, and trusted — we ensure your building always looks its best.
 
       Excellence as Standard.
-    `
-    },
-    {
-        id: 'carpet',
-        title: 'Carpet Cleaning',
-        slug: 'carpet-cleaning',
-        image: n6,
-        content: `
+    `,
+  },
+  {
+    id: "carpet",
+    title: "Carpet Cleaning",
+    slug: "carpet-cleaning",
+    ...imagesFor("carpet-cleaning"),
+    content: `
       A well-maintained carpet is an investment that should stand the test of time. Proper care not only preserves its appearance but also extends its lifespan and performance.
 
       At NativeShine Cleaning Ltd, we provide specialist cleaning for a wide range of carpets and rugs — from delicate natural fibres such as silk and wool to durable commercial carpet tiles.
@@ -124,14 +139,14 @@ export const servicesData = [
       With NativeShine Cleaning Ltd, your carpets are maintained to the highest standard — enhancing both appearance and longevity.
 
       Excellence as Standard.
-    `
-    },
-    {
-        id: 'public-areas',
-        title: 'Public & Pedestrian Areas',
-        slug: 'public-pedestrian-areas',
-        image: n7,
-        content: `
+    `,
+  },
+  {
+    id: "public-areas",
+    title: "Public & Pedestrian Areas",
+    slug: "public-pedestrian-areas",
+    ...imagesFor("public-pedestrian-areas"),
+    content: `
       Every part of your premises contributes to the impression you create — especially the areas your clients encounter first. Entrances, walkways, and shared spaces are the arteries of your building and must be maintained to the highest standard at all times.
 
       At NativeShine Cleaning Ltd, we treat these areas with the same level of care and attention as your internal spaces. From the moment your clients arrive, we ensure your environment reflects cleanliness, professionalism, and pride.
@@ -141,14 +156,14 @@ export const servicesData = [
       With NativeShine Cleaning Ltd, your exterior and high-traffic areas are always clean, presentable, and ready to make the right impression.
 
       Excellence as Standard.
-    `
-    },
-    {
-        id: 'specialist',
-        title: 'Specialist Services',
-        slug: 'specialist-services',
-        image: n8,
-        content: `
+    `,
+  },
+  {
+    id: "specialist",
+    title: "Specialist Services",
+    slug: "specialist-services",
+    ...imagesFor("specialist-services"),
+    content: `
       At NativeShine Cleaning Ltd, we go beyond traditional cleaning to deliver a comprehensive range of specialist and support services designed to enhance and support your operations.
 
       Our capabilities include:
@@ -167,6 +182,10 @@ export const servicesData = [
       With NativeShine Cleaning Ltd, you benefit from a complete, reliable, and flexible service solution tailored to your business needs.
 
       Excellence as Standard.
-    `
-    }
-];
+    `,
+  },
+].map((service) => ({
+  ...service,
+  /** @deprecated Use imageThumbnail — kept for any legacy references */
+  image: service.imageThumbnail,
+}));

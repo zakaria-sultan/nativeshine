@@ -90,7 +90,7 @@ const QuoteModal = () => {
                                             key="success"
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
-                                            className="text-center py-20"
+                                            className="text-center py-8"
                                         >
                                             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
                                                 <CheckCircle2 className="w-10 h-10 text-primary" />

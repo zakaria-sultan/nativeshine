@@ -35,7 +35,7 @@ const TestimonialSlider = () => {
     }, []);
 
     return (
-        <section className="py-24 bg-secondary-dark text-white overflow-hidden relative">
+        <section className="py-8 bg-secondary-dark text-white overflow-hidden relative">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,rgba(0,102,204,0.15)_0%,transparent_50%)]"></div>
 
             <div className="container mx-auto px-6 relative z-10">

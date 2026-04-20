@@ -3,22 +3,11 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowRight,
-    Star,
     CheckCircle2,
     X,
     Maximize2
 } from 'lucide-react';
 import { servicesData } from '../data/servicesData';
-
-// Example gallery images (using the same local assets for demonstration)
-import n1 from '../assets/n1.jpeg';
-import n2 from '../assets/n2.jpeg';
-import n3 from '../assets/n3.jpeg';
-import n4 from '../assets/n4.jpeg';
-import n5 from '../assets/n5.jpeg';
-import n6 from '../assets/n6.jpeg';
-import n7 from '../assets/n7.jpeg';
-import n8 from '../assets/n8.jpeg';
 
 const ServicePageTemplate = () => {
     const { slug } = useParams();
@@ -30,7 +19,7 @@ const ServicePageTemplate = () => {
         return <Navigate to="/services" replace />;
     }
 
-    const galleryImages = [n1, n2, n3, n4, n5, n6];
+    const galleryImages = service.imageGallery ?? [];
 
     const testimonials = [
         {
@@ -46,29 +35,29 @@ const ServicePageTemplate = () => {
     ];
 
     return (
-        <div className="flex w-full flex-1 flex-col bg-white">
+        <div className="flex w-full flex-col bg-white">
             {/* Hero Header — short fixed block on mobile/tablet; taller from md up */}
-            <section className="ns-service-hero -mt-24 md:-mt-32 relative bg-slate-900 overflow-hidden flex items-end md:items-center">
+            <section className="h-[550px] -mt-24 md:-mt-32 relative bg-slate-900 overflow-hidden flex items-end md:items-center">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src={service.image}
-                        alt={service.title}
-                        className="ns-service-hero-img w-full h-full object-cover opacity-40 transform scale-105"
+                        src={service.imageHero}
+                        alt=""
+                        className="ns-service-hero-img w-full h-full object-cover object-top opacity-50"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-white/20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/50 to-slate-900/30" />
                 </div>
 
-                <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full py-6 pt-20 sm:pt-20 md:py-0 md:pb-0 md:pt-28 lg:pt-32">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full py-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="border-l-4 md:border-l-8 border-[#0ea5e9] pl-4 md:pl-8"
+                        className="max-w-4xl rounded-sm bg-slate-950/55 backdrop-blur-md px-5 py-6 sm:px-8 sm:py-8 border-l-4 md:border-l-8 border-[#0ea5e9] shadow-lg"
                     >
                         <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-sm mb-2 md:mb-4 italic">
                             Specialist Services
                         </h4>
-                        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter font-montserrat leading-tight">
+                        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter font-montserrat leading-[1.1] pr-2">
                             {service.title}
                         </h1>
                     </motion.div>
@@ -76,7 +65,7 @@ const ServicePageTemplate = () => {
             </section>
 
             {/* Main Content Section */}
-            <section className="ns-service-body py-8 md:py-16 lg:py-24">
+            <section className="py-8">
                 <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                     <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20">
 
@@ -125,7 +114,7 @@ const ServicePageTemplate = () => {
                             </div>
 
                             {/* Action Bar */}
-                            <div className="mt-16 pt-12 border-t border-slate-100 flex flex-wrap gap-6 items-center">
+                            <div className="mt-8 pt-8 border-t border-slate-100 flex flex-wrap gap-6 items-center">
                                 <Link to="/contact" className="bg-[#0ea5e9] text-white px-10 py-4 font-black text-sm uppercase tracking-widest hover:bg-slate-900 transition-all flex items-center gap-3">
                                     Request a Quote <ArrowRight size={18} />
                                 </Link>
@@ -140,23 +129,23 @@ const ServicePageTemplate = () => {
             </section>
 
             {/* Our Works Gallery Section */}
-            <section className="ns-service-gallery ns-page-last py-8 md:py-16 lg:py-24 bg-[#F9F9F9]">
+            <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">
                 <div className="container mx-auto px-6 max-w-7xl">
-                    <div className="mb-16">
+                    <div className="mb-8">
                         <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">OUR RECENT WORKS</h2>
                         <p className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-xs mt-4">Witness the transformation</p>
-                        <div className="w-32 h-2 bg-[#00AEEF] mt-8"></div>
+                        <div className="w-32 h-2 bg-[#00AEEF] mt-6"></div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {galleryImages.map((img, i) => (
                             <motion.div
-                                key={i}
+                                key={`${service.slug}-g-${i}`}
                                 whileHover={{ y: -10 }}
                                 onClick={() => setSelectedImage(img)}
-                                className="aspect-[4/3] relative overflow-hidden group cursor-pointer border-4 border-white shadow-lg"
+                                className="aspect-[4/3] relative overflow-hidden group cursor-pointer border-4 border-white shadow-lg bg-slate-100"
                             >
-                                <img src={img} alt={`Work ${i + 1}`} className="w-full h-full object-cover" />
+                                <img src={img} alt="" className="w-full h-full object-cover object-center" />
                                 <div className="absolute inset-0 bg-[#0ea5e9]/90 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center p-8">
                                     <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
                                         <Maximize2 size={32} className="text-white mx-auto mb-4" />
@@ -167,7 +156,7 @@ const ServicePageTemplate = () => {
                         ))}
                     </div>
 
-                    <p className="text-center mt-12 text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] animate-pulse">
+                    <p className="text-center mt-8 text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] animate-pulse">
                         Click on images to view
                     </p>
                 </div>

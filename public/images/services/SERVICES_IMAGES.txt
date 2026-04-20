@@ -1,0 +1,23 @@
+NativeShine — service image files (served at /images/services/)
+
+Per service slug, keep these filenames when replacing assets:
+
+  {slug}-thumbnail.png   — Homepage “Our Specialist Services” cards + legacy `image` alias
+  {slug}-hero.png        — Service page header background
+
+Slugs:
+  front-of-house
+  back-of-house
+  kitchen-cleaning
+  spa-gymnasium
+  window-cleaning
+  carpet-cleaning
+  public-pedestrian-areas
+  specialist-services
+
+Gallery (service page “Our recent works”):
+  galleries/{slug}/gallery-1.png
+  galleries/{slug}/gallery-2.png
+  galleries/{slug}/gallery-3.png
+
+You may use .jpg instead by renaming files and updating paths in src/data/servicesData.js (imagesFor).

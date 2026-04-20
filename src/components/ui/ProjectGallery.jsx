@@ -27,9 +27,9 @@ const projects = [
 
 const ProjectGallery = () => {
     return (
-        <section className="py-24 bg-slate-50">
+        <section className="py-8 bg-slate-50">
             <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-8">
                     <div className="max-w-2xl">
                         <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">Our Portfolio</h2>
                         <h3 className="text-4xl md:text-5xl font-black text-secondary-dark tracking-tight">Recent Projects</h3>
