@@ -26,8 +26,8 @@ const RecentWorks = ({ serviceSlug, serviceTitle }) => {
   const closeLightbox = () => setLightboxSrc(null);
 
   return (
-    <section className="ns-page-last pt-8 pb-12 bg-[#F9F9F9]">
-      <div className="container mx-auto px-6 max-w-7xl">
+    <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">
+      <div className="container mx-auto px-6 max-w-7xl pb-6">
         <div className="mb-10">
           <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">
             OUR RECENT WORKS

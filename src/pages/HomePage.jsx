@@ -46,7 +46,7 @@ const HomePage = () => {
       {/* Hero: fixed height (550px) for all viewports — avoids vh/md blowups with width=1280 meta */}
       <section
         id="top"
-        className="h-[550px] -mt-24 relative bg-slate-900 overflow-hidden flex flex-col"
+        className="!h-[500px] relative bg-slate-900 overflow-hidden flex flex-col mt-0"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -117,7 +117,7 @@ const HomePage = () => {
       </section>
 
       {/* Infinite Text Marquee — flush to hero (no top margin) */}
-      <section className="mt-0 py-8 bg-white border-y border-slate-100 overflow-hidden flex items-center">
+      <section className="mt-0 py-4 bg-white border-y border-slate-100 overflow-hidden flex items-center">
         <div className="relative flex whitespace-nowrap">
           <motion.div
             className="flex items-center"
@@ -165,7 +165,7 @@ const HomePage = () => {
       {/* OUR SERVICES - 4 COLUMN GRID */}
       <section
         id="services"
-        className="ns-page-last pt-8 pb-12 bg-white w-full px-4 sm:px-6 md:px-12"
+        className="ns-page-last pt-6 pb-0 mb-0 bg-white w-full px-4 sm:px-6 md:px-12"
       >
         <div className="mb-8 text-center max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">

@@ -6,7 +6,7 @@ const About = () => {
   return (
     <div className="flex w-full flex-col bg-white">
       {/* Hero Section */}
-      <section className="-mt-24 pt-28 pb-6 bg-[#F9F9F9] border-b border-slate-100">
+      <section className="mt-0 pt-6 pb-6 bg-[#F9F9F9] border-b border-slate-100">
         <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
           <div className="max-w-4xl">
             <h4 className="text-[#00AEEF] font-black uppercase tracking-[0.3em] text-xs sm:text-sm mb-4 md:mb-6">

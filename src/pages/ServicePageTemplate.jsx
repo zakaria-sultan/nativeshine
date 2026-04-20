@@ -33,7 +33,7 @@ const ServicePageTemplate = () => {
     return (
         <div className="flex w-full flex-col bg-white">
             {/* Hero Header — short fixed block on mobile/tablet; taller from md up */}
-            <section className="h-[550px] -mt-24 md:-mt-32 relative bg-slate-900 overflow-hidden flex items-end md:items-center">
+            <section className="!h-[500px] mt-0 relative bg-slate-900 overflow-hidden flex items-end md:items-center">
                 <div className="absolute inset-0 z-0">
                     <img
                         src={service.imageHero}
