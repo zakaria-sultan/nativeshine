@@ -55,7 +55,7 @@ const HomePage = () => {
       {/* Hero: fixed height on small screens so it does not dominate the viewport; md+ keeps a tall hero */}
       <section
         id="top"
-        className="-mt-24 relative h-[500px] sm:h-[540px] md:min-h-[75vh] md:h-[min(88vh,900px)] bg-slate-900 overflow-hidden flex flex-col"
+        className="ns-hero-home -mt-24 relative bg-slate-900 overflow-hidden flex flex-col"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -70,12 +70,12 @@ const HomePage = () => {
             <img
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
-              className="w-full h-full object-cover"
+              className="ns-hero-bg w-full h-full object-cover"
             />
           </motion.div>
         </AnimatePresence>
 
-        <div className="relative z-20 h-full flex flex-col justify-center pb-24 pt-20 sm:pb-20 sm:pt-20 md:pb-16 md:pt-16 container mx-auto px-4 sm:px-6">
+        <div className="ns-hero-home-inner relative z-20 h-full flex flex-col justify-center pb-24 pt-20 sm:pb-20 sm:pt-20 md:pb-16 md:pt-16 container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -126,7 +126,7 @@ const HomePage = () => {
       </section>
 
       {/* Infinite Text Marquee — flush to hero (no top margin) */}
-      <section className="mt-0 py-5 sm:py-6 bg-white border-y border-slate-100 overflow-hidden flex items-center">
+      <section className="ns-home-marquee mt-0 py-5 sm:py-6 bg-white border-y border-slate-100 overflow-hidden flex items-center">
         <div className="relative flex whitespace-nowrap">
           <motion.div
             className="flex items-center"
@@ -174,7 +174,7 @@ const HomePage = () => {
       {/* OUR SERVICES - 4 COLUMN GRID */}
       <section
         id="services"
-        className="py-8 md:py-14 lg:py-16 bg-white w-full px-4 sm:px-6 md:px-12"
+        className="ns-home-services ns-page-last py-8 md:py-14 lg:py-16 bg-white w-full px-4 sm:px-6 md:px-12"
       >
         <div className="mb-8 md:mb-14 text-center max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">

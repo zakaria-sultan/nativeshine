@@ -19,7 +19,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<HomePage />} />
           <Route path="/services/:slug" element={<ServicePageTemplate />} />
-          <Route path="*" element={<div className="py-40 text-center text-4xl font-black text-[#00AEEF] uppercase tracking-tighter">404: Page Not Found</div>} />
+          <Route path="*" element={<div className="ns-page-last ns-notfound py-40 text-center text-4xl font-black text-[#00AEEF] uppercase tracking-tighter">404: Page Not Found</div>} />
         </Routes>
       </Layout>
     </Router>

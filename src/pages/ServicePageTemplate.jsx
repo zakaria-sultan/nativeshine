@@ -48,12 +48,12 @@ const ServicePageTemplate = () => {
     return (
         <div className="flex w-full flex-1 flex-col bg-white">
             {/* Hero Header — short fixed block on mobile/tablet; taller from md up */}
-            <section className="-mt-24 md:-mt-32 relative h-[220px] min-h-[200px] sm:h-[260px] md:min-h-[280px] md:h-[42vh] lg:h-[52vh] xl:h-[56vh] bg-slate-900 overflow-hidden flex items-end md:items-center">
+            <section className="ns-service-hero -mt-24 md:-mt-32 relative bg-slate-900 overflow-hidden flex items-end md:items-center">
                 <div className="absolute inset-0 z-0">
                     <img
                         src={service.image}
                         alt={service.title}
-                        className="w-full h-full object-cover opacity-40 transform scale-105"
+                        className="ns-service-hero-img w-full h-full object-cover opacity-40 transform scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-white/20"></div>
                 </div>
@@ -76,7 +76,7 @@ const ServicePageTemplate = () => {
             </section>
 
             {/* Main Content Section */}
-            <section className="py-8 md:py-16 lg:py-24">
+            <section className="ns-service-body py-8 md:py-16 lg:py-24">
                 <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                     <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20">
 
@@ -140,7 +140,7 @@ const ServicePageTemplate = () => {
             </section>
 
             {/* Our Works Gallery Section */}
-            <section className="py-8 md:py-16 lg:py-24 bg-[#F9F9F9]">
+            <section className="ns-service-gallery ns-page-last py-8 md:py-16 lg:py-24 bg-[#F9F9F9]">
                 <div className="container mx-auto px-6 max-w-7xl">
                     <div className="mb-16">
                         <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">OUR RECENT WORKS</h2>

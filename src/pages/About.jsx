@@ -6,7 +6,7 @@ const About = () => {
   return (
     <div className="flex w-full flex-1 flex-col bg-white">
       {/* Hero Section */}
-      <section className="-mt-24 pt-28 pb-8 sm:pt-32 md:pt-36 md:pb-12 bg-[#F9F9F9] border-b border-slate-100">
+      <section className="ns-about-hero -mt-24 pt-28 pb-8 sm:pt-32 md:pt-36 md:pb-12 bg-[#F9F9F9] border-b border-slate-100">
         <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
           <div className="max-w-4xl">
             <h4 className="text-[#00AEEF] font-black uppercase tracking-[0.3em] text-xs sm:text-sm mb-4 md:mb-6">
@@ -26,7 +26,7 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-8 md:py-12">
+      <section className="ns-about-mission py-8 md:py-12">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20 items-center">
             <div className="lg:w-1/2">
@@ -79,7 +79,7 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="py-8 md:py-12 bg-[#F9F9F9]">
+      <section className="ns-about-values ns-page-last py-8 md:py-12 bg-[#F9F9F9]">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl text-center">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-8 md:mb-10 uppercase tracking-tighter">
             OUR CORE VALUES

@@ -68,3 +68,126 @@ html {
     padding-right: 16px !important;
   }
 }
+
+/*
+ * Forced desktop width (width=1280) on phones: Tailwind md:/lg/ always match, so vh-based
+ * heroes and min-h-screen stretch the layout. Default to landscape sizing, then override for
+ * portrait aspect (width/height <= 3/4), which still fires on phones even when layout width is 1280.
+ */
+.ns-hero-home {
+  min-height: 75vh;
+  height: min(88vh, 900px);
+}
+
+.ns-service-hero {
+  min-height: 280px;
+  height: 42vh;
+}
+
+@media (min-height: 800px) {
+  .ns-service-hero {
+    height: 52vh;
+  }
+}
+
+@media (min-height: 1000px) {
+  .ns-service-hero {
+    height: 56vh;
+  }
+}
+
+@media (max-aspect-ratio: 3/4) {
+  body {
+    min-height: 0 !important;
+  }
+
+  .ns-layout-shell {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .ns-layout-main {
+    flex-grow: 0 !important;
+    flex-basis: auto !important;
+  }
+
+  .ns-hero-home {
+    height: 500px !important;
+    min-height: 500px !important;
+    max-height: 500px !important;
+    background-attachment: scroll !important;
+  }
+
+  .ns-hero-home-inner {
+    padding-top: 5rem !important;
+    padding-bottom: 4.5rem !important;
+  }
+
+  .ns-hero-bg {
+    object-fit: cover !important;
+    object-position: top center !important;
+  }
+
+  .ns-service-hero {
+    height: 420px !important;
+    min-height: 420px !important;
+    max-height: 420px !important;
+    background-attachment: scroll !important;
+  }
+
+  .ns-service-hero-img {
+    object-fit: cover !important;
+    object-position: top center !important;
+    transform: none !important;
+  }
+
+  .ns-home-marquee {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .ns-home-services {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .ns-about-hero {
+    padding-top: 7rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .ns-about-mission {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .ns-about-values {
+    padding-top: 2rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .ns-contact-section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .ns-service-body {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .ns-service-gallery {
+    padding-top: 2rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .ns-page-last {
+    padding-bottom: 1rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .ns-notfound {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}

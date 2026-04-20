@@ -21,7 +21,7 @@ const Contact = () => {
 
     return (
         <div className="flex w-full flex-1 flex-col bg-white font-sans">
-            <section className="py-6 pb-8 md:py-10 md:pb-14">
+            <section className="ns-contact-section ns-page-last py-6 pb-8 md:py-10 md:pb-14">
                 <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                     <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
                         {/* Form Side */}
