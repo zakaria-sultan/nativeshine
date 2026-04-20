@@ -29,7 +29,7 @@ const HomePage = () => {
     const slides = [
         {
             title: "BRINGING NEW LIFE TO YOUR FLOORS AND WALLS",
-            subtitle: "FLOOR RESTORATION",
+            subtitle: "FLOOR RESTORATIO",
             image: n1,
             description: "Our extensive knowledge and experience in floor restoration along with the most advanced tools and processes will result in your floors and walls looking as good as new."
         },
