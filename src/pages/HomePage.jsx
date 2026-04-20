@@ -165,7 +165,7 @@ const HomePage = () => {
       {/* OUR SERVICES - 4 COLUMN GRID */}
       <section
         id="services"
-        className="ns-page-last pt-8 pb-0 mb-0 bg-white w-full px-4 sm:px-6 md:px-12"
+        className="ns-page-last pt-8 pb-12 bg-white w-full px-4 sm:px-6 md:px-12"
       >
         <div className="mb-8 text-center max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">

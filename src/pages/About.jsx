@@ -79,7 +79,7 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">
+      <section className="ns-page-last pt-8 pb-16 bg-[#F9F9F9]">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl text-center">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-6 uppercase tracking-tighter">
             OUR CORE VALUES

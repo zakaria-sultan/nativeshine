@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
     ArrowRight,
     CheckCircle2,
-    X,
-    Maximize2
 } from 'lucide-react';
 import { servicesData } from '../data/servicesData';
+import RecentWorks from '../components/services/RecentWorks';
 
 const ServicePageTemplate = () => {
     const { slug } = useParams();
-    const [selectedImage, setSelectedImage] = useState(null);
 
     const service = servicesData.find(s => s.slug === slug);
 
     if (!service) {
         return <Navigate to="/services" replace />;
     }
-
-    const galleryImages = service.imageGallery ?? [];
 
     const testimonials = [
         {
@@ -128,69 +124,7 @@ const ServicePageTemplate = () => {
                 </div>
             </section>
 
-            {/* Our Works Gallery Section */}
-            <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">
-                <div className="container mx-auto px-6 max-w-7xl">
-                    <div className="mb-8">
-                        <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">OUR RECENT WORKS</h2>
-                        <p className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-xs mt-4">Witness the transformation</p>
-                        <div className="w-32 h-2 bg-[#00AEEF] mt-6"></div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {galleryImages.map((img, i) => (
-                            <motion.div
-                                key={`${service.slug}-g-${i}`}
-                                whileHover={{ y: -10 }}
-                                onClick={() => setSelectedImage(img)}
-                                className="aspect-[4/3] relative overflow-hidden group cursor-pointer border-4 border-white shadow-lg bg-slate-100"
-                            >
-                                <img src={img} alt="" className="w-full h-full object-cover object-center" />
-                                <div className="absolute inset-0 bg-[#0ea5e9]/90 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center p-8">
-                                    <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                                        <Maximize2 size={32} className="text-white mx-auto mb-4" />
-                                        <span className="text-white text-xs font-black uppercase tracking-widest">View Full Project</span>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    <p className="text-center mt-8 text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] animate-pulse">
-                        Click on images to view
-                    </p>
-                </div>
-            </section>
-
-            {/* Lightbox Modal */}
-            <AnimatePresence>
-                {selectedImage && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-md"
-                        onClick={() => setSelectedImage(null)}
-                    >
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative max-w-5xl w-full"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <button
-                                className="absolute -top-12 right-0 text-white hover:text-[#0ea5e9] transition-colors flex items-center gap-2 group"
-                                onClick={() => setSelectedImage(null)}
-                            >
-                                <span className="text-xs font-black uppercase tracking-widest group-hover:mr-2 transition-all">Close</span>
-                                <X size={24} />
-                            </button>
-                            <img src={selectedImage} alt="Gallery view" className="w-full h-auto max-h-[85vh] object-contain border-4 border-white shadow-2xl" />
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            <RecentWorks serviceSlug={service.slug} serviceTitle={service.title} />
         </div>
     );
 };

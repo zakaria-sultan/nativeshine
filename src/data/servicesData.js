@@ -5,7 +5,9 @@
  * Replace files in place — same filenames — to swap in final photography:
  *   {slug}-thumbnail.jpg  → homepage / nav cards
  *   {slug}-hero.jpg       → service page header background
- *   galleries/{slug}/gallery-1.jpg … gallery-3.jpg → “Our recent works” grid
+ *   galleries/{slug}/gallery-1.png … gallery-3.png → optional extras
+ *   Recent work grids (service pages): /images/recent-works/{slug}/sample-1.png … sample-6.png
+ *     (see src/data/recentWorksByService.js)
  *
  * Optional high-res: use .png with same base name and update paths below.
  */

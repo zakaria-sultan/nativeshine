@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
 import { servicesData } from '../data/servicesData';
 
@@ -21,7 +20,7 @@ const Contact = () => {
 
     return (
         <div className="flex w-full flex-col bg-white font-sans">
-            <section className="ns-page-last pt-8 pb-0 mb-0">
+            <section className="pt-8 pb-12">
                 <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                     <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
                         {/* Form Side */}
@@ -148,6 +147,26 @@ const Contact = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section className="ns-page-last px-4 sm:px-6 pb-16 max-w-7xl mx-auto w-full">
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tighter mb-2 text-center md:text-left">
+                    Find <span className="text-[#0ea5e9]">Us</span>
+                </h3>
+                <p className="text-slate-500 text-sm font-medium text-center md:text-left mb-6 max-w-2xl">
+                    128 Berkeley Square, Mayfair, London W1J 6EB
+                </p>
+                <div className="rounded-2xl shadow-lg border-4 border-white overflow-hidden grayscale hover:grayscale-0 transition-[filter] duration-500">
+                    <iframe
+                        title="NativeShine office location — Berkeley Square, London"
+                        src="https://www.google.com/maps?q=128+Berkeley+Square,+Mayfair,+London+W1J+6EB&output=embed"
+                        width="100%"
+                        height="450"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        className="w-full border-0 block"
+                    />
                 </div>
             </section>
         </div>
