@@ -47,9 +47,12 @@ const HomePage = () => {
     const marqueeText = "STRATEGIC PARTNERSHIPS COMING SOON  • NEW COLLABORATIONS UNDERWAY • ";
 
     return (
-        <div className="bg-white">
-            {/* Hero Slider - Adjusted for Mobile Viewport */}
-            <section id="top" className="-mt-24 relative h-[65vh] md:h-screen bg-slate-900 overflow-hidden">
+        <div className="flex w-full flex-1 flex-col bg-white">
+            {/* Hero: fixed height on small screens so it does not dominate the viewport; md+ keeps a tall hero */}
+            <section
+                id="top"
+                className="-mt-24 relative h-[500px] sm:h-[540px] md:min-h-[75vh] md:h-[min(88vh,900px)] bg-slate-900 overflow-hidden flex flex-col"
+            >
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentSlide}
@@ -57,7 +60,7 @@ const HomePage = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="absolute inset-0"
+                        className="absolute inset-0 h-full w-full"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
                         <img
@@ -68,20 +71,20 @@ const HomePage = () => {
                     </motion.div>
                 </AnimatePresence>
 
-                <div className="relative z-20 h-full container mx-auto px-6 flex flex-col justify-center">
+                <div className="relative z-20 h-full flex flex-col justify-center pb-24 pt-20 sm:pb-20 sm:pt-20 md:pb-16 md:pt-16 container mx-auto px-4 sm:px-6">
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
-                        className="max-w-2xl bg-white/10 backdrop-blur-md p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] mt-8 md:mt-0"
+                        className="max-w-2xl bg-white/10 backdrop-blur-md p-5 sm:p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] w-full"
                     >
                         <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] md:text-sm mb-3 md:mb-4">
                             {slides[currentSlide].subtitle}
                         </h4>
-                        <h1 className="text-2xl md:text-6xl font-black text-white mb-4 md:mb-6 leading-tight uppercase tracking-tighter font-montserrat">
+                        <h1 className="text-[1.65rem] leading-snug sm:text-3xl md:text-6xl font-black text-white mb-3 sm:mb-4 md:mb-6 uppercase tracking-tighter font-montserrat">
                             {slides[currentSlide].title}
                         </h1>
-                        <p className="text-sm md:text-lg text-slate-200 mb-6 md:mb-8 leading-relaxed font-medium line-clamp-3 md:line-clamp-none">
+                        <p className="text-sm md:text-lg text-slate-200 mb-5 sm:mb-6 md:mb-8 leading-relaxed font-medium sm:line-clamp-4 md:line-clamp-none">
                             {slides[currentSlide].description}
                         </p>
                         <button className="bg-[#0ea5e9] text-white px-6 py-3 md:px-10 md:py-4 font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:text-[#0ea5e9] transition-all flex items-center gap-3 shadow-lg shadow-cyan-500/20 active:scale-95">
@@ -90,7 +93,7 @@ const HomePage = () => {
                     </motion.div>
                 </div>
 
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+                <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
                     {slides.map((_, i) => (
                         <button
                             key={i}
@@ -100,16 +103,26 @@ const HomePage = () => {
                     ))}
                 </div>
 
-                <button onClick={prevSlide} className="absolute left-6 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all">
+                <button
+                    type="button"
+                    onClick={prevSlide}
+                    className="hidden sm:flex absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all"
+                    aria-label="Previous slide"
+                >
                     <ChevronLeft />
                 </button>
-                <button onClick={nextSlide} className="absolute right-6 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all">
+                <button
+                    type="button"
+                    onClick={nextSlide}
+                    className="hidden sm:flex absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all"
+                    aria-label="Next slide"
+                >
                     <ChevronRight />
                 </button>
             </section>
 
-            {/* Infinite Text Marquee */}
-            <section className="py-6 bg-white border-y border-slate-100 overflow-hidden flex items-center">
+            {/* Infinite Text Marquee — flush to hero (no top margin) */}
+            <section className="mt-0 py-5 sm:py-6 bg-white border-y border-slate-100 overflow-hidden flex items-center">
                 <div className="relative flex whitespace-nowrap">
                     <motion.div
                         className="flex items-center"
@@ -152,7 +165,7 @@ const HomePage = () => {
 
 
             {/* OUR SERVICES - 4 COLUMN GRID */}
-            <section id="services" className="py-10 md:py-16 bg-white w-full px-6 md:px-12">
+            <section id="services" className="py-8 md:py-14 lg:py-16 bg-white w-full px-4 sm:px-6 md:px-12">
                 <div className="mb-8 md:mb-14 text-center max-w-4xl mx-auto">
                     <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">
                         OUR SPECIALIST SERVICES

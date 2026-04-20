@@ -20,19 +20,18 @@ const Contact = () => {
     };
 
     return (
-        <div className="bg-white font-sans">
-            {/* Hero Section Placeholder (Reduced as per previous user edit) */}
-            <section className="py-5 pb-20">
-                <div className="container mx-auto px-6 max-w-7xl">
-                    <div className="flex flex-col lg:flex-row gap-16">
+        <div className="flex w-full flex-1 flex-col bg-white font-sans">
+            <section className="py-6 pb-8 md:py-10 md:pb-14">
+                <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+                    <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
                         {/* Form Side */}
                         <div className="lg:w-2/3">
-                            <div className="bg-white p-12 lg:p-16 border border-slate-100 shadow-xl rounded-sm">
-                                <h3 className="text-3xl font-black text-slate-900 mb-8 uppercase tracking-tighter font-montserrat">
+                            <div className="bg-white p-6 sm:p-8 md:p-12 lg:p-16 border border-slate-100 shadow-xl rounded-sm">
+                                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 mb-6 md:mb-8 uppercase tracking-tighter font-montserrat">
                                     Submit an <span className="text-[#0ea5e9]">Enquiry</span>
                                 </h3>
-                                <form onSubmit={handleSubmit} className="space-y-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                                         <div className="space-y-3">
                                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">Full Name</label>
                                             <input
@@ -97,15 +96,15 @@ const Contact = () => {
                         </div>
 
                         {/* Info Side */}
-                        <div className="lg:w-1/3 space-y-8">
-                            <div className="p-12 bg-slate-900 text-white rounded-sm shadow-2xl relative overflow-hidden group">
+                        <div className="lg:w-1/3 space-y-6 md:space-y-8">
+                            <div className="p-6 sm:p-8 md:p-12 bg-slate-900 text-white rounded-sm shadow-2xl relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 p-8 transform rotate-12 opacity-5 translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform">
                                     <MessageCircle size={160} />
                                 </div>
-                                <h3 className="text-2xl font-black mb-10 uppercase tracking-tighter italic border-b border-white/10 pb-4 font-montserrat">
+                                <h3 className="text-xl sm:text-2xl font-black mb-6 md:mb-10 uppercase tracking-tighter italic border-b border-white/10 pb-4 font-montserrat">
                                     Direct <span className="text-[#0ea5e9]">Contact</span>
                                 </h3>
-                                <div className="space-y-10 relative z-10">
+                                <div className="space-y-6 md:space-y-10 relative z-10">
                                     <div className="flex gap-6 group cursor-pointer items-center">
                                         <div className="w-14 h-14 bg-white/5 flex items-center justify-center text-[#0ea5e9] transform group-hover:bg-[#0ea5e9] group-hover:text-white transition-all ring-1 ring-white/10 group-hover:ring-transparent">
                                             <Phone size={24} />
@@ -124,7 +123,7 @@ const Contact = () => {
                                             <p className="font-black text-xl tracking-tighter">info@nativeshine.co.uk</p>
                                         </div>
                                     </div>
-                                    <div className="flex gap-6 group cursor-pointer items-center border-t border-white/5 pt-10">
+                                    <div className="flex gap-6 group cursor-pointer items-center border-t border-white/5 pt-6 md:pt-10">
                                         <div className="w-14 h-14 bg-[#0ea5e9]/10 flex items-center justify-center text-[#0ea5e9] transform group-hover:bg-[#0ea5e9] group-hover:text-white transition-all ring-1 ring-[#0ea5e9]/20">
                                             <MessageCircle size={24} />
                                         </div>
@@ -136,7 +135,7 @@ const Contact = () => {
                                 </div>
                             </div>
 
-                            <div className="p-12 bg-white border border-slate-100 rounded-sm shadow-xl flex items-center gap-8">
+                            <div className="p-6 sm:p-8 md:p-12 bg-white border border-slate-100 rounded-sm shadow-xl flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8">
                                 <div className="w-16 h-16 bg-[#0ea5e9]/5 flex items-center justify-center text-[#0ea5e9] shrink-0">
                                     <MapPin size={32} />
                                 </div>

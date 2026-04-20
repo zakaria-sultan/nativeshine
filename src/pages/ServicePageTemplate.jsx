@@ -46,9 +46,9 @@ const ServicePageTemplate = () => {
     ];
 
     return (
-        <div className="bg-white min-h-screen">
-            {/* Hero Header */}
-            <section className="-mt-32 relative h-[60vh] bg-slate-900 overflow-hidden flex items-center">
+        <div className="flex w-full flex-1 flex-col bg-white">
+            {/* Hero Header — short fixed block on mobile/tablet; taller from md up */}
+            <section className="-mt-24 md:-mt-32 relative h-[220px] min-h-[200px] sm:h-[260px] md:min-h-[280px] md:h-[42vh] lg:h-[52vh] xl:h-[56vh] bg-slate-900 overflow-hidden flex items-end md:items-center">
                 <div className="absolute inset-0 z-0">
                     <img
                         src={service.image}
@@ -58,17 +58,17 @@ const ServicePageTemplate = () => {
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 to-white/20"></div>
                 </div>
 
-                <div className="container mx-auto px-6 relative z-10 pt-32">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full py-6 pt-20 sm:pt-20 md:py-0 md:pb-0 md:pt-28 lg:pt-32">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="border-l-8 border-[#0ea5e9] pl-8"
+                        className="border-l-4 md:border-l-8 border-[#0ea5e9] pl-4 md:pl-8"
                     >
-                        <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.3em] text-sm mb-4 italic">
+                        <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-sm mb-2 md:mb-4 italic">
                             Specialist Services
                         </h4>
-                        <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter font-montserrat">
+                        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter font-montserrat leading-tight">
                             {service.title}
                         </h1>
                     </motion.div>
@@ -76,9 +76,9 @@ const ServicePageTemplate = () => {
             </section>
 
             {/* Main Content Section */}
-            <section className="py-24">
-                <div className="container mx-auto px-6 max-w-7xl">
-                    <div className="flex flex-col lg:flex-row gap-20">
+            <section className="py-8 md:py-16 lg:py-24">
+                <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+                    <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20">
 
                         {/* Left Column: Testimonials */}
                         <aside className="lg:w-1/3">
@@ -140,7 +140,7 @@ const ServicePageTemplate = () => {
             </section>
 
             {/* Our Works Gallery Section */}
-            <section className="py-24 bg-[#F9F9F9]">
+            <section className="py-8 md:py-16 lg:py-24 bg-[#F9F9F9]">
                 <div className="container mx-auto px-6 max-w-7xl">
                     <div className="mb-16">
                         <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">OUR RECENT WORKS</h2>

@@ -38,8 +38,6 @@
 
   body {
     margin: 0;
-    display: block;
-    min-width: 1280px;
     min-height: 100vh;
     @apply text-slate-800 bg-slate-50;
   }
@@ -61,4 +59,12 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100% !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }

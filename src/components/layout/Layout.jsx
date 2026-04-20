@@ -7,17 +7,20 @@ const Layout = ({ children }) => {
     const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
     return (
-        <div className="flex flex-col min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#00AEEF] selection:text-white">
+        <>
+            {/* Fixed header is outside the min-h-screen flex column so it does not steal flex space / break mt-auto math */}
             <Header onOpenQuote={() => setIsQuoteModalOpen(true)} />
-            <main className="flex-grow pt-24 lg:pt-32">
-                {children}
-            </main>
-            <Footer />
+            <div className="flex min-h-screen flex-col bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#00AEEF] selection:text-white">
+                <main className="flex w-full flex-1 flex-col pt-20 md:pt-24 lg:pt-28">
+                    {children}
+                </main>
+                <Footer className="shrink-0" />
+            </div>
             <QuoteModal
                 isOpen={isQuoteModalOpen}
                 onClose={() => setIsQuoteModalOpen(false)}
             />
-        </div>
+        </>
     );
 };
 
