@@ -1,35 +1,20 @@
 /**
  * Service content + image URLs.
  *
- * Images live under public/images/services/ (served as /images/services/...).
- * Replace files in place — same filenames — to swap in final photography:
- *   {slug}-thumbnail.jpg  → homepage / nav cards
- *   {slug}-hero.jpg       → service page header background
- *   galleries/{slug}/gallery-1.png … gallery-3.png → optional extras
- *   Recent work grids (service pages): /images/recent-works/{slug}/sample-1.png … sample-6.png
- *     (see src/data/recentWorksByService.js)
- *
- * Optional high-res: use .png with same base name and update paths below.
+ * Card + hero + gallery (first three slots) resolve from `src/assets/{Folder}/` via
+ * `getServiceImageSet` (see src/lib/resolveServiceImages.js, src/config/recentWorksAssetFolders.js).
+ * Filename pattern per folder: e.g. `Front of House1.png` … `3.jpg`, mixed extensions OK.
+ * If a file is missing, fallbacks are public/images/services/ and recent-works paths.
  */
 
-const base = "/images/services";
-
-function imagesFor(slug) {
-  return {
-    imageThumbnail: `${base}/${slug}-thumbnail.png`,
-    imageHero: `${base}/${slug}-hero.png`,
-    imageGallery: [1, 2, 3].map(
-      (n) => `${base}/galleries/${slug}/gallery-${n}.png`,
-    ),
-  };
-}
+import { getServiceImageSet } from "../lib/resolveServiceImages";
 
 export const servicesData = [
   {
     id: "front-of-house",
     title: "Front of House",
     slug: "front-of-house",
-    ...imagesFor("front-of-house"),
+    ...getServiceImageSet("front-of-house"),
     content: `
       They say “first impressions count” — we believe they define everything.
       Before a word is spoken or a service is delivered, your environment speaks on your behalf. The moment someone enters your premises, they form an immediate and lasting perception of your standards, your professionalism, and your attention to detail. That moment is not just important — it is critical.
@@ -53,7 +38,7 @@ export const servicesData = [
     id: "back-of-house",
     title: "Back of House",
     slug: "back-of-house",
-    ...imagesFor("back-of-house"),
+    ...getServiceImageSet("back-of-house"),
     content: `
       Back of house areas sit at the very core of any successful premises. While they may not always be visible to customers, they play a critical role in ensuring that operations run smoothly, efficiently, and to the highest standard. Maintaining exceptional cleanliness in these spaces is essential, as it directly impacts the quality, safety, and consistency of the services you deliver.
 
@@ -72,7 +57,7 @@ export const servicesData = [
     id: "kitchen",
     title: "Kitchen Cleaning",
     slug: "kitchen-cleaning",
-    ...imagesFor("kitchen-cleaning"),
+    ...getServiceImageSet("kitchen-cleaning"),
     content: `
       There is no working environment more critical to maintain than the kitchen. It is the heart of any hospitality operation — where standards, safety, and reputation are defined every day.
 
@@ -94,7 +79,7 @@ export const servicesData = [
     id: "spa",
     title: "Spa & Gymnasium",
     slug: "spa-gymnasium",
-    ...imagesFor("spa-gymnasium"),
+    ...getServiceImageSet("spa-gymnasium"),
     content: `
       When clients enter your spa or gymnasium, they expect a clean, calm, and hygienic environment that supports their wellbeing.
 
@@ -113,7 +98,7 @@ export const servicesData = [
     id: "windows",
     title: "Window Cleaning",
     slug: "window-cleaning",
-    ...imagesFor("window-cleaning"),
+    ...getServiceImageSet("window-cleaning"),
     content: `
       At NativeShine Cleaning Ltd, we provide reliable internal and external window cleaning for all property types, from single-storey to high-rise buildings.
 
@@ -128,7 +113,7 @@ export const servicesData = [
     id: "carpet",
     title: "Carpet Cleaning",
     slug: "carpet-cleaning",
-    ...imagesFor("carpet-cleaning"),
+    ...getServiceImageSet("carpet-cleaning"),
     content: `
       A well-maintained carpet is an investment that should stand the test of time. Proper care not only preserves its appearance but also extends its lifespan and performance.
 
@@ -147,7 +132,7 @@ export const servicesData = [
     id: "public-areas",
     title: "Public & Pedestrian Areas",
     slug: "public-pedestrian-areas",
-    ...imagesFor("public-pedestrian-areas"),
+    ...getServiceImageSet("public-pedestrian-areas"),
     content: `
       Every part of your premises contributes to the impression you create — especially the areas your clients encounter first. Entrances, walkways, and shared spaces are the arteries of your building and must be maintained to the highest standard at all times.
 
@@ -164,7 +149,7 @@ export const servicesData = [
     id: "specialist",
     title: "Specialist Services",
     slug: "specialist-services",
-    ...imagesFor("specialist-services"),
+    ...getServiceImageSet("specialist-services"),
     content: `
       At NativeShine Cleaning Ltd, we go beyond traditional cleaning to deliver a comprehensive range of specialist and support services designed to enhance and support your operations.
 

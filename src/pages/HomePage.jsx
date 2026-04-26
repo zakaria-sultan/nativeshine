@@ -9,9 +9,9 @@ import {
   X,
   Maximize2,
 } from "lucide-react";
+import { getHomeHeroFromAssets } from "../lib/resolveServiceImages";
 
-import n1 from "../assets/n1.jpeg";
-import n2 from "../assets/n2.jpeg";
+const HERO_IMAGES = getHomeHeroFromAssets();
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -21,14 +21,14 @@ const HomePage = () => {
     {
       title: "BRINGING NEW LIFE TO YOUR FLOORS AND WALLS",
       subtitle: "FLOOR RESTORATION",
-      image: n1,
+      image: HERO_IMAGES.slide1,
       description:
         "Our extensive knowledge and experience in floor restoration along with the most advanced tools and processes will result in your floors and walls looking as good as new.",
     },
     {
       title: "PRESERVING LONDON'S ARCHITECTURAL HERITAGE",
       subtitle: "FACADE CLEANING",
-      image: n2,
+      image: HERO_IMAGES.slide2,
       description:
         "Specialist steam cleaning and restoration services for commercial and residential properties across the capital.",
     },

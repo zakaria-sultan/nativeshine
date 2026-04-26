@@ -1,0 +1,10 @@
+NativeShine — optional hero fallbacks (only if no matching src/assets files)
+
+The homepage hero normally uses bundled images from src/assets (see
+src/lib/resolveServiceImages.js: carpet/front-of-house for slide 1,
+window/specialist for slide 2). If those are missing, these URLs are used:
+
+  /images/hero/slide-1.jpg
+  /images/hero/slide-2.jpg
+
+Add those files here if you need manual overrides.
