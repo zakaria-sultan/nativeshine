@@ -55,7 +55,7 @@ const Footer = ({ className = '' }) => {
                             </span>
                         </Link>
                         <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-xs transition-opacity hover:opacity-80">
-                            Redefining architectural restoration through precision, innovation, and unwavering attention to detail since 2004.
+                            Redefining architectural restoration through precision, innovation, and unwavering attention to detail since 2025.
                         </p>
                     </div>
 

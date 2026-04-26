@@ -35,7 +35,7 @@ const About = () => {
               </h2>
               <div className="space-y-4 md:space-y-6 text-base md:text-lg text-slate-500 font-medium leading-relaxed">
                 <p>
-                  Founded in 2004, NativeShine Services was established with a
+                  Founded in 2025, NativeShine Services was established with a
                   singular vision: to provide the highest level of architectural
                   restoration and maintenance for the capital's most prestigious
                   properties.
