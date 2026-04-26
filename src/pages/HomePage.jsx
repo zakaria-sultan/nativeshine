@@ -116,7 +116,7 @@ const HomePage = () => {
         </button>
       </section>
 
-      {/* Infinite Text Marquee — flush to hero (no top margin) */}
+      {/* Infinite Text Marquee — flush to hero (no top margin)
       <section className="mt-0 py-4 bg-white border-y border-slate-100 overflow-hidden flex items-center">
         <div className="relative flex whitespace-nowrap">
           <motion.div
@@ -160,7 +160,7 @@ const HomePage = () => {
             </span>
           </motion.div>
         </div>
-      </section>
+      </section> */}
 
       {/* OUR SERVICES - 4 COLUMN GRID */}
       <section
