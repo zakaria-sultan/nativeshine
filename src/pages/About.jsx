@@ -35,10 +35,18 @@ const About = () => {
               </h2>
               <div className="space-y-4 md:space-y-6 text-base md:text-lg text-slate-500 font-medium leading-relaxed">
                 <p>
-                  Founded in 2025, NativeShine Services was established with a
-                  singular vision: to provide the highest level of architectural
-                  restoration and maintenance for the capital's most prestigious
-                  properties.
+                  Founded in 2025, NATIVESHINE LTD was established with a
+                  singular vision: to deliver the highest standard of
+                  architectural restoration and maintenance for the capital’s
+                  most prestigious properties, built on expertise developed
+                  since 2004.
+                </p>
+                <p>
+                  Our approach is rooted in a deep respect for materials,
+                  heritage, and craftsmanship. Whether restoring a Grade I
+                  listed façade or maintaining a contemporary commercial
+                  interior, we apply the same uncompromising standards of
+                  precision, care, and attention to detail.
                 </p>
                 <p>
                   Our approach is rooted in a deep respect for materials and

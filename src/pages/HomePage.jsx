@@ -82,9 +82,6 @@ const HomePage = () => {
             <p className="text-sm md:text-lg text-slate-200 mb-5 sm:mb-6 md:mb-8 leading-relaxed font-medium sm:line-clamp-4 md:line-clamp-none">
               {slides[currentSlide].description}
             </p>
-            <button className="bg-[#0ea5e9] text-white px-6 py-3 md:px-10 md:py-4 font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:text-[#0ea5e9] transition-all flex items-center gap-3 shadow-lg shadow-cyan-500/20 active:scale-95">
-              Read More <ArrowRight size={16} />
-            </button>
           </motion.div>
         </div>
 
