@@ -72,7 +72,7 @@ export const servicesData = [
 
       With NativeShine Cleaning Ltd, your kitchen is maintained to the highest professional standard — clean, compliant, and always ready to perform.
 
-      Excellence as Standard.
+      EXCELLENCE IS THE STANDARD .
     `,
   },
   {
@@ -91,7 +91,7 @@ export const servicesData = [
 
       With NativeShine Cleaning Ltd, your space remains clean, safe, and ready to perform.
 
-      Excellence as Standard.
+      EXCELLENCE IS THE STANDARD.
     `,
   },
   {
@@ -106,7 +106,7 @@ export const servicesData = [
 
       Flexible, efficient, and trusted — we ensure your building always looks its best.
 
-      Excellence as Standard.
+      EXCELLENCE IS THE STANDARD.
     `,
   },
   {
@@ -115,17 +115,17 @@ export const servicesData = [
     slug: "carpet-cleaning",
     ...getServiceImageSet("carpet-cleaning"),
     content: `
-      A well-maintained carpet is an investment that should stand the test of time. Proper care not only preserves its appearance but also extends its lifespan and performance.
+      A well-maintained carpet is an investment that should stand the test of time. With the right care, it not only retains its appearance but also delivers long-lasting performance and durability.
 
-      At NativeShine Cleaning Ltd, we provide specialist cleaning for a wide range of carpets and rugs — from delicate natural fibres such as silk and wool to durable commercial carpet tiles.
+      At NativeShine Cleaning Ltd, we provide specialist cleaning for a wide range of carpets and rugs — from delicate natural fibres such as silk and wool to hard-wearing commercial carpet tiles.
 
-      Using advanced cleaning techniques, industry-leading equipment, and environmentally responsible products, we deliver deep, effective results while protecting the integrity of your flooring.
+      Using advanced cleaning techniques, industry-leading equipment, and environmentally responsible products, we achieve deep, effective results while preserving the integrity of your flooring.
 
-      In addition to one-off cleans, we offer tailored maintenance programmes to keep your carpets consistently fresh, clean, and presentable. We also provide carpet repair services, as well as supply and installation options to support all your flooring requirements.
+      In addition to one-off deep cleans, we offer tailored maintenance programmes designed to keep your carpets consistently fresh, clean, and professionally presented. We also provide expert carpet repair services, as well as supply and installation solutions to meet all your flooring needs.
 
       With NativeShine Cleaning Ltd, your carpets are maintained to the highest standard — enhancing both appearance and longevity.
 
-      Excellence as Standard.
+      EXCELLENCE IS THE STANDARD.
     `,
   },
   {
@@ -142,7 +142,7 @@ export const servicesData = [
 
       With NativeShine Cleaning Ltd, your exterior and high-traffic areas are always clean, presentable, and ready to make the right impression.
 
-      Excellence as Standard.
+      EXCELLENCE IS THE STANDARD.
     `,
   },
   {
@@ -168,7 +168,7 @@ export const servicesData = [
 
       With NativeShine Cleaning Ltd, you benefit from a complete, reliable, and flexible service solution tailored to your business needs.
 
-      Excellence as Standard.
+      EXCELLENCE IS THE STANDARD.
     `,
   },
 ].map((service) => ({

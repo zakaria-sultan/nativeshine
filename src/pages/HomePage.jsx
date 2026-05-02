@@ -23,7 +23,7 @@ const HomePage = () => {
       subtitle: "FLOOR RESTORATION",
       image: HERO_IMAGES.slide1,
       description:
-        "Our extensive knowledge and experience in floor restoration along with the most advanced tools and processes will result in your floors and walls looking as good as new.",
+        "Our extensive knowledge and experience in floor restoration, combined with advanced tools and modern techniques, ensure your floors and walls look as good as new.",
     },
     {
       title: "PRESERVING LONDON'S ARCHITECTURAL HERITAGE",
@@ -172,7 +172,7 @@ const HomePage = () => {
             OUR SPECIALIST SERVICES
           </h2>
           <p className="text-[#f97316] font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mt-4 italic">
-            Excellence as Standard
+            EXCELLENCE IS THE STANDARD
           </p>
           <div className="w-20 md:w-32 h-1.5 md:h-2 bg-[#f97316] mt-6 md:mt-8 mx-auto"></div>
         </div>
