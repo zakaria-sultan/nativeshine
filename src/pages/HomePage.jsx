@@ -194,9 +194,9 @@ const HomePage = () => {
               />
 
               <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6 md:p-7 z-10">
-                <span className="text-white/70 text-[10px] font-black uppercase tracking-[0.25em] mb-2 block drop-shadow-md">
+                {/* <span className="text-white/70 text-[10px] font-black uppercase tracking-[0.25em] mb-2 block drop-shadow-md">
                   Service {String(i + 1).padStart(2, "0")}
-                </span>
+                </span> */}
                 <h4 className="text-white text-lg sm:text-xl md:text-2xl font-black uppercase tracking-tight mb-3 group-hover:text-[#0ea5e9] transition-colors duration-300 leading-snug max-w-[95%] text-balance drop-shadow-lg">
                   {service.title}
                 </h4>
