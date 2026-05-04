@@ -195,7 +195,7 @@ const Contact = () => {
         <div className="rounded-2xl shadow-lg border-4 border-white overflow-hidden grayscale hover:grayscale-0 transition-[filter] duration-500">
           <iframe
             title="NativeShine office location — Albany street, London"
-            src="https://www.google.com/maps?q=Albany+street+London+nw1+4bj&output=embed"
+            src="https://www.google.com/maps?q=nw1+4bj+London+UK&output=embed"
             width="100%"
             height="450"
             loading="lazy"
