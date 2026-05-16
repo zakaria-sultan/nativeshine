@@ -30,7 +30,7 @@ const ServicePageTemplate = () => {
   return (
     <div className="flex w-full flex-col bg-white">
       {/* Hero Header — short fixed block on mobile/tablet; taller from md up */}
-      <section className="!h-[500px] mt-0 relative bg-slate-900 overflow-hidden flex items-end md:items-center">
+      <section className="!min-h-[280px] sm:!min-h-[380px] lg:!h-[500px] mt-0 relative bg-slate-900 overflow-hidden flex items-end lg:items-center">
         <div className="absolute inset-0 z-0">
           <img
             src={service.imageHero}
@@ -40,7 +40,7 @@ const ServicePageTemplate = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/50 to-slate-900/30" />
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-6 sm:py-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -63,8 +63,8 @@ const ServicePageTemplate = () => {
           <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20">
             {/* Left Column: Testimonials */}
             <aside className="lg:w-1/3">
-              <div className="sticky top-40 space-y-8">
-                <div className="bg-[#F9F9F9] p-10 border border-slate-100 rounded-sm">
+              <div className="sticky top-32 lg:top-40 space-y-6 lg:space-y-8">
+                <div className="bg-[#F9F9F9] p-6 sm:p-8 lg:p-10 border border-slate-100 rounded-sm">
                   <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#0ea5e9] mb-10 border-b-2 border-[#00AEEF]/10 pb-4">
                     TESTIMONIALS
                   </h3>

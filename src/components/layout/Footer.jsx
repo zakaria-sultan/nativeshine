@@ -8,6 +8,7 @@ const Footer = ({ className = "" }) => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
+    { name: "Portfolio", path: "/#services" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -45,7 +46,7 @@ const Footer = ({ className = "" }) => {
     <footer
       className={`bg-white border-t border-gray-100 font-inter ${className}`.trim()}
     >
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-10 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
           {/* Column 1: Branding */}
           <div className="flex flex-col space-y-6">

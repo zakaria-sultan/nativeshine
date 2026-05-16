@@ -67,9 +67,9 @@ const RecentWorks = ({ serviceSlug, serviceTitle }) => {
 
   return (
     <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">
-      <div className="container mx-auto px-6 max-w-7xl pb-6">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl pb-6">
         <div className="mb-10">
-          <h2 className="text-4xl font-black text-slate-900 uppercase tracking-tighter">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">
             OUR RECENT WORKS
           </h2>
           <p className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-xs mt-4">
@@ -78,7 +78,7 @@ const RecentWorks = ({ serviceSlug, serviceTitle }) => {
           <div className="w-32 h-2 bg-[#00AEEF] mt-6" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {images.map((src, i) => (
             <figure
               key={`${serviceSlug}-rw-${i}`}

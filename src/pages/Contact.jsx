@@ -1,29 +1,71 @@
 import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send, MessageCircle, Loader2 } from "lucide-react";
 import { servicesData } from "../data/servicesData";
+import { useToast } from "../context/ToastContext";
+import {
+  validateContactForm,
+  hasValidationErrors,
+} from "../lib/contactFormValidation";
+import { submitEnquiryEmail } from "../lib/submitEnquiryEmail";
+
+const emptyForm = () => ({
+  name: "",
+  email: "",
+  phone: "",
+  service: "",
+  message: "",
+});
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    service: "",
-    message: "",
-  });
+  const { showToast } = useToast();
+  const [formData, setFormData] = useState(emptyForm);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const whatsappMessage = `Hello NativeShine, I would like a quote for ${formData.service || "a service"}. My name is ${formData.name}.`;
-    const encodedMessage = encodeURIComponent(whatsappMessage);
-    const whatsappUrl = `https://wa.me/447477134380?text=${encodedMessage}`;
-    window.open(whatsappUrl, "_blank");
+    const errors = validateContactForm(formData);
+    setFieldErrors(errors);
+    if (hasValidationErrors(errors)) {
+      showToast("Please fix the highlighted fields and try again.", "error");
+      return;
+    }
+
+    setIsSending(true);
+    try {
+      await submitEnquiryEmail(formData, { formLabel: "Contact page" });
+      showToast(
+        "Thank you! Your message has been sent successfully.",
+        "success",
+      );
+      setFormData(emptyForm());
+      setFieldErrors({});
+    } catch (err) {
+      showToast(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+        "error",
+      );
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const clearFieldError = (key) => {
+    setFieldErrors((prev) => {
+      if (!(key in prev)) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
   };
 
   return (
     <div className="flex w-full flex-col bg-white font-sans">
-      <section className="pt-8 pb-12">
-        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+      <section className="pt-6 pb-10 md:pt-8 md:pb-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-10 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
-            {/* Form Side */}
             <div className="lg:w-2/3">
               <div className="bg-white p-6 sm:p-8 md:p-12 lg:p-16 border border-slate-100 shadow-xl rounded-sm">
                 <h3 className="text-2xl sm:text-3xl font-black text-slate-900 mb-6 md:mb-8 uppercase tracking-tighter font-montserrat">
@@ -32,6 +74,7 @@ const Contact = () => {
                 <form
                   onSubmit={handleSubmit}
                   className="space-y-6 md:space-y-8"
+                  noValidate
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div className="space-y-3">
@@ -41,13 +84,21 @@ const Contact = () => {
                       <input
                         required
                         type="text"
-                        className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all"
+                        disabled={isSending}
+                        className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all disabled:opacity-60"
                         placeholder="Enter name..."
                         value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          clearFieldError("name");
+                        }}
+                        aria-invalid={!!fieldErrors.name}
                       />
+                      {fieldErrors.name && (
+                        <p className="text-xs font-bold text-red-600">
+                          {fieldErrors.name}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-3">
                       <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">
@@ -56,15 +107,49 @@ const Contact = () => {
                       <input
                         required
                         type="email"
-                        className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all"
+                        autoComplete="email"
+                        disabled={isSending}
+                        className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all disabled:opacity-60"
                         placeholder="email@address.com"
                         value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          clearFieldError("email");
+                        }}
+                        aria-invalid={!!fieldErrors.email}
                       />
+                      {fieldErrors.email && (
+                        <p className="text-xs font-bold text-red-600">
+                          {fieldErrors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
+
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">
+                      Phone <span className="font-medium opacity-70">(optional)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      autoComplete="tel"
+                      disabled={isSending}
+                      className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all md:max-w-md disabled:opacity-60"
+                      placeholder="07700 900000"
+                      value={formData.phone}
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        clearFieldError("phone");
+                      }}
+                      aria-invalid={!!fieldErrors.phone}
+                    />
+                    {fieldErrors.phone && (
+                      <p className="text-xs font-bold text-red-600">
+                        {fieldErrors.phone}
+                      </p>
+                    )}
+                  </div>
+
                   <div className="space-y-3">
                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">
                       Service Required
@@ -72,11 +157,17 @@ const Contact = () => {
                     <div className="relative">
                       <select
                         required
-                        className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all appearance-none cursor-pointer"
+                        disabled={isSending}
+                        className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all appearance-none cursor-pointer disabled:opacity-60"
                         value={formData.service}
-                        onChange={(e) =>
-                          setFormData({ ...formData, service: e.target.value })
-                        }
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            service: e.target.value,
+                          });
+                          clearFieldError("service");
+                        }}
+                        aria-invalid={!!fieldErrors.service}
                       >
                         <option value="">Select Service Required</option>
                         {servicesData.map((service) => (
@@ -89,33 +180,60 @@ const Contact = () => {
                         <Send size={14} className="rotate-90" />
                       </div>
                     </div>
+                    {fieldErrors.service && (
+                      <p className="text-xs font-bold text-red-600">
+                        {fieldErrors.service}
+                      </p>
+                    )}
                   </div>
+
                   <div className="space-y-3">
                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0ea5e9]">
                       Message Details
                     </label>
                     <textarea
                       required
-                      rows="6"
-                      className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all resize-none"
+                      rows={6}
+                      disabled={isSending}
+                      className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all resize-none disabled:opacity-60"
                       placeholder="How can we help you?"
                       value={formData.message}
-                      onChange={(e) =>
-                        setFormData({ ...formData, message: e.target.value })
-                      }
-                    ></textarea>
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          message: e.target.value,
+                        });
+                        clearFieldError("message");
+                      }}
+                      aria-invalid={!!fieldErrors.message}
+                    />
+                    {fieldErrors.message && (
+                      <p className="text-xs font-bold text-red-600">
+                        {fieldErrors.message}
+                      </p>
+                    )}
                   </div>
+
                   <button
                     type="submit"
-                    className="w-full bg-[#0ea5e9] text-white py-6 font-black text-xs uppercase tracking-[0.4em] rounded-sm hover:bg-slate-900 transition-all flex items-center justify-center gap-3 shadow-xl shadow-cyan-500/20 active:scale-95"
+                    disabled={isSending}
+                    className="w-full bg-[#0ea5e9] text-white py-6 font-black text-xs uppercase tracking-[0.4em] rounded-sm hover:bg-slate-900 transition-all flex items-center justify-center gap-3 shadow-xl shadow-cyan-500/20 active:scale-95 disabled:opacity-70 disabled:pointer-events-none disabled:active:scale-100"
                   >
-                    Send Message <Send size={18} />
+                    {isSending ? (
+                      <>
+                        <Loader2 className="animate-spin" size={20} aria-hidden />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message <Send size={18} />
+                      </>
+                    )}
                   </button>
                 </form>
               </div>
             </div>
 
-            {/* Info Side */}
             <div className="lg:w-1/3 space-y-6 md:space-y-8">
               <div className="p-6 sm:p-8 md:p-12 bg-slate-900 text-white rounded-sm shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-8 transform rotate-12 opacity-5 translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform">

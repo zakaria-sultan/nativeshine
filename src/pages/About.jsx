@@ -7,7 +7,7 @@ const About = () => {
     <div className="flex w-full flex-col bg-white">
       {/* Hero Section */}
       <section className="mt-0 pt-6 pb-6 bg-[#F9F9F9] border-b border-slate-100">
-        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6">
+        <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
           <div className="max-w-4xl">
             <h4 className="text-[#00AEEF] font-black uppercase tracking-[0.3em] text-xs sm:text-sm mb-4 md:mb-6">
               Our Heritage
@@ -26,8 +26,8 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-8">
-        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+      <section className="py-8 md:py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-10 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
             <div className="lg:w-1/2">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 mb-6 uppercase tracking-tighter">

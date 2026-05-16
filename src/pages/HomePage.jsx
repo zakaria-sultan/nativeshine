@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ArrowRight,
   X,
-  Maximize2,
 } from "lucide-react";
 import { getHomeHeroFromAssets } from "../lib/resolveServiceImages";
 
@@ -46,7 +45,7 @@ const HomePage = () => {
       {/* Hero: fixed height (550px) for all viewports — avoids vh/md blowups with width=1280 meta */}
       <section
         id="top"
-        className="!h-[500px] relative bg-slate-900 overflow-hidden flex flex-col mt-0"
+        className="relative min-h-[320px] sm:min-h-[400px] lg:!h-[500px] lg:min-h-0 bg-slate-900 overflow-hidden flex flex-col mt-0"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -66,20 +65,20 @@ const HomePage = () => {
           </motion.div>
         </AnimatePresence>
 
-        <div className="relative z-20 h-full flex flex-col justify-center py-8 container mx-auto px-4 sm:px-6">
+        <div className="relative z-20 flex flex-1 flex-col justify-center py-6 sm:py-8 container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="max-w-2xl bg-white/10 backdrop-blur-md p-5 sm:p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] w-full"
+        className="max-w-2xl bg-white/10 backdrop-blur-md p-4 sm:p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] w-full"
           >
-            <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] md:text-sm mb-3 md:mb-4">
+            <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs md:text-sm mb-2 sm:mb-3 md:mb-4">
               {slides[currentSlide].subtitle}
             </h4>
-            <h1 className="text-[1.65rem] leading-snug sm:text-3xl md:text-6xl font-black text-white mb-3 sm:mb-4 md:mb-6 uppercase tracking-tighter font-montserrat">
+            <h1 className="text-2xl leading-tight sm:text-3xl md:text-5xl lg:text-6xl font-black text-white mb-3 sm:mb-4 md:mb-6 uppercase tracking-tighter font-montserrat">
               {slides[currentSlide].title}
             </h1>
-            <p className="text-sm md:text-lg text-slate-200 mb-5 sm:mb-6 md:mb-8 leading-relaxed font-medium sm:line-clamp-4 md:line-clamp-none">
+            <p className="text-xs sm:text-sm md:text-lg text-slate-200 mb-5 sm:mb-6 md:mb-8 leading-relaxed font-medium md:line-clamp-none">
               {slides[currentSlide].description}
             </p>
           </motion.div>
@@ -98,7 +97,7 @@ const HomePage = () => {
         <button
           type="button"
           onClick={prevSlide}
-          className="hidden sm:flex absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all"
+          className="flex absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all touch-manipulation"
           aria-label="Previous slide"
         >
           <ChevronLeft />
@@ -106,7 +105,7 @@ const HomePage = () => {
         <button
           type="button"
           onClick={nextSlide}
-          className="hidden sm:flex absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all"
+          className="flex absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 bg-white/10 hover:bg-[#00AEEF] text-white rounded-full backdrop-blur-md transition-all touch-manipulation"
           aria-label="Next slide"
         >
           <ChevronRight />
@@ -162,7 +161,7 @@ const HomePage = () => {
       {/* OUR SERVICES - 4 COLUMN GRID */}
       <section
         id="services"
-        className="ns-page-last pt-6 pb-0 mb-0 bg-white w-full px-4 sm:px-6 md:px-12"
+        className="ns-page-last pt-6 pb-8 mb-0 bg-white w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20"
       >
         <div className="mb-8 text-center max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tighter leading-tight px-4">
@@ -174,7 +173,7 @@ const HomePage = () => {
           <div className="w-20 md:w-32 h-1.5 md:h-2 bg-[#f97316] mt-6 md:mt-8 mx-auto"></div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 w-full">
           {servicesData.map((service, i) => (
             <Link
               key={service.slug}

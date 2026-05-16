@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
     <>
       <Header onOpenQuote={() => setIsQuoteModalOpen(true)} />
       <div className="flex min-h-screen flex-col bg-white font-sans text-slate-900 overflow-x-hidden selection:bg-[#00AEEF] selection:text-white">
-        <main className="flex flex-col w-full min-h-0 flex-1 pt-24 pb-0">
+        <main className="flex flex-col w-full min-h-0 flex-1 pt-36 lg:pt-24 pb-0">
           {children}
         </main>
         <Footer className="shrink-0 mt-0" />
