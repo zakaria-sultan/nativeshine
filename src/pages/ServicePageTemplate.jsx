@@ -16,12 +16,12 @@ const ServicePageTemplate = () => {
 
   const testimonials = [
     {
-      text: "The level of service provided to us by NativeShine Services is second to none and is the main reason why our customers love to stay here.",
+      text: "The level of service provided by NativeShine Services is second to none, and it is one of the main reasons our customers love staying here.",
       client: "Hotel Services Client",
       initials: "HS",
     },
     {
-      text: "We have recently changed over to NativeShine Services. We needed a seamless transition. They were very helpful and efficient during this process.",
+      text: "We recently switched to NativeShine Services and needed a seamless transition. They were extremely helpful and efficient throughout the process.",
       client: "Floor Restoration Client",
       initials: "FR",
     },

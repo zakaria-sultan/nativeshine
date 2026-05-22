@@ -177,14 +177,13 @@ export const servicesData = [
     slug: "office-cleaning",
     ...getServiceImageSet("office-cleaning"),
     content: `
-Transforming Workspaces into Productive and Professional Environments.
+Professional Cleaning for Clean and Well-Maintained Workplaces
 
-At Nativeshine Cleaning Services, we understand that a clean office is more than just appearance—it creates a productive, healthy, and welcoming environment for employees and clients. We provide reliable and professional office cleaning solutions designed to maintain spotless workplaces that reflect your organization's standards and reputation. Our trained cleaning staff ensure every workspace receives careful attention and quality service.
+At  NATIVESHINE, we provide reliable and professional office cleaning services designed to maintain clean, hygienic, and well-presented working environments. We understand that a well-maintained office reflects professionalism and creates a comfortable environment for employees, clients, and visitors.
 
-Our office cleaning services include cleaning workstations, meeting rooms, reception areas, washrooms, kitchens, and common spaces. We perform dusting, floor cleaning, waste removal, surface sanitization, glass cleaning, and disinfection of frequently touched areas to maintain high hygiene standards and improve workplace comfort.
+Our trained and supervised cleaning staff deliver high-quality cleaning services for offices, workstations, meeting rooms, reception areas, washrooms, kitchens, and communal spaces. Services include dusting, floor cleaning, vacuuming, waste removal, surface sanitisation, glass cleaning, and disinfection of frequently touched areas to maintain excellent hygiene standards throughout the workplace.
 
-With flexible schedules including daily, weekly, and customized plans, Nativeshine delivers cleaning services with consistency, professionalism, and attention to detail. We are committed to creating clean spaces where businesses can thrive and employees can perform at their best.
-    `,
+With flexible daily, weekly, and customised cleaning schedules, NATIVESHINE delivers dependable cleaning solutions with consistency, professionalism, and attention to detail.`,
   },
   {
     id: "school-cleaning",
@@ -192,13 +191,13 @@ With flexible schedules including daily, weekly, and customized plans, Nativeshi
     slug: "school-cleaning",
     ...getServiceImageSet("school-cleaning"),
     content: `
-Creating Safe, Healthy, and Inspiring Learning Environments.
+    Creating Safe, Hygienic, and Well-Maintained School Environments
 
-At Nativeshine Cleaning Services, we believe that a clean school environment plays a vital role in student wellbeing and academic success. Our school cleaning services are designed to create safe, hygienic, and comfortable learning spaces where students and teachers can focus and perform effectively. We apply professional cleaning practices that support health, cleanliness, and safety standards within educational facilities.
+At  NATIVESHINE, we provide professional school cleaning services focused on maintaining clean, safe, and hygienic educational environments for students, staff, and visitors. Our cleaning services support high standards of cleanliness, hygiene, and day-to-day maintenance across school facilities.
 
-Our cleaning team provides comprehensive cleaning for classrooms, libraries, laboratories, staff offices, washrooms, hallways, playgrounds, and shared facilities. Services include floor cleaning, dusting, waste management, sanitation of high-touch surfaces, washroom disinfection, and maintaining overall cleanliness throughout school premises.
+Our cleaning team provides comprehensive cleaning for classrooms, libraries, laboratories, staff offices, washrooms, hallways, playgrounds, and shared facilities. Services include floor cleaning, dusting, waste management, washroom sanitation, disinfection of high-touch surfaces, and general cleaning throughout the premises.
 
-Nativeshine is committed to delivering dependable and child-friendly cleaning services through trained staff, quality supervision, and flexible schedules tailored to each institution’s needs. We do not simply clean schools—we help create environments where learning flourishes and students feel safe and comfortable.
+NATIVESHINE delivers reliable and professional cleaning services through trained staff, quality supervision, and flexible cleaning schedules tailored to the needs of each educational facility. We are committed to maintaining clean and well-presented environments with professionalism, care, and attention to detail
     `,
   },
 ].map((service) => ({
