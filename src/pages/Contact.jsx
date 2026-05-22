@@ -135,7 +135,7 @@ const Contact = () => {
                       autoComplete="tel"
                       disabled={isSending}
                       className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all md:max-w-md disabled:opacity-60"
-                      placeholder="07700 900000"
+                      placeholder="07777 143488"
                       value={formData.phone}
                       onChange={(e) => {
                         setFormData({ ...formData, phone: e.target.value });

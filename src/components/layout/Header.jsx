@@ -38,7 +38,6 @@ const Header = ({ onOpenQuote }) => {
     { name: "Home", path: "/", hash: "#top" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/", hash: "#services", dropdown: true },
-    { name: "Portfolio", path: "/services" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -132,13 +131,6 @@ const Header = ({ onOpenQuote }) => {
                     onClick={(e) => handleNavClick(e, link)}
                     end={link.name === "Home"}
                     className={({ isActive }) => {
-                      if (link.name === "Portfolio") {
-                        const portfolioActive =
-                          location.pathname === "/services" ||
-                          (location.pathname === "/" &&
-                            location.hash === "#services");
-                        return getDesktopLinkClass(portfolioActive);
-                      }
                       const isHashMatch = link.hash
                         ? location.hash === link.hash
                         : !location.hash;
@@ -293,13 +285,6 @@ const Header = ({ onOpenQuote }) => {
                         onClick={(e) => handleNavClick(e, link)}
                         end={link.name === "Home"}
                         className={({ isActive }) => {
-                          if (link.name === "Portfolio") {
-                            const active =
-                              location.pathname === "/services" ||
-                              (location.pathname === "/" &&
-                                location.hash === "#services");
-                            return getMobileLinkClass(active);
-                          }
                           const isHashMatch = link.hash
                             ? location.hash === link.hash
                             : !link.hash;

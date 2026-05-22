@@ -35,4 +35,12 @@ export const RECENT_WORKS_ASSET_MAP = {
     folder: "Specialist Services",
     prefixes: ["Specialist Services"],
   },
+  "office-cleaning": {
+    folder: "Office Cleaning",
+    prefixes: ["Office Cleaning"],
+  },
+  "school-cleaning": {
+    folder: "School Cleaning",
+    prefixes: ["School Cleaning"],
+  },
 };
