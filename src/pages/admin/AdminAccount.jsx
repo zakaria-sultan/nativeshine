@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import PasswordField from "../../components/admin/PasswordField";
 
 export default function AdminAccount() {
   const { profile, updateOwnPassword, updateOwnProfile } = useAuth();
+  const { showToast } = useToast();
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -18,13 +18,11 @@ export default function AdminAccount() {
   const onSaveProfile = async (e) => {
     e.preventDefault();
     setSaving(true);
-    setError("");
-    setMessage("");
     try {
       await updateOwnProfile({ full_name: fullName });
-      setMessage("Profile updated");
+      showToast("Profile updated", "success");
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Profile update failed", "error");
     } finally {
       setSaving(false);
     }
@@ -32,14 +30,12 @@ export default function AdminAccount() {
 
   const onSavePassword = async (e) => {
     e.preventDefault();
-    setError("");
-    setMessage("");
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      showToast("Password must be at least 8 characters", "error");
       return;
     }
     if (password !== confirm) {
-      setError("Passwords do not match");
+      showToast("Passwords do not match", "error");
       return;
     }
     setSaving(true);
@@ -47,9 +43,9 @@ export default function AdminAccount() {
       await updateOwnPassword(password);
       setPassword("");
       setConfirm("");
-      setMessage("Password updated");
+      showToast("Password updated", "success");
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Password update failed", "error");
     } finally {
       setSaving(false);
     }
@@ -117,17 +113,6 @@ export default function AdminAccount() {
           Update password
         </button>
       </form>
-
-      {message ? (
-        <p className="mt-4 rounded-sm bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-          {message}
-        </p>
-      ) : null}
-      {error ? (
-        <p className="mt-4 rounded-sm bg-rose-50 px-3 py-2 text-sm text-rose-700">
-          {error}
-        </p>
-      ) : null}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Plus, Trash2, Save } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import { invokeAdminUsers } from "../../lib/adminApi";
 import PasswordField from "../../components/admin/PasswordField";
 
@@ -14,17 +15,15 @@ const emptyCreate = () => ({
 
 export default function AdminUsers() {
   const { isSuper, user } = useAuth();
+  const { showToast } = useToast();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
   const [createForm, setCreateForm] = useState(emptyCreate);
   const [creating, setCreating] = useState(false);
   const [edits, setEdits] = useState({});
 
   const load = useCallback(async () => {
     setLoading(true);
-    setError("");
     try {
       const data = await invokeAdminUsers("list");
       setUsers(data.users || []);
@@ -38,11 +37,11 @@ export default function AdminUsers() {
       }
       setEdits(next);
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Failed to load users", "error");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showToast]);
 
   useEffect(() => {
     if (isSuper) load();
@@ -55,15 +54,13 @@ export default function AdminUsers() {
   const onCreate = async (e) => {
     e.preventDefault();
     setCreating(true);
-    setError("");
-    setMessage("");
     try {
       await invokeAdminUsers("create", createForm);
       setCreateForm(emptyCreate());
-      setMessage("User created");
+      showToast("User created successfully", "success");
       await load();
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Could not create user", "error");
     } finally {
       setCreating(false);
     }
@@ -72,8 +69,6 @@ export default function AdminUsers() {
   const onSaveUser = async (id) => {
     const draft = edits[id];
     if (!draft) return;
-    setError("");
-    setMessage("");
     try {
       await invokeAdminUsers("update", {
         id,
@@ -81,14 +76,14 @@ export default function AdminUsers() {
         role: draft.role,
         password: draft.password || undefined,
       });
-      setMessage("User updated");
+      showToast("User updated", "success");
       setEdits((prev) => ({
         ...prev,
         [id]: { ...prev[id], password: "" },
       }));
       await load();
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Update failed", "error");
     }
   };
 
@@ -96,10 +91,10 @@ export default function AdminUsers() {
     if (!window.confirm(`Delete user ${email}?`)) return;
     try {
       await invokeAdminUsers("delete", { id });
-      setMessage("User deleted");
+      showToast("User deleted", "success");
       await load();
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Delete failed", "error");
     }
   };
 
@@ -191,10 +186,7 @@ export default function AdminUsers() {
               password: "",
             };
             return (
-              <div
-                key={u.id}
-                className="border border-slate-200 bg-white p-5"
-              >
+              <div key={u.id} className="border border-slate-200 bg-white p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="font-bold text-slate-900">{u.email}</p>
@@ -277,17 +269,6 @@ export default function AdminUsers() {
           })
         )}
       </div>
-
-      {message ? (
-        <p className="mt-4 rounded-sm bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-          {message}
-        </p>
-      ) : null}
-      {error ? (
-        <p className="mt-4 rounded-sm bg-rose-50 px-3 py-2 text-sm text-rose-700">
-          {error}
-        </p>
-      ) : null}
     </div>
   );
 }

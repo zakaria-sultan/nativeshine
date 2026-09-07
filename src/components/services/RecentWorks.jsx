@@ -2,6 +2,7 @@ import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { resolveRecentWorkImages } from "../../lib/resolveRecentWorkImages";
+import FastImage from "../common/FastImage";
 
 /**
  * Per-service “Our Recent Works” grid (6 samples, 2×3 on large screens).
@@ -92,11 +93,12 @@ const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
                 onClick={() => openLightbox(i)}
                 aria-label={`Open larger preview: ${serviceTitle} sample ${i + 1}`}
               />
-              <img
+              <FastImage
                 src={src}
                 alt={`${serviceTitle}: recent work sample ${i + 1}`}
+                width={900}
+                quality={74}
                 className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 pointer-events-none"
-                loading="lazy"
               />
               <figcaption className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
             </figure>

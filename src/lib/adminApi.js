@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabase";
+import { compressImageForUpload } from "./imageOptimize";
 
 export async function invokeAdminUsers(action, payload = {}) {
   if (!supabase) throw new Error("Supabase is not configured");
@@ -85,14 +86,17 @@ export async function uploadServiceImage({
   existingStoragePath,
 }) {
   if (!supabase) throw new Error("Supabase is not configured");
-  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+
+  const uploadFile = await compressImageForUpload(file);
+  const ext = (uploadFile.name.split(".").pop() || "jpg").toLowerCase();
   const storagePath = `${slug}/${kind}-${slot}-${Date.now()}.${ext}`;
 
   const { error: upErr } = await supabase.storage
     .from("service-images")
-    .upload(storagePath, file, {
-      contentType: file.type || "image/jpeg",
+    .upload(storagePath, uploadFile, {
+      contentType: uploadFile.type || "image/jpeg",
       upsert: true,
+      cacheControl: "31536000",
     });
   if (upErr) throw upErr;
 

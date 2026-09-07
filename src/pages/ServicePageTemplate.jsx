@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { useServices } from "../context/ServicesContext";
 import RecentWorks from "../components/services/RecentWorks";
+import FastImage from "../components/common/FastImage";
 
 const ServicePageTemplate = () => {
   const { slug } = useParams();
@@ -40,9 +41,13 @@ const ServicePageTemplate = () => {
     <div className="flex w-full flex-col bg-white">
       <section className="!min-h-[280px] sm:!min-h-[380px] lg:!h-[500px] mt-0 relative bg-slate-900 overflow-hidden flex items-end lg:items-center">
         <div className="absolute inset-0 z-0">
-          <img
+          <FastImage
             src={service.imageHero}
             alt=""
+            width={1400}
+            quality={75}
+            loading="eager"
+            fetchPriority="high"
             className="ns-service-hero-img w-full h-full object-cover object-top opacity-50"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/50 to-slate-900/30" />

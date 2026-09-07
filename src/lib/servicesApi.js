@@ -1,3 +1,5 @@
+import { collectRecentUrls } from "./imageSlots";
+
 /**
  * Map DB rows (+ images) into the shape the public site already expects.
  */
@@ -6,11 +8,7 @@ export function mapServiceRow(row, images = []) {
   const byKind = (kind, slot = 1) =>
     images.find((img) => img.kind === kind && img.slot === slot)?.url || null;
 
-  const recentFilled = Array.from({ length: 6 }, (_, i) =>
-    byKind("recent", i + 1),
-  );
-  const recentImages = recentFilled.filter(Boolean);
-
+  const recentImages = collectRecentUrls(images);
   const thumbnail =
     byKind("thumbnail", 1) || byKind("hero", 1) || recentImages[0] || "";
   const hero =
@@ -25,14 +23,17 @@ export function mapServiceRow(row, images = []) {
     is_published: row.is_published,
     imageThumbnail: thumbnail,
     imageHero: hero,
-    imageGallery: recentFilled.slice(0, 3).map((u) => u || ""),
+    imageGallery: recentImages.slice(0, 3),
     recentImages,
     image: thumbnail,
     _images: images,
   };
 }
 
-export async function fetchServicesFromSupabase(supabase, { includeUnpublished = false } = {}) {
+export async function fetchServicesFromSupabase(
+  supabase,
+  { includeUnpublished = false } = {},
+) {
   let query = supabase
     .from("services")
     .select("*, service_images(*)")

@@ -3,26 +3,26 @@ import { Link } from "react-router-dom";
 import { Plus, Pencil, Trash2, Image as ImageIcon } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useServices } from "../../context/ServicesContext";
+import { useToast } from "../../context/ToastContext";
 import { deleteService, fetchAdminServices } from "../../lib/adminApi";
 
 export default function AdminServices() {
   const { canEdit } = useAuth();
   const { refresh: refreshPublic } = useServices();
+  const { showToast } = useToast();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
-    setError("");
     try {
       setRows(await fetchAdminServices());
     } catch (err) {
-      setError(err.message);
+      showToast(err.message || "Failed to load services", "error");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showToast]);
 
   useEffect(() => {
     load();
@@ -37,8 +37,9 @@ export default function AdminServices() {
       await deleteService(row.id);
       await load();
       await refreshPublic();
+      showToast(`Deleted “${row.title}”`, "success");
     } catch (err) {
-      alert(err.message);
+      showToast(err.message || "Delete failed", "error");
     }
   };
 
@@ -60,12 +61,6 @@ export default function AdminServices() {
           </Link>
         ) : null}
       </div>
-
-      {error ? (
-        <p className="mt-4 rounded-sm bg-rose-50 px-3 py-2 text-sm text-rose-700">
-          {error}
-        </p>
-      ) : null}
 
       <div className="mt-6 overflow-hidden border border-slate-200 bg-white">
         {loading ? (
