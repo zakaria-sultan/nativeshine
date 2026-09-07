@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { servicesData } from "../../data/servicesData";
+import { useServices } from "../../context/ServicesContext";
 
 const Footer = ({ className = "" }) => {
+  const { services: servicesData } = useServices();
   const siteMap = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },

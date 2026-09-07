@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
-import { servicesData } from "../../data/servicesData";
+import { useServices } from "../../context/ServicesContext";
 import { useToast } from "../../context/ToastContext";
 import {
   validateQuoteForm,
@@ -18,6 +18,7 @@ const emptyForm = () => ({
 });
 
 const QuoteModal = ({ isOpen, onClose }) => {
+  const { services: servicesData } = useServices();
   const { showToast } = useToast();
   const [formData, setFormData] = useState(emptyForm);
   const [fieldErrors, setFieldErrors] = useState({});

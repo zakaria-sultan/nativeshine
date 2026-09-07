@@ -5,16 +5,16 @@ import { resolveRecentWorkImages } from "../../lib/resolveRecentWorkImages";
 
 /**
  * Per-service “Our Recent Works” grid (6 samples, 2×3 on large screens).
- * Images resolve from src/assets/{Folder}/{Prefix}{n}.{png|jpg|jpeg} when present.
- *
- * @param {string} serviceSlug — route slug, e.g. kitchen-cleaning
- * @param {string} serviceTitle — display name for accessible labels
+ * Prefers `images` from CMS; falls back to static asset resolution.
  */
-const RecentWorks = ({ serviceSlug, serviceTitle }) => {
-  const images = useMemo(
-    () => resolveRecentWorkImages(serviceSlug),
-    [serviceSlug],
-  );
+const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
+  const images = useMemo(() => {
+    if (Array.isArray(imagesProp) && imagesProp.filter(Boolean).length > 0) {
+      return imagesProp.filter(Boolean);
+    }
+    return resolveRecentWorkImages(serviceSlug);
+  }, [imagesProp, serviceSlug]);
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -64,6 +64,8 @@ const RecentWorks = ({ serviceSlug, serviceTitle }) => {
 
   const currentSrc =
     images.length > 0 ? images[lightboxIndex % images.length] : null;
+
+  if (!images.length) return null;
 
   return (
     <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">

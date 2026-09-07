@@ -3,9 +3,10 @@ import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X, Phone } from "lucide-react";
 
-import { servicesData } from "../../data/servicesData";
+import { useServices } from "../../context/ServicesContext";
 
 const Header = ({ onOpenQuote }) => {
+  const { services: servicesData } = useServices();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
