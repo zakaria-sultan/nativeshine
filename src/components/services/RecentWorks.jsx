@@ -2,19 +2,20 @@ import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { resolveRecentWorkImages } from "../../lib/resolveRecentWorkImages";
+import FastImage from "../common/FastImage";
 
 /**
  * Per-service “Our Recent Works” grid (6 samples, 2×3 on large screens).
- * Images resolve from src/assets/{Folder}/{Prefix}{n}.{png|jpg|jpeg} when present.
- *
- * @param {string} serviceSlug — route slug, e.g. kitchen-cleaning
- * @param {string} serviceTitle — display name for accessible labels
+ * Prefers `images` from CMS; falls back to static asset resolution.
  */
-const RecentWorks = ({ serviceSlug, serviceTitle }) => {
-  const images = useMemo(
-    () => resolveRecentWorkImages(serviceSlug),
-    [serviceSlug],
-  );
+const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
+  const images = useMemo(() => {
+    if (Array.isArray(imagesProp) && imagesProp.filter(Boolean).length > 0) {
+      return imagesProp.filter(Boolean);
+    }
+    return resolveRecentWorkImages(serviceSlug);
+  }, [imagesProp, serviceSlug]);
+
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -65,6 +66,8 @@ const RecentWorks = ({ serviceSlug, serviceTitle }) => {
   const currentSrc =
     images.length > 0 ? images[lightboxIndex % images.length] : null;
 
+  if (!images.length) return null;
+
   return (
     <section className="ns-page-last pt-8 pb-0 mb-0 bg-[#F9F9F9]">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 max-w-7xl pb-6">
@@ -90,11 +93,12 @@ const RecentWorks = ({ serviceSlug, serviceTitle }) => {
                 onClick={() => openLightbox(i)}
                 aria-label={`Open larger preview: ${serviceTitle} sample ${i + 1}`}
               />
-              <img
+              <FastImage
                 src={src}
                 alt={`${serviceTitle}: recent work sample ${i + 1}`}
+                width={900}
+                quality={74}
                 className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 pointer-events-none"
-                loading="lazy"
               />
               <figcaption className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
             </figure>

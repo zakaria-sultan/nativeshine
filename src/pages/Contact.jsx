@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Phone, MapPin, Send, MessageCircle, Loader2 } from "lucide-react";
-import { servicesData } from "../data/servicesData";
+import { useServices } from "../context/ServicesContext";
 import { useToast } from "../context/ToastContext";
 import {
   validateContactForm,
@@ -17,6 +17,7 @@ const emptyForm = () => ({
 });
 
 const Contact = () => {
+  const { services: servicesData } = useServices();
   const { showToast } = useToast();
   const [formData, setFormData] = useState(emptyForm);
   const [fieldErrors, setFieldErrors] = useState({});

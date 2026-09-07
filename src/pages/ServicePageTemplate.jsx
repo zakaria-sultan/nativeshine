@@ -2,13 +2,23 @@ import React from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import { servicesData } from "../data/servicesData";
+import { useServices } from "../context/ServicesContext";
 import RecentWorks from "../components/services/RecentWorks";
+import FastImage from "../components/common/FastImage";
 
 const ServicePageTemplate = () => {
   const { slug } = useParams();
+  const { getBySlug, loading } = useServices();
 
-  const service = servicesData.find((s) => s.slug === slug);
+  const service = getBySlug(slug);
+
+  if (loading && !service) {
+    return (
+      <div className="ns-page-last flex min-h-[40vh] items-center justify-center text-sm font-black uppercase tracking-widest text-slate-400">
+        Loading service…
+      </div>
+    );
+  }
 
   if (!service) {
     return <Navigate to="/services" replace />;
@@ -29,12 +39,15 @@ const ServicePageTemplate = () => {
 
   return (
     <div className="flex w-full flex-col bg-white">
-      {/* Hero Header — short fixed block on mobile/tablet; taller from md up */}
       <section className="!min-h-[280px] sm:!min-h-[380px] lg:!h-[500px] mt-0 relative bg-slate-900 overflow-hidden flex items-end lg:items-center">
         <div className="absolute inset-0 z-0">
-          <img
+          <FastImage
             src={service.imageHero}
             alt=""
+            width={1400}
+            quality={75}
+            loading="eager"
+            fetchPriority="high"
             className="ns-service-hero-img w-full h-full object-cover object-top opacity-50"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/50 to-slate-900/30" />
@@ -57,11 +70,9 @@ const ServicePageTemplate = () => {
         </div>
       </section>
 
-      {/* Main Content Section */}
       <section className="py-8">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20">
-            {/* Left Column: Testimonials */}
             <aside className="lg:w-1/3">
               <div className="sticky top-32 lg:top-40 space-y-6 lg:space-y-8">
                 <div className="bg-[#F9F9F9] p-6 sm:p-8 lg:p-10 border border-slate-100 rounded-sm">
@@ -90,7 +101,6 @@ const ServicePageTemplate = () => {
                   </div>
                 </div>
 
-                {/* Excellence Badge */}
                 <div className="bg-[#0ea5e9] p-8 text-white rounded-sm shadow-xl shadow-cyan-500/10">
                   <CheckCircle2 size={40} className="mb-6 opacity-40" />
                   <h4 className="text-xl font-black uppercase tracking-tight mb-4">
@@ -104,7 +114,6 @@ const ServicePageTemplate = () => {
               </div>
             </aside>
 
-            {/* Right Column: Dynamic Content */}
             <div className="lg:w-2/3">
               <div className="prose prose-slate prose-lg max-w-none">
                 <div className="text-slate-600 leading-[1.8] font-medium space-y-8 whitespace-pre-line">
@@ -112,7 +121,6 @@ const ServicePageTemplate = () => {
                 </div>
               </div>
 
-              {/* Action Bar */}
               <div className="mt-8 pt-8 border-t border-slate-100 flex flex-wrap gap-6 items-center">
                 <Link
                   to="/contact"
@@ -132,7 +140,11 @@ const ServicePageTemplate = () => {
         </div>
       </section>
 
-      <RecentWorks serviceSlug={service.slug} serviceTitle={service.title} />
+      <RecentWorks
+        serviceSlug={service.slug}
+        serviceTitle={service.title}
+        images={service.recentImages}
+      />
     </div>
   );
 };
