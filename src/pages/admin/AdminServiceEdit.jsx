@@ -7,10 +7,13 @@ import { useToast } from "../../context/ToastContext";
 import { supabase } from "../../lib/supabase";
 import {
   deleteServiceImage,
+  deleteServiceTestimonial,
   saveService,
+  saveServiceTestimonial,
   uploadServiceImage,
 } from "../../lib/adminApi";
 import { slugifyTitle } from "../../lib/servicesApi";
+import { initialsFromName } from "../../lib/testimonials";
 import {
   findImage,
   nextEmptyRecentSlot,
@@ -23,6 +26,14 @@ const PRIMARY_SLOTS = [
   { kind: "thumbnail", slot: 1, label: "Thumbnail (homepage card)" },
   { kind: "hero", slot: 1, label: "Hero (service page)" },
 ];
+
+const emptyTestimonial = () => ({
+  id: null,
+  quote_text: "",
+  client_name: "",
+  initials: "",
+  sort_order: 0,
+});
 
 export default function AdminServiceEdit() {
   const { id } = useParams();
@@ -40,9 +51,12 @@ export default function AdminServiceEdit() {
     is_published: true,
   });
   const [images, setImages] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [draftTestimonial, setDraftTestimonial] = useState(emptyTestimonial);
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [savingTestimonial, setSavingTestimonial] = useState(false);
   const [slugTouched, setSlugTouched] = useState(false);
 
   const load = useCallback(async () => {
@@ -51,7 +65,7 @@ export default function AdminServiceEdit() {
     try {
       const { data, error: err } = await supabase
         .from("services")
-        .select("*, service_images(*)")
+        .select("*, service_images(*), service_testimonials(*)")
         .eq("id", id)
         .single();
       if (err) throw err;
@@ -63,6 +77,11 @@ export default function AdminServiceEdit() {
         is_published: data.is_published,
       });
       setImages(data.service_images || []);
+      setTestimonials(
+        (data.service_testimonials || [])
+          .slice()
+          .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)),
+      );
       setSlugTouched(true);
     } catch (err) {
       showToast(err.message || "Failed to load service", "error");
@@ -106,6 +125,74 @@ export default function AdminServiceEdit() {
       showToast(err.message || "Save failed", "error");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const onEditTestimonial = (row) => {
+    setDraftTestimonial({
+      id: row.id,
+      quote_text: row.quote_text || "",
+      client_name: row.client_name || "",
+      initials: row.initials || "",
+      sort_order: row.sort_order ?? 0,
+    });
+  };
+
+  const onSaveTestimonial = async (e) => {
+    e.preventDefault();
+    if (!canEdit || isNew) return;
+    if (!draftTestimonial.quote_text.trim() || !draftTestimonial.client_name.trim()) {
+      showToast("Quote and client name are required", "error");
+      return;
+    }
+    setSavingTestimonial(true);
+    try {
+      const initials =
+        draftTestimonial.initials.trim() ||
+        initialsFromName(draftTestimonial.client_name);
+      const saved = await saveServiceTestimonial({
+        id: draftTestimonial.id || undefined,
+        service_id: id,
+        quote_text: draftTestimonial.quote_text.trim(),
+        client_name: draftTestimonial.client_name.trim(),
+        initials,
+        sort_order:
+          draftTestimonial.id != null
+            ? draftTestimonial.sort_order
+            : testimonials.length,
+      });
+      setTestimonials((prev) => {
+        const without = prev.filter((t) => t.id !== saved.id);
+        return [...without, saved].sort(
+          (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
+        );
+      });
+      setDraftTestimonial(emptyTestimonial());
+      await refreshPublic();
+      showToast(
+        draftTestimonial.id ? "Testimonial updated" : "Testimonial added",
+        "success",
+      );
+    } catch (err) {
+      showToast(err.message || "Could not save testimonial", "error");
+    } finally {
+      setSavingTestimonial(false);
+    }
+  };
+
+  const onDeleteTestimonial = async (row) => {
+    if (!canEdit) return;
+    if (!window.confirm("Delete this testimonial?")) return;
+    try {
+      await deleteServiceTestimonial(row.id);
+      setTestimonials((prev) => prev.filter((t) => t.id !== row.id));
+      if (draftTestimonial.id === row.id) {
+        setDraftTestimonial(emptyTestimonial());
+      }
+      await refreshPublic();
+      showToast("Testimonial deleted", "success");
+    } catch (err) {
+      showToast(err.message || "Delete failed", "error");
     }
   };
 
@@ -395,6 +482,163 @@ export default function AdminServiceEdit() {
                   No gallery images yet. Click “Add image”.
                 </p>
               ) : null}
+            </div>
+          </>
+        )}
+      </section>
+
+      <section id="testimonials" className="mt-10">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h3 className="text-lg font-black tracking-tight">Testimonials</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Each service has its own testimonials shown on the service page.
+            </p>
+          </div>
+        </div>
+
+        {isNew ? (
+          <p className="mt-2 text-sm text-slate-500">
+            Save the service first, then add testimonials.
+          </p>
+        ) : (
+          <>
+            <form
+              onSubmit={onSaveTestimonial}
+              className="mt-4 space-y-4 border border-slate-200 bg-white p-5"
+            >
+              <p className="text-xs font-black uppercase tracking-widest text-[#0ea5e9]">
+                {draftTestimonial.id ? "Edit testimonial" : "Add testimonial"}
+              </p>
+              <div>
+                <label className="mb-1.5 block text-xs font-black uppercase tracking-widest text-slate-500">
+                  Quote
+                </label>
+                <textarea
+                  value={draftTestimonial.quote_text}
+                  onChange={(e) =>
+                    setDraftTestimonial((p) => ({
+                      ...p,
+                      quote_text: e.target.value,
+                    }))
+                  }
+                  rows={4}
+                  disabled={!canEdit}
+                  required
+                  className="w-full border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-[#0ea5e9]"
+                  placeholder="Customer feedback…"
+                />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1.5 block text-xs font-black uppercase tracking-widest text-slate-500">
+                    Client name
+                  </label>
+                  <input
+                    value={draftTestimonial.client_name}
+                    onChange={(e) =>
+                      setDraftTestimonial((p) => ({
+                        ...p,
+                        client_name: e.target.value,
+                      }))
+                    }
+                    disabled={!canEdit}
+                    required
+                    className="w-full border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-[#0ea5e9]"
+                    placeholder="Hotel Services Client"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-xs font-black uppercase tracking-widest text-slate-500">
+                    Initials
+                  </label>
+                  <input
+                    value={draftTestimonial.initials}
+                    onChange={(e) =>
+                      setDraftTestimonial((p) => ({
+                        ...p,
+                        initials: e.target.value.toUpperCase().slice(0, 3),
+                      }))
+                    }
+                    disabled={!canEdit}
+                    maxLength={3}
+                    className="w-full border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-[#0ea5e9]"
+                    placeholder="Auto from name if blank"
+                  />
+                </div>
+              </div>
+              {canEdit ? (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="submit"
+                    disabled={savingTestimonial}
+                    className="inline-flex items-center gap-2 bg-[#0ea5e9] px-4 py-2.5 text-xs font-black uppercase tracking-widest text-white hover:bg-slate-900 disabled:opacity-60"
+                  >
+                    <Plus size={14} />
+                    {savingTestimonial
+                      ? "Saving…"
+                      : draftTestimonial.id
+                        ? "Update testimonial"
+                        : "Add testimonial"}
+                  </button>
+                  {draftTestimonial.id ? (
+                    <button
+                      type="button"
+                      onClick={() => setDraftTestimonial(emptyTestimonial())}
+                      className="border border-slate-200 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-slate-600 hover:border-slate-400"
+                    >
+                      Cancel edit
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
+            </form>
+
+            <div className="mt-4 space-y-3">
+              {testimonials.length === 0 ? (
+                <p className="text-sm text-slate-400">
+                  No testimonials yet for this service. Add the first one above.
+                </p>
+              ) : (
+                testimonials.map((t) => (
+                  <div
+                    key={t.id}
+                    className="border border-slate-200 bg-white p-4"
+                  >
+                    <p className="text-sm italic leading-relaxed text-slate-600">
+                      “{t.quote_text}”
+                    </p>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-9 w-9 items-center justify-center border border-slate-100 bg-slate-50 text-xs font-black text-[#0ea5e9]">
+                          {t.initials}
+                        </div>
+                        <p className="text-sm font-bold text-slate-900">
+                          {t.client_name}
+                        </p>
+                      </div>
+                      {canEdit ? (
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => onEditTestimonial(t)}
+                            className="border border-slate-200 px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:border-[#0ea5e9] hover:text-[#0ea5e9]"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => onDeleteTestimonial(t)}
+                            className="inline-flex items-center gap-1 border border-rose-100 px-2.5 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50"
+                          >
+                            <Trash2 size={14} /> Delete
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </>
         )}

@@ -1,10 +1,14 @@
 import { collectRecentUrls } from "./imageSlots";
+import {
+  DEFAULT_TESTIMONIALS,
+  mapTestimonialRow,
+} from "./testimonials";
 
 /**
- * Map DB rows (+ images) into the shape the public site already expects.
+ * Map DB rows (+ images + testimonials) into the shape the public site expects.
  */
 
-export function mapServiceRow(row, images = []) {
+export function mapServiceRow(row, images = [], testimonials = []) {
   const byKind = (kind, slot = 1) =>
     images.find((img) => img.kind === kind && img.slot === slot)?.url || null;
 
@@ -13,6 +17,11 @@ export function mapServiceRow(row, images = []) {
     byKind("thumbnail", 1) || byKind("hero", 1) || recentImages[0] || "";
   const hero =
     byKind("hero", 1) || byKind("thumbnail", 1) || recentImages[0] || "";
+
+  const mappedTestimonials = (testimonials || [])
+    .slice()
+    .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    .map(mapTestimonialRow);
 
   return {
     id: row.id,
@@ -26,7 +35,10 @@ export function mapServiceRow(row, images = []) {
     imageGallery: recentImages.slice(0, 3),
     recentImages,
     image: thumbnail,
+    testimonials:
+      mappedTestimonials.length > 0 ? mappedTestimonials : DEFAULT_TESTIMONIALS,
     _images: images,
+    _testimonials: mappedTestimonials,
   };
 }
 
@@ -36,7 +48,7 @@ export async function fetchServicesFromSupabase(
 ) {
   let query = supabase
     .from("services")
-    .select("*, service_images(*)")
+    .select("*, service_images(*), service_testimonials(*)")
     .order("sort_order", { ascending: true });
 
   if (!includeUnpublished) {
@@ -48,8 +60,13 @@ export async function fetchServicesFromSupabase(
 
   return (data || []).map((row) => {
     const images = row.service_images || [];
-    const { service_images: _omit, ...rest } = row;
-    return mapServiceRow(rest, images);
+    const testimonials = row.service_testimonials || [];
+    const {
+      service_images: _omitImages,
+      service_testimonials: _omitTestimonials,
+      ...rest
+    } = row;
+    return mapServiceRow(rest, images, testimonials);
   });
 }
 

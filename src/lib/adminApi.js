@@ -37,7 +37,7 @@ export async function fetchAdminServices() {
   if (!supabase) throw new Error("Supabase is not configured");
   const { data, error } = await supabase
     .from("services")
-    .select("*, service_images(*)")
+    .select("*, service_images(*), service_testimonials(*)")
     .order("sort_order", { ascending: true });
   if (error) throw error;
   return data || [];
@@ -57,7 +57,7 @@ export async function saveService(payload) {
       .from("services")
       .update(row)
       .eq("id", payload.id)
-      .select("*, service_images(*)")
+      .select("*, service_images(*), service_testimonials(*)")
       .single();
     if (error) throw error;
     return data;
@@ -65,7 +65,7 @@ export async function saveService(payload) {
   const { data, error } = await supabase
     .from("services")
     .insert(row)
-    .select("*, service_images(*)")
+    .select("*, service_images(*), service_testimonials(*)")
     .single();
   if (error) throw error;
   return data;
@@ -138,5 +138,42 @@ export async function deleteServiceImage(imageRow) {
     .from("service_images")
     .delete()
     .eq("id", imageRow.id);
+  if (error) throw error;
+}
+
+export async function saveServiceTestimonial(payload) {
+  if (!supabase) throw new Error("Supabase is not configured");
+  const row = {
+    service_id: payload.service_id,
+    quote_text: payload.quote_text ?? "",
+    client_name: payload.client_name ?? "",
+    initials: payload.initials ?? "",
+    sort_order: Number(payload.sort_order) || 0,
+  };
+  if (payload.id) {
+    const { data, error } = await supabase
+      .from("service_testimonials")
+      .update(row)
+      .eq("id", payload.id)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+  const { data, error } = await supabase
+    .from("service_testimonials")
+    .insert(row)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteServiceTestimonial(id) {
+  if (!supabase) throw new Error("Supabase is not configured");
+  const { error } = await supabase
+    .from("service_testimonials")
+    .delete()
+    .eq("id", id);
   if (error) throw error;
 }

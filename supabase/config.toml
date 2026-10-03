@@ -1,9 +1,5 @@
-{
-  "name": "nativeshine",
-  "project_id": "",
-  "functions": {
-    "admin-users": {
-      "verify_jwt": true
-    }
-  }
-}
+# NativeShine Supabase config
+project_id = "eakdpherlirecfyvwear"
+
+[functions.admin-users]
+verify_jwt = true
