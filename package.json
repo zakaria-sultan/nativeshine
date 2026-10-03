@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "seed": "node scripts/seed-supabase.mjs"
+    "seed": "node scripts/seed-supabase.mjs",
+    "seed:testimonials": "node scripts/seed-testimonials.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.115.0",
