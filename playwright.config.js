@@ -6,6 +6,8 @@ const chrome = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
 export default defineConfig({
   testDir: './tests/browser',
   fullyParallel: true,
+  // Keep local Chrome runs stable on the developer's desktop.
+  workers: 1,
   retries: 0,
   reporter: 'list',
   use: {

@@ -13,6 +13,7 @@ const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
 const AdminServiceEdit = lazy(() => import("./pages/admin/AdminServiceEdit"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminAccount = lazy(() => import("./pages/admin/AdminAccount"));
+const AdminBranding = lazy(() => import("./pages/admin/AdminBranding"));
 const AdminSiteSettings = lazy(() => import("./pages/admin/AdminSiteSettings"));
 const AdminHomeSlides = lazy(() => import("./pages/admin/AdminHomeSlides"));
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="services" element={<AdminServices />} />
           <Route path="services/:id" element={<AdminServiceEdit />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="branding" element={<AdminBranding />} />
           <Route path="settings" element={<AdminSiteSettings />} />
           <Route path="homepage" element={<AdminHomeSlides />} />
           <Route path="account" element={<AdminAccount />} />

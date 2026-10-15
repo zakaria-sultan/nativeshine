@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { CompanyLogo, CompanyWordmark } from "../branding/CompanyBranding";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { whatsappHref } from "../../lib/siteContent";
 import { useServices } from "../../context/ServicesContext";
@@ -53,15 +54,13 @@ const Footer = ({ className = "" }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
           {/* Column 1: Branding */}
           <div className="flex flex-col space-y-6">
-            <Link to="/" className="flex items-center gap-4 group">
-              <img
-                src="/logo.jpeg"
-                alt="NativeShine"
-                className="h-16 w-auto transition-transform group-hover:scale-105"
+            <Link to="/" className="flex min-w-0 items-center gap-3 group">
+              <CompanyLogo
+                className="h-12 w-12 shrink-0 object-contain transition-transform group-hover:scale-105"
               />
-              <span className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter uppercase border-l-2 border-slate-100 pl-4 py-1">
-                NativeShine <span className="text-[#0ea5e9]">LTD</span>
-              </span>
+              <div className="min-w-0 flex-1 border-l border-slate-100 pl-2">
+                <CompanyWordmark />
+              </div>
             </Link>
             <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-xs transition-opacity hover:opacity-80">
               Founded in 2025, delivering architectural restoration excellence

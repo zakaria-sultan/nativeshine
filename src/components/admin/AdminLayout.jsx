@@ -9,6 +9,7 @@ import {
   ExternalLink,
   MapPin,
   Images,
+  Image as ImageIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -82,6 +83,7 @@ export default function AdminLayout() {
               <Briefcase size={18} /> Services
             </NavLink>
             <NavLink to="/admin/homepage" className={linkClass}><Images size={18} /> Homepage slides</NavLink>
+            <NavLink to="/admin/branding" className={linkClass}><ImageIcon size={18} /> Company branding</NavLink>
             <NavLink to="/admin/settings" className={linkClass}><MapPin size={18} /> Contact & location</NavLink>
             {isSuper ? (
               <NavLink to="/admin/users" className={linkClass}>

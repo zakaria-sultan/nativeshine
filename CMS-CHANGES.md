@@ -36,8 +36,8 @@
 
 ## Xaqiijinta
 
-Natiijada ugu dambaysa: lint iyo production build way gudbeen; 6 unit tests,
-12 Chrome tests, live persistence/API checks iyo SQL permissions checks way
+Natiijada ugu dambaysa: lint iyo production build way gudbeen; 8 unit tests,
+18 Chrome tests, live persistence/API checks iyo SQL permissions checks way
 gudbeen. `npm audit fix` kadib npm wuxuu soo sheegay 0 vulnerabilities. Browser
 bundle-ka waxaa laga xaqiijiyey inuusan ku jirin server service-role key.
 
@@ -67,3 +67,27 @@ simulate-gareeyey; lama sugin saacad dhab ah. File cleanup-ku waa best effort
 haddii Storage uu fashilmo; database content-ku dib uguma soo noqdo arrintaas.
 
 Warbixintii hore ee `WEBSITE-AUDIT.md` waa snapshot ka hor sixitaannadan.
+
+## Company branding
+
+`/admin/branding` wuxuu client admin-ka siinayaa laba upload: company icon iyo
+company wordmark (magaca/hal-ku-dhegga oo dhan). Save wuxuu wada beddelaa header,
+mobile drawer iyo footer; icon-ku sidoo kale wuxuu beddelaa favicon-ka.
+`Restore original` wuxuu soo celiyaa icon-kii hore ama SVG wordmark-ka hadda la
+habeeyey. Default-ka jira lama beddelin ilaa client-ku save sameeyo.
+
+PNG, JPEG iyo WebP ilaa 5 MB ayaa la aqbalaa; PNG/WebP transparency iyo original
+quality waa la ilaaliyaa. Sawir dhaawacmay waa la diidaa kahor upload.
+Save-ku wuxuu beddelaa branding fields oo keliya, wuxuuna isticmaalaa
+`updated_at` si aanu edit duug ahi u overwrite-gareyn mid cusub. Failed writes
+waxay nadiifiyaan uploads-ka aan la isticmaalin; haddii response-ku lumo kadib
+commit, file wali database-ku tixraacayo lama tirtiro. Files slide ama service
+kale isticmaalo sidoo kale waa la ilaaliyaa.
+
+Migration `20261015123000_company_branding.sql` wuxuu ku daraa `logo_url`,
+`logo_storage_path`, `wordmark_url`, `wordmark_storage_path` isla `site_settings`.
+Wuxuu adeegsadaa RLS-ka hadda jira iyo `site-images` bucket-ka.
+`tests/branding-database.sql` wuxuu tijaabiyaa admin save/reset, public reads,
+read-only/anonymous restrictions iyo URL validation, dhammaantood rollback leh.
+Browser tests-ku waxay hubiyaan upload bytes, shared rendering, cross-tab refresh,
+reload, mobile layout, reset, invalid files, stale/failed saves iyo lost responses.

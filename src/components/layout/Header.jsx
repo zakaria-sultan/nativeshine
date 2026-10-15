@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X, Phone } from "lucide-react";
 
+import { CompanyLogo, CompanyWordmark } from "../branding/CompanyBranding";
 import { useSiteContent } from "../../context/SiteContentContext";
 import { phoneHref } from "../../lib/siteContent";
 import { useServices } from "../../context/ServicesContext";
@@ -100,19 +101,15 @@ const Header = ({ onOpenQuote }) => {
           <div className="container mx-auto max-w-[1280px] w-full h-full px-4 md:px-6 lg:px-8 flex flex-row flex-nowrap items-center justify-between gap-3 lg:gap-4 min-w-0">
             <Link
               to="/"
-              className="flex items-center gap-2 sm:gap-3 group shrink-0 min-w-0 max-w-[72%] lg:max-w-[45%]"
+              className="ns-header-brand flex items-center gap-2 sm:gap-3 group min-w-0"
             >
-              <div className="h-11 w-11 lg:h-12 lg:w-12 aspect-square rounded-full overflow-hidden border-2 border-slate-100 shadow-sm flex-shrink-0 transition-transform group-hover:scale-105">
-                <img
-                  src="/logo.jpeg"
-                  alt="NativeShine"
-                  className="h-full w-full object-cover"
+              <div className={`h-9 w-9 sm:h-11 sm:w-11 lg:h-12 lg:w-12 aspect-square ${settings?.logo_storage_path ? "rounded-sm" : "rounded-full"} overflow-hidden border-2 border-slate-100 shadow-sm flex-shrink-0 transition-transform group-hover:scale-105`}>
+                <CompanyLogo
+                  className="h-full w-full object-contain"
                 />
               </div>
-              <div className="border-l-2 border-slate-100 pl-2 sm:pl-3 flex flex-col justify-center min-w-0">
-                <span className="text-xs sm:text-sm lg:text-base font-black text-slate-900 tracking-tighter uppercase leading-none truncate">
-                  NativeShine <span className="text-[#0ea5e9]">LTD</span>
-                </span>
+              <div className="ns-brand-lettering min-w-0 flex-1 border-l border-slate-100 pl-2 sm:pl-3">
+                <CompanyWordmark />
               </div>
             </Link>
 
@@ -214,17 +211,13 @@ const Header = ({ onOpenQuote }) => {
               className="fixed top-0 right-0 z-[70] h-full w-full max-w-md bg-white shadow-2xl lg:hidden flex flex-col"
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 shrink-0">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-slate-100 flex-shrink-0">
-                    <img
-                      src="/logo.jpeg"
-                      alt=""
-                      className="h-full w-full object-cover"
+                <div className="flex flex-1 items-center gap-3 min-w-0">
+                  <div className={`h-10 w-10 ${settings?.logo_storage_path ? "rounded-sm" : "rounded-full"} overflow-hidden border-2 border-slate-100 flex-shrink-0`}>
+                    <CompanyLogo
+                      className="h-full w-full object-contain"
                     />
                   </div>
-                  <span className="text-sm font-black uppercase tracking-tighter text-slate-900 truncate">
-                    NativeShine <span className="text-[#0ea5e9]">LTD</span>
-                  </span>
+                  <CompanyWordmark className="ns-menu-wordmark" />
                 </div>
                 <button
                   type="button"
