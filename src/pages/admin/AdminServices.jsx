@@ -66,7 +66,7 @@ export default function AdminServices() {
         {loading ? (
           <p className="p-6 text-sm text-slate-400">Loading…</p>
         ) : rows.length === 0 ? (
-          <p className="p-6 text-sm text-slate-500">No services yet. Run the seed script or create one.</p>
+          <p className="p-6 text-sm text-slate-500">No services yet. Create a service to get started.</p>
         ) : (
           <table className="w-full text-left text-sm">
             <thead className="border-b border-slate-100 bg-slate-50 text-xs font-black uppercase tracking-wider text-slate-500">

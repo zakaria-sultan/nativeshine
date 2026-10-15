@@ -7,6 +7,8 @@ import {
   KeyRound,
   LogOut,
   ExternalLink,
+  MapPin,
+  Images,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -47,6 +49,8 @@ export default function AdminLayout() {
     return <Navigate to="/admin/login" replace />;
   }
 
+  if (!profile) return <div className="p-8" role="alert">Your account profile could not be loaded. <button onClick={() => window.location.reload()} className="underline">Try again</button> <button onClick={signOut} className="underline">Sign out</button></div>;
+
   const handleLogout = async () => {
     await signOut();
     navigate("/admin/login");
@@ -77,6 +81,8 @@ export default function AdminLayout() {
             <NavLink to="/admin/services" className={linkClass}>
               <Briefcase size={18} /> Services
             </NavLink>
+            <NavLink to="/admin/homepage" className={linkClass}><Images size={18} /> Homepage slides</NavLink>
+            <NavLink to="/admin/settings" className={linkClass}><MapPin size={18} /> Contact & location</NavLink>
             {isSuper ? (
               <NavLink to="/admin/users" className={linkClass}>
                 <Users size={18} /> Users

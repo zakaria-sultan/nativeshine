@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import HomePage from "./pages/HomePage";
@@ -6,18 +6,21 @@ import ServicePageTemplate from "./pages/ServicePageTemplate";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/common/ScrollToTop";
-import AdminLayout from "./components/admin/AdminLayout";
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminServices from "./pages/admin/AdminServices";
-import AdminServiceEdit from "./pages/admin/AdminServiceEdit";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminAccount from "./pages/admin/AdminAccount";
+const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminServices = lazy(() => import("./pages/admin/AdminServices"));
+const AdminServiceEdit = lazy(() => import("./pages/admin/AdminServiceEdit"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminAccount = lazy(() => import("./pages/admin/AdminAccount"));
+const AdminSiteSettings = lazy(() => import("./pages/admin/AdminSiteSettings"));
+const AdminHomeSlides = lazy(() => import("./pages/admin/AdminHomeSlides"));
 
 function App() {
   return (
     <Router>
       <ScrollToTop />
+      <Suspense fallback={<div className="p-8 text-center">Loading…</div>}>
       <Routes>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
@@ -25,6 +28,8 @@ function App() {
           <Route path="services" element={<AdminServices />} />
           <Route path="services/:id" element={<AdminServiceEdit />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="settings" element={<AdminSiteSettings />} />
+          <Route path="homepage" element={<AdminHomeSlides />} />
           <Route path="account" element={<AdminAccount />} />
         </Route>
 
@@ -44,6 +49,7 @@ function App() {
           />
         </Route>
       </Routes>
+      </Suspense>
     </Router>
   );
 }

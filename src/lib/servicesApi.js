@@ -1,8 +1,7 @@
-import { collectRecentUrls } from "./imageSlots";
+import { collectRecentUrls } from "./imageSlots.js";
 import {
-  DEFAULT_TESTIMONIALS,
   mapTestimonialRow,
-} from "./testimonials";
+} from "./testimonials.js";
 
 /**
  * Map DB rows (+ images + testimonials) into the shape the public site expects.
@@ -35,8 +34,7 @@ export function mapServiceRow(row, images = [], testimonials = []) {
     imageGallery: recentImages.slice(0, 3),
     recentImages,
     image: thumbnail,
-    testimonials:
-      mappedTestimonials.length > 0 ? mappedTestimonials : DEFAULT_TESTIMONIALS,
+    testimonials: mappedTestimonials,
     _images: images,
     _testimonials: mappedTestimonials,
   };

@@ -1,38 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
-const testimonials = [
-    {
-        name: 'James Wilson',
-        role: 'Facility Manager, The Grand',
-        text: 'NativeShine has consistently delivered exceptional results. Their attention to detail in our marble restoration was truly remarkable.',
-        image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=cover&q=80&w=150'
-    },
-    {
-        name: 'Sarah Thompson',
-        role: 'Operations Director, TechCorp',
-        text: 'Reliable, professional, and thorough. We have been using their commercial maintenance services for 3 years without a single issue.',
-        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=cover&q=80&w=150'
-    },
-    {
-        name: 'Robert Chen',
-        role: 'Property Developer, Mayfair Properties',
-        text: 'The best restoration team in London. They understood our requirements perfectly and delivered ahead of schedule.',
-        image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=cover&q=80&w=150'
-    }
-];
-
-const TestimonialSlider = () => {
+const TestimonialSlider = ({ testimonials = [] }) => {
     const [current, setCurrent] = useState(0);
 
     const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
     const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
     useEffect(() => {
-        const timer = setInterval(next, 5000);
+        if (testimonials.length < 2) return;
+        const timer = setInterval(() => setCurrent(value => (value + 1) % testimonials.length), 5000);
         return () => clearInterval(timer);
-    }, []);
+    }, [testimonials.length]);
+
+    if (!testimonials.length) return null;
+    const testimonial = testimonials[current % testimonials.length];
 
     return (
         <section className="py-8 bg-secondary-dark text-white overflow-hidden relative">
@@ -47,7 +30,7 @@ const TestimonialSlider = () => {
 
                 <div className="max-w-4xl mx-auto relative">
                     <AnimatePresence mode="wait">
-                        <motion.div
+                        <Motion.div
                             key={current}
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -59,18 +42,18 @@ const TestimonialSlider = () => {
                                 {[1, 2, 3, 4, 5].map(s => <Star key={s} className="w-5 h-5 text-primary-light fill-primary-light mr-1" />)}
                             </div>
                             <p className="text-2xl md:text-3xl text-slate-100 italic font-light leading-relaxed text-center mb-12">
-                                "{testimonials[current].text}"
+                                "{testimonial.text}"
                             </p>
                             <div className="flex flex-col items-center">
                                 <img
-                                    src={testimonials[current].image}
-                                    alt={testimonials[current].name}
+                                    src={testimonial.image}
+                                    alt={testimonial.name}
                                     className="w-20 h-20 rounded-full border-4 border-primary/30 mb-4"
                                 />
-                                <div className="text-xl font-black text-white">{testimonials[current].name}</div>
-                                <div className="text-primary-light font-bold text-sm tracking-widest uppercase">{testimonials[current].role}</div>
+                                <div className="text-xl font-black text-white">{testimonial.name}</div>
+                                <div className="text-primary-light font-bold text-sm tracking-widest uppercase">{testimonial.role}</div>
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     </AnimatePresence>
 
                     <div className="flex justify-center mt-12 space-x-6">

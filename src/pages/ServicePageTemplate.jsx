@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { useServices } from "../context/ServicesContext";
 import RecentWorks from "../components/services/RecentWorks";
@@ -8,7 +8,7 @@ import FastImage from "../components/common/FastImage";
 
 const ServicePageTemplate = () => {
   const { slug } = useParams();
-  const { getBySlug, loading } = useServices();
+  const { getBySlug, loading, error, refresh } = useServices();
 
   const service = getBySlug(slug);
 
@@ -20,25 +20,13 @@ const ServicePageTemplate = () => {
     );
   }
 
+  if (error && !service) return <div className="p-10 text-center" role="alert">Could not load this service. <button onClick={refresh} className="underline">Try again</button></div>;
+
   if (!service) {
     return <Navigate to="/services" replace />;
   }
 
-  const testimonials =
-    Array.isArray(service.testimonials) && service.testimonials.length > 0
-      ? service.testimonials
-      : [
-          {
-            text: "The level of service provided by NativeShine Services is second to none, and it is one of the main reasons our customers love staying here.",
-            client: "Hotel Services Client",
-            initials: "HS",
-          },
-          {
-            text: "We recently switched to NativeShine Services and needed a seamless transition. They were extremely helpful and efficient throughout the process.",
-            client: "Floor Restoration Client",
-            initials: "FR",
-          },
-        ];
+  const testimonials = service.testimonials ?? [];
 
   return (
     <div className="flex w-full flex-col bg-white">
@@ -57,7 +45,7 @@ const ServicePageTemplate = () => {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-6 sm:py-8">
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -69,7 +57,7 @@ const ServicePageTemplate = () => {
             <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter font-montserrat leading-[1.1] pr-2">
               {service.title}
             </h1>
-          </motion.div>
+          </Motion.div>
         </div>
       </section>
 
@@ -78,7 +66,7 @@ const ServicePageTemplate = () => {
           <div className="flex flex-col lg:flex-row gap-10 md:gap-16 lg:gap-20">
             <aside className="lg:w-1/3">
               <div className="sticky top-32 lg:top-40 space-y-6 lg:space-y-8">
-                <div className="bg-[#F9F9F9] p-6 sm:p-8 lg:p-10 border border-slate-100 rounded-sm">
+                {testimonials.length > 0 && <div className="bg-[#F9F9F9] p-6 sm:p-8 lg:p-10 border border-slate-100 rounded-sm">
                   <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#0ea5e9] mb-10 border-b-2 border-[#00AEEF]/10 pb-4">
                     TESTIMONIALS
                   </h3>
@@ -102,7 +90,7 @@ const ServicePageTemplate = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div>}
 
                 <div className="bg-[#0ea5e9] p-8 text-white rounded-sm shadow-xl shadow-cyan-500/10">
                   <CheckCircle2 size={40} className="mb-6 opacity-40" />

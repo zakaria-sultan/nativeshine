@@ -1,19 +1,10 @@
-/**
- * Sends enquiry payloads to info@nativeshine.co.uk via FormSubmit (no backend).
- * First-time use: FormSubmit may send a confirmation email to activate the address.
- * @see https://formsubmit.co/ajax-documentation
- */
-
-export const NATIVE_SHINE_ENQUIRY_EMAIL = "info@nativeshine.co.uk";
-
-const ENDPOINT = `https://formsubmit.co/ajax/${encodeURIComponent(NATIVE_SHINE_ENQUIRY_EMAIL)}`;
-
-/**
- * @param {object} fields — name, email, phone?, service, message
- * @param {{ formLabel?: string }} options
- */
+/** Send enquiries to the current database-configured contact email. */
 export async function submitEnquiryEmail(fields, options = {}) {
-  const { formLabel = "Website enquiry" } = options;
+  const { formLabel = "Website enquiry", recipient } = options;
+  if (!recipient || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient)) {
+    throw new Error("Contact details are unavailable. Please reload and try again.");
+  }
+  const endpoint = `https://formsubmit.co/ajax/${encodeURIComponent(recipient)}`;
 
   const payload = {
     name: fields.name?.trim() ?? "",
@@ -26,7 +17,7 @@ export async function submitEnquiryEmail(fields, options = {}) {
     _captcha: "false",
   };
 
-  const response = await fetch(ENDPOINT, {
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +41,7 @@ export async function submitEnquiryEmail(fields, options = {}) {
     throw new Error(msg);
   }
 
-  if (body && body.success === false) {
+  if (body && (body.success === false || body.success === "false")) {
     throw new Error(
       typeof body.message === "string"
         ? body.message
@@ -58,5 +49,8 @@ export async function submitEnquiryEmail(fields, options = {}) {
     );
   }
 
+  if (body.success !== true && body.success !== "true") {
+    throw new Error("The email service did not confirm delivery. Please try again.");
+  }
   return body;
 }

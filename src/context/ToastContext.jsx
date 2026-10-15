@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion as Motion } from "framer-motion";
 import { CheckCircle2, XCircle, Info, X } from "lucide-react";
 
 const ToastContext = createContext(null);
@@ -55,7 +55,7 @@ export function ToastProvider({ children }) {
                 const style = STYLES[toast.type] || STYLES.success;
                 const Icon = style.icon;
                 return (
-                  <motion.div
+                  <Motion.div
                     key={toast.id}
                     role="alert"
                     initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -83,7 +83,7 @@ export function ToastProvider({ children }) {
                     >
                       <X size={18} />
                     </button>
-                  </motion.div>
+                  </Motion.div>
                 );
               })}
             </AnimatePresence>

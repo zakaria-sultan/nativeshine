@@ -26,4 +26,16 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  {
+    files: ['api/**/*.js', 'vite.config.js', 'playwright.config.js', 'scripts/**/*.{js,mjs}', 'tests/**/*.{js,mjs}'],
+    languageOptions: { globals: globals.node },
+  },
+  {
+    files: ['src/context/*.jsx'],
+    rules: {
+      'react-refresh/only-export-components': ['error', {
+        allowExportNames: ['useAuth', 'useQuote', 'useServices', 'useToast', 'useSiteContent'],
+      }],
+    },
+  },
 ])

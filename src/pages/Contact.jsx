@@ -6,6 +6,8 @@ import {
   validateContactForm,
   hasValidationErrors,
 } from "../lib/contactFormValidation";
+import { useSiteContent } from "../context/SiteContentContext";
+import { mapEmbedUrl, phoneHref, whatsappHref } from "../lib/siteContent";
 import { submitEnquiryEmail } from "../lib/submitEnquiryEmail";
 
 const emptyForm = () => ({
@@ -18,6 +20,7 @@ const emptyForm = () => ({
 
 const Contact = () => {
   const { services: servicesData } = useServices();
+  const { settings } = useSiteContent();
   const { showToast } = useToast();
   const [formData, setFormData] = useState(emptyForm);
   const [fieldErrors, setFieldErrors] = useState({});
@@ -25,6 +28,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!settings) return;
     const errors = validateContactForm(formData);
     setFieldErrors(errors);
     if (hasValidationErrors(errors)) {
@@ -34,7 +38,7 @@ const Contact = () => {
 
     setIsSending(true);
     try {
-      await submitEnquiryEmail(formData, { formLabel: "Contact page" });
+      await submitEnquiryEmail(formData, { formLabel: "Contact page", recipient: settings.email });
       showToast(
         "Thank you! Your message has been sent successfully.",
         "success",
@@ -85,7 +89,7 @@ const Contact = () => {
                       <input
                         required
                         type="text"
-                        disabled={isSending}
+                        disabled={isSending || !settings}
                         className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all disabled:opacity-60"
                         placeholder="Enter name..."
                         value={formData.name}
@@ -109,7 +113,7 @@ const Contact = () => {
                         required
                         type="email"
                         autoComplete="email"
-                        disabled={isSending}
+                        disabled={isSending || !settings}
                         className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all disabled:opacity-60"
                         placeholder="email@address.com"
                         value={formData.email}
@@ -134,9 +138,9 @@ const Contact = () => {
                     <input
                       type="tel"
                       autoComplete="tel"
-                      disabled={isSending}
+                      disabled={isSending || !settings}
                       className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all md:max-w-md disabled:opacity-60"
-                      placeholder="07777 143488"
+                      placeholder={settings?.mobile_phone || "Phone number"}
                       value={formData.phone}
                       onChange={(e) => {
                         setFormData({ ...formData, phone: e.target.value });
@@ -158,7 +162,7 @@ const Contact = () => {
                     <div className="relative">
                       <select
                         required
-                        disabled={isSending}
+                        disabled={isSending || !settings}
                         className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all appearance-none cursor-pointer disabled:opacity-60"
                         value={formData.service}
                         onChange={(e) => {
@@ -195,7 +199,7 @@ const Contact = () => {
                     <textarea
                       required
                       rows={6}
-                      disabled={isSending}
+                      disabled={isSending || !settings}
                       className="w-full bg-slate-50 border border-slate-100 p-5 rounded-sm font-bold text-sm focus:border-[#0ea5e9] outline-none transition-all resize-none disabled:opacity-60"
                       placeholder="How can we help you?"
                       value={formData.message}
@@ -217,7 +221,7 @@ const Contact = () => {
 
                   <button
                     type="submit"
-                    disabled={isSending}
+                    disabled={isSending || !settings}
                     className="w-full bg-[#0ea5e9] text-white py-6 font-black text-xs uppercase tracking-[0.4em] rounded-sm hover:bg-slate-900 transition-all flex items-center justify-center gap-3 shadow-xl shadow-cyan-500/20 active:scale-95 disabled:opacity-70 disabled:pointer-events-none disabled:active:scale-100"
                   >
                     {isSending ? (
@@ -253,7 +257,7 @@ const Contact = () => {
                         Head Office
                       </p>
                       <p className="font-black text-xl tracking-tighter">
-                        020 3642 1152{" "}
+                        <a href={phoneHref(settings?.office_phone)}>{settings?.office_phone}</a>
                       </p>
                     </div>
                   </div>
@@ -266,7 +270,7 @@ const Contact = () => {
                         Enquiries
                       </p>
                       <p className="font-black text-xl tracking-tighter">
-                        info@nativeshine.co.uk
+                        <a href={`mailto:${settings?.email}`}>{settings?.email}</a>
                       </p>
                     </div>
                   </div>
@@ -279,7 +283,7 @@ const Contact = () => {
                         Fast Response
                       </p>
                       <p className="font-black text-xl tracking-tighter">
-                        07777 143488
+                        <a href={whatsappHref(settings?.mobile_phone)} target="_blank" rel="noreferrer">{settings?.mobile_phone}</a>
                       </p>
                     </div>
                   </div>
@@ -294,8 +298,8 @@ const Contact = () => {
                   <h4 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em] mb-2">
                     Our Location
                   </h4>
-                  <p className="text-sm text-slate-500 font-bold leading-relaxed">
-                    9 Roswick Albany street <br /> London nw1 4bj
+                  <p className="whitespace-pre-line text-sm text-slate-500 font-bold leading-relaxed">
+                    {settings?.address}
                   </p>
                 </div>
               </div>
@@ -309,18 +313,18 @@ const Contact = () => {
           Find <span className="text-[#0ea5e9]">Us</span>
         </h3>
         <p className="text-slate-500 text-sm font-medium text-center md:text-left mb-6 max-w-2xl">
-          9 Roswick Albany street London nw1 4bj
+          {settings?.address}
         </p>
         <div className="rounded-2xl shadow-lg border-4 border-white overflow-hidden grayscale hover:grayscale-0 transition-[filter] duration-500">
-          <iframe
-            title="NativeShine office location — Albany street, London"
-            src="https://www.google.com/maps?q=nw1+4bj+London+UK&output=embed"
+          {settings && <iframe
+            title={`NativeShine office location — ${settings.address}`}
+            src={mapEmbedUrl(settings.address)}
             width="100%"
             height="450"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="w-full border-0 block"
-          />
+          />}
         </div>
       </section>
     </div>

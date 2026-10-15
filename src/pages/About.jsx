@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { Shield, Target, Users, CheckCircle2 } from "lucide-react";
 
 const About = () => {
@@ -47,12 +46,6 @@ const About = () => {
                   listed façade or maintaining a contemporary commercial
                   interior, we apply the same uncompromising standards of
                   precision, care, and attention to detail.
-                </p>
-                <p>
-                  Our approach is rooted in a deep respect for materials and
-                  craftsmanship. Whether we are restoring a Grade I listed
-                  facade or maintaining a contemporary commercial interior, we
-                  apply the same rigorous standards of precision and care.
                 </p>
               </div>
             </div>
