@@ -40,10 +40,11 @@ test('deleting the last testimonial and gallery image leaves them absent after r
   state.images.push({ id: 'gallery-one', service_id: 'service-one', kind: 'recent', slot: 1, url: 'https://images.test/gallery.jpg' });
   await login(page);
   await page.goto('/admin/services/service-one');
-  page.on('dialog', dialog => dialog.accept());
   await page.locator('#testimonials').getByRole('button', { name: 'Delete', exact: true }).click();
+  await page.getByRole('alertdialog').getByRole('button', { name: 'Delete', exact: true }).click();
   await expect(page.locator('#testimonials')).toContainText('No testimonials yet');
   await page.locator('#images').getByRole('button', { name: 'Remove', exact: true }).last().click();
+  await page.getByRole('alertdialog').getByRole('button', { name: 'Delete', exact: true }).click();
   await expect(page.locator('#images')).toContainText('No gallery images yet');
   await page.goto('/services/test-cleaning');
   await page.reload();
@@ -129,8 +130,8 @@ test('homepage text, image, publishing, deletion and new slides persist', async 
   await expect(page.getByRole('heading', { name: 'SECOND HERO TITLE' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'MY UPDATED HERO' })).toHaveCount(0);
   await page.goto('/admin/homepage');
-  page.on('dialog', dialog => dialog.accept());
   await page.getByRole('button', { name: 'Delete slide', exact: true }).first().click();
+  await page.getByRole('alertdialog').getByRole('button', { name: 'Delete', exact: true }).click();
   await expect(page.getByRole('alert')).toContainText('Homepage slide deleted');
   expect(state.slides).toHaveLength(1);
   await page.getByRole('button', { name: 'Add slide', exact: true }).click();

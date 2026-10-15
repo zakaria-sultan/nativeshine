@@ -9,22 +9,24 @@ export default function BrandWordmark({ className = '' }) {
       role="img" aria-label="NativeShine Ltd. Excellence is our standard!" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id={`${id}-chrome`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#a0b4bf" />
-          <stop offset=".2" stopColor="#4a5a65" />
-          <stop offset=".5" stopColor="#151e27" />
-          <stop offset=".78" stopColor="#0c1219" />
-          <stop offset="1" stopColor="#235871" />
+          <stop offset="0" stopColor="#edf8fd" />
+          <stop offset=".18" stopColor="#c2d3dc" />
+          <stop offset=".35" stopColor="#7a929f" />
+          <stop offset=".55" stopColor="#2c3d49" />
+          <stop offset=".78" stopColor="#131e28" />
+          <stop offset="1" stopColor="#385e73" />
         </linearGradient>
         <linearGradient id={`${id}-silver`} x1="0" y1="0" x2="0" y2="1">
-          <stop stopColor="#ffffff" /><stop offset=".28" stopColor="#9eafb9" />
-          <stop offset=".48" stopColor="#f5fdff" /><stop offset=".7" stopColor="#839eae" />
+          <stop stopColor="#ffffff" /><stop offset=".28" stopColor="#b5c4cd" />
+          <stop offset=".48" stopColor="#f5fdff" /><stop offset=".7" stopColor="#a9bdc8" />
           <stop offset="1" stopColor="#edfaff" />
         </linearGradient>
         <linearGradient id={`${id}-ltd`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#8297a3" />
-          <stop offset=".3" stopColor="#3e505c" />
-          <stop offset=".7" stopColor="#151e25" />
-          <stop offset="1" stopColor="#345a6a" />
+          <stop offset="0" stopColor="#eef6f9" />
+          <stop offset=".22" stopColor="#c7d6df" />
+          <stop offset=".45" stopColor="#8198a6" />
+          <stop offset=".7" stopColor="#293d4b" />
+          <stop offset="1" stopColor="#527b91" />
         </linearGradient>
         <radialGradient id={`${id}-glow`}>
           <stop stopColor="#ffffff" /><stop offset=".22" stopColor="#b9f9ff" stopOpacity=".9" />
@@ -60,8 +62,8 @@ export default function BrandWordmark({ className = '' }) {
         <path id={`${id}-star`} d="M0-9 1.8-2 9 0 1.8 1.8 0 9-1.8 1.8-9 0-1.8-2Z" />
       </defs>
       <g aria-hidden="true" strokeLinejoin="round" paintOrder="stroke fill">
-        <use href={`#${id}-name`} stroke="#405762" strokeWidth="8.6" transform="translate(0 .8)" />
-        <use href={`#${id}-name`} stroke={url('silver')} strokeWidth="7.4" />
+        <use href={`#${id}-name`} stroke="#405762" strokeWidth="9.4" transform="translate(0 .8)" />
+        <use href={`#${id}-name`} stroke={url('silver')} strokeWidth="8.4" />
         <use href={`#${id}-name`} stroke="#496875" strokeWidth=".55" />
         <text x="72" y="87" textLength="363" lengthAdjust="spacingAndGlyphs"
           fontFamily="Arial, sans-serif" fontWeight="900" fontStyle="italic" fontSize="25"

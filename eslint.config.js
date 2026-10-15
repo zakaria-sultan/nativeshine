@@ -34,7 +34,7 @@ export default defineConfig([
     files: ['src/context/*.jsx'],
     rules: {
       'react-refresh/only-export-components': ['error', {
-        allowExportNames: ['useAuth', 'useQuote', 'useServices', 'useToast', 'useSiteContent'],
+        allowExportNames: ['useAuth', 'useQuote', 'useServices', 'useToast', 'useSiteContent', 'useConfirm'],
       }],
     },
   },

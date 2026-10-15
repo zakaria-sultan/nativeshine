@@ -103,9 +103,9 @@ const Header = ({ onOpenQuote }) => {
               to="/"
               className="ns-header-brand flex items-center gap-2 sm:gap-3 group min-w-0"
             >
-              <div className={`h-9 w-9 sm:h-11 sm:w-11 lg:h-12 lg:w-12 aspect-square ${settings?.logo_storage_path ? "rounded-sm" : "rounded-full"} overflow-hidden border-2 border-slate-100 shadow-sm flex-shrink-0 transition-transform group-hover:scale-105`}>
+              <div className="h-9 w-9 sm:h-11 sm:w-11 lg:h-12 lg:w-12 aspect-square rounded-full overflow-hidden border-2 border-slate-100 shadow-sm flex-shrink-0 transition-transform group-hover:scale-105">
                 <CompanyLogo
-                  className="h-full w-full object-contain"
+                  className="h-full w-full object-cover"
                 />
               </div>
               <div className="ns-brand-lettering min-w-0 flex-1 border-l border-slate-100 pl-2 sm:pl-3">
@@ -212,9 +212,9 @@ const Header = ({ onOpenQuote }) => {
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 shrink-0">
                 <div className="flex flex-1 items-center gap-3 min-w-0">
-                  <div className={`h-10 w-10 ${settings?.logo_storage_path ? "rounded-sm" : "rounded-full"} overflow-hidden border-2 border-slate-100 flex-shrink-0`}>
+                  <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-slate-100 flex-shrink-0">
                     <CompanyLogo
-                      className="h-full w-full object-contain"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   <CompanyWordmark className="ns-menu-wordmark" />

@@ -91,4 +91,7 @@ export async function login(page) {
   await page.getByLabel('Password', { exact: true }).fill('test-password');
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await page.waitForURL('**/admin');
+  const welcome = page.getByRole('alert').filter({ hasText: 'Signed in successfully' });
+  await welcome.getByRole('button', { name: 'Dismiss notification' }).click();
+  await welcome.waitFor({ state: 'detached' });
 }

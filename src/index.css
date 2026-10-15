@@ -117,3 +117,9 @@ html {
   aspect-ratio: 480 / 110;
   object-fit: contain;
 }
+
+.ns-company-logo {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+}

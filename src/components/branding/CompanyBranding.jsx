@@ -4,8 +4,9 @@ import BrandWordmark from './BrandWordmark';
 
 export function CompanyLogo({ className = '' }) {
   const { settings } = useSiteContent();
-  if (!settings) return <span aria-hidden="true" className={className} />;
-  return <img src={settings.logo_url ?? '/logo.jpeg'} alt="" className={className} />;
+  const logoClass = `ns-company-logo ${className}`.trim();
+  if (!settings) return <span aria-hidden="true" className={logoClass} />;
+  return <img src={settings.logo_url ?? '/logo.jpeg'} alt="" className={logoClass} />;
 }
 
 export function CompanyWordmark({ className = '' }) {

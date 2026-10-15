@@ -1,3 +1,4 @@
+import { useConfirm } from '../../context/ConfirmContext';
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, Pencil, Trash2, Image as ImageIcon } from "lucide-react";
@@ -7,9 +8,11 @@ import { useToast } from "../../context/ToastContext";
 import { deleteService, fetchAdminServices } from "../../lib/adminApi";
 
 export default function AdminServices() {
+  const confirmDelete = useConfirm();
   const { canEdit } = useAuth();
   const { refresh: refreshPublic } = useServices();
   const { showToast } = useToast();
+  const [deleting, setDeleting] = useState(false);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,18 +32,19 @@ export default function AdminServices() {
   }, [load]);
 
   const onDelete = async (row) => {
-    if (!canEdit) return;
-    if (!window.confirm(`Delete service “${row.title}”? This cannot be undone.`)) {
+    if (!canEdit || deleting) return;
+    if (!await confirmDelete(`Delete service “${row.title}”?`)) {
       return;
     }
     try {
+      setDeleting(true);
       await deleteService(row.id);
       await load();
       await refreshPublic();
       showToast(`Deleted “${row.title}”`, "success");
     } catch (err) {
       showToast(err.message || "Delete failed", "error");
-    }
+    } finally { setDeleting(false); }
   };
 
   return (
@@ -121,6 +125,8 @@ export default function AdminServices() {
                         <button
                           type="button"
                           onClick={() => onDelete(row)}
+                          disabled={deleting}
+                          aria-label={`Delete ${row.title}`}
                           className="inline-flex items-center gap-1 rounded-sm border border-rose-100 px-2.5 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50"
                         >
                           <Trash2 size={14} />

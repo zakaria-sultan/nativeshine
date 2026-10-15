@@ -23,7 +23,7 @@ function ImageChoice({ slot, label, help, current, change, disabled, onChange })
     <h3 className="text-lg font-bold">{label}</h3>
     <p className="text-sm text-slate-500">{help}</p>
     <div className="flex h-32 items-center justify-center rounded border border-slate-200 bg-slate-50 p-4">
-      {source ? <img src={source} alt={`${label} preview`} className="h-full max-w-full object-contain" /> : slot === 'wordmark' ? <BrandWordmark className="max-w-sm" /> : null}
+      {source ? <img src={source} alt={`${label} preview`} className={slot === 'logo' ? 'h-24 w-24 shrink-0 rounded-full object-cover' : 'h-full max-w-full object-contain'} /> : slot === 'wordmark' ? <BrandWordmark className="max-w-sm" /> : null}
     </div>
     <label htmlFor={`${slot}-upload`} className="block text-sm font-bold">Upload {label.toLowerCase()}</label>
     <input id={`${slot}-upload`} type="file" accept="image/png,image/jpeg,image/webp" disabled={disabled}
@@ -84,7 +84,7 @@ export default function AdminBranding() {
     <p className="mt-2 text-sm text-slate-500">Use PNG, JPG or WebP, up to 5 MB. Transparent PNG/WebP files keep their transparent background.</p>
     {!canEdit && <p className="mt-3 text-amber-700">Your account has read-only access.</p>}
     <form onSubmit={save} className="mt-6 space-y-5">
-      <ImageChoice slot="logo" label="Company icon" help="The small logo beside the company name. A square image works best." current={current} change={changes.logo} disabled={!canEdit || saving} onChange={change => choose('logo', change)} />
+      <ImageChoice slot="logo" label="Company icon" help="Shown as a circle beside the company name. A square image with centered artwork works best." current={current} change={changes.logo} disabled={!canEdit || saving} onChange={change => choose('logo', change)} />
       <ImageChoice slot="wordmark" label="Company wordmark" help="Optional: replace the styled company name and tagline with your own wide logo image. Restore the original to use the current silver-and-blue lettering." current={current} change={changes.wordmark} disabled={!canEdit || saving} onChange={change => choose('wordmark', change)} />
       {canEdit && <button disabled={saving || !Object.values(changes).some(Boolean)} className="bg-[#0ea5e9] px-6 py-3 text-sm font-bold text-white disabled:opacity-50">{saving ? 'Saving…' : 'Save company branding'}</button>}
     </form>
