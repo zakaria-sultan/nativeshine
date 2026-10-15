@@ -1,16 +1,52 @@
-# React + Vite
+# NativeShine
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React/Vite website with Supabase Auth, PostgreSQL and Storage, plus a client CMS.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```sh
+npm ci
+cp .env.example .env
+# Fill the Supabase settings in .env, then:
+npm run dev
+```
 
-## React Compiler
+Public pages: `/`, `/about`, `/contact`, `/services/:slug`.
+Client CMS: `/admin/login`, `/admin/services`, `/admin/homepage`, `/admin/settings`.
+Super administrators also manage `/admin/users`. The Vite dev server includes the
+same `/api/admin-users` handler used on Vercel; `vercel dev` is optional.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Services, testimonials, galleries, homepage slides and shared contact details use
+Supabase as the source of truth. Empty records stay empty. Failed reads retain
+only the last confirmed database content and show a retry message. Open public
+tabs refresh on focus, reconnect, local admin changes and every 60 seconds.
 
-## Expanding the ESLint configuration
+## Verification
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```sh
+npm run lint
+npm test
+npm run build
+npm run test:e2e
+```
+
+Browser tests use a mock database and intercept email requests. They do not
+change production content or send real enquiries. Chrome is auto-detected on
+Linux; otherwise install Playwright Chromium (`npx playwright install chromium`)
+or set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
+
+Optional real-project checks (requires the server-only key in `.env`):
+
+```sh
+npm run test:live
+supabase db query --linked --file tests/database.sql
+```
+
+The live script creates temporary private services, testimonials, slides and
+confirmed test accounts, exercises actual login/token refresh/user management,
+then deletes the fixtures. It checks that existing testimonials and contact
+settings are unchanged. The SQL suite runs entirely inside a rolled-back
+transaction. Run these deliberately against the intended project.
+
+See [DEPLOY.md](DEPLOY.md) for migrations and deployment, and
+[CMS-CHANGES.md](CMS-CHANGES.md) for the implemented changes and verification.

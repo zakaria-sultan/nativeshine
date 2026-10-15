@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Upload, Trash2, Plus } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -13,6 +13,7 @@ import {
   uploadServiceImage,
 } from "../../lib/adminApi";
 import { slugifyTitle } from "../../lib/servicesApi";
+import { contentSaveError } from "../../lib/siteContentApi";
 import { initialsFromName } from "../../lib/testimonials";
 import {
   findImage,
@@ -54,20 +55,25 @@ export default function AdminServiceEdit() {
   const [testimonials, setTestimonials] = useState([]);
   const [draftTestimonial, setDraftTestimonial] = useState(emptyTestimonial);
   const [loading, setLoading] = useState(!isNew);
+  const [loadError, setLoadError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [savingTestimonial, setSavingTestimonial] = useState(false);
   const [slugTouched, setSlugTouched] = useState(false);
 
+  const loadRequest = useRef(0);
   const load = useCallback(async () => {
+    const current = ++loadRequest.current;
     if (isNew || !supabase) return;
     setLoading(true);
+    setLoadError(null);
     try {
       const { data, error: err } = await supabase
         .from("services")
         .select("*, service_images(*), service_testimonials(*)")
         .eq("id", id)
         .single();
+      if (current !== loadRequest.current) return;
       if (err) throw err;
       setForm({
         title: data.title,
@@ -75,6 +81,7 @@ export default function AdminServiceEdit() {
         content: data.content || "",
         sort_order: data.sort_order ?? 0,
         is_published: data.is_published,
+        updated_at: data.updated_at,
       });
       setImages(data.service_images || []);
       setTestimonials(
@@ -84,11 +91,11 @@ export default function AdminServiceEdit() {
       );
       setSlugTouched(true);
     } catch (err) {
-      showToast(err.message || "Failed to load service", "error");
+      if (current === loadRequest.current) setLoadError(err.message || "Failed to load service");
     } finally {
-      setLoading(false);
+      if (current === loadRequest.current) setLoading(false);
     }
-  }, [id, isNew, showToast]);
+  }, [id, isNew]);
 
   useEffect(() => {
     load();
@@ -119,10 +126,11 @@ export default function AdminServiceEdit() {
       if (isNew) {
         navigate(`/admin/services/${saved.id}`, { replace: true });
       } else {
+        setForm(previous => ({ ...previous, updated_at: saved.updated_at }));
         setImages(saved.service_images || []);
       }
     } catch (err) {
-      showToast(err.message || "Save failed", "error");
+      showToast(contentSaveError(err), "error");
     } finally {
       setSaving(false);
     }
@@ -135,6 +143,7 @@ export default function AdminServiceEdit() {
       client_name: row.client_name || "",
       initials: row.initials || "",
       sort_order: row.sort_order ?? 0,
+      updated_at: row.updated_at,
     });
   };
 
@@ -152,6 +161,7 @@ export default function AdminServiceEdit() {
         initialsFromName(draftTestimonial.client_name);
       const saved = await saveServiceTestimonial({
         id: draftTestimonial.id || undefined,
+        updated_at: draftTestimonial.updated_at,
         service_id: id,
         quote_text: draftTestimonial.quote_text.trim(),
         client_name: draftTestimonial.client_name.trim(),
@@ -174,17 +184,17 @@ export default function AdminServiceEdit() {
         "success",
       );
     } catch (err) {
-      showToast(err.message || "Could not save testimonial", "error");
+      showToast(contentSaveError(err), "error");
     } finally {
       setSavingTestimonial(false);
     }
   };
 
   const onDeleteTestimonial = async (row) => {
-    if (!canEdit) return;
+    if (!canEdit || savingTestimonial) return;
     if (!window.confirm("Delete this testimonial?")) return;
     try {
-      await deleteServiceTestimonial(row.id);
+      await deleteServiceTestimonial(row);
       setTestimonials((prev) => prev.filter((t) => t.id !== row.id));
       if (draftTestimonial.id === row.id) {
         setDraftTestimonial(emptyTestimonial());
@@ -192,7 +202,7 @@ export default function AdminServiceEdit() {
       await refreshPublic();
       showToast("Testimonial deleted", "success");
     } catch (err) {
-      showToast(err.message || "Delete failed", "error");
+      showToast(contentSaveError(err), "error");
     }
   };
 
@@ -262,6 +272,8 @@ export default function AdminServiceEdit() {
   if (loading) {
     return <p className="text-sm text-slate-400">Loading…</p>;
   }
+
+  if (loadError) return <div role="alert">Could not load this service. <button onClick={load} className="underline">Try again</button></div>;
 
   const renderCard = (kind, slot, label) => {
     const img = findImage(images, kind, slot);

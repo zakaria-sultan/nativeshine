@@ -9,7 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "seed": "node scripts/seed-supabase.mjs",
-    "seed:testimonials": "node scripts/seed-testimonials.mjs"
+    "seed:testimonials": "node scripts/seed-testimonials.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test:live": "node scripts/verify-cms-live.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.115.0",
@@ -24,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

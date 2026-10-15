@@ -25,12 +25,20 @@ if [[ "$missing" -eq 1 ]]; then
   exit 1
 fi
 
+if [[ -e .env ]]; then
+  echo "An .env file already exists. Setup will not overwrite your configured server credentials."
+  exit 1
+fi
+umask 077
 cat > .env <<EOF
 VITE_SUPABASE_URL=${SUPABASE_URL}
 VITE_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+SUPABASE_URL=${SUPABASE_URL}
+SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
 EOF
 
-echo "Wrote .env (VITE_* only — service role is NOT stored in .env)"
+echo "Wrote protected .env (server-only service key is never exposed through VITE_ variables)"
 
 echo ""
 echo "=== IMPORTANT: run the SQL migration in Supabase SQL Editor first ==="

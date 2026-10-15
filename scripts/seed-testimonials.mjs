@@ -25,6 +25,9 @@ const DEFAULTS = [
 ];
 
 async function main() {
+  if (process.env.ALLOW_CMS_BOOTSTRAP !== 'true') {
+    throw new Error('Bootstrap is disabled to protect client edits and deletions. Set ALLOW_CMS_BOOTSTRAP=true only for a new, empty database.');
+  }
   const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {

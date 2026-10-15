@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
@@ -15,7 +16,11 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(isSupabaseConfigured);
 
+  const profileRequest = useRef(0);
+  const activeUser = useRef(null);
+  const invalidateProfile = useCallback(() => { ++profileRequest.current; }, []);
   const loadProfile = useCallback(async (userId) => {
+    const request = ++profileRequest.current;
     if (!supabase || !userId) {
       setProfile(null);
       return null;
@@ -25,6 +30,7 @@ export function AuthProvider({ children }) {
       .select("id, email, full_name, role, created_at")
       .eq("id", userId)
       .maybeSingle();
+    if (request !== profileRequest.current || activeUser.current !== userId) return null;
     if (error) {
       console.warn("Profile load failed", error);
       setProfile(null);
@@ -40,34 +46,42 @@ export function AuthProvider({ children }) {
     }
 
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
+    let timer;
+    const applySession = (nextSession) => {
       if (!mounted) return;
-      setSession(data.session);
-      if (data.session?.user) {
-        loadProfile(data.session.user.id).finally(() => {
-          if (mounted) setLoading(false);
-        });
-      } else {
-        setLoading(false);
-      }
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      const userId = nextSession?.user?.id || null;
+      const changed = activeUser.current !== userId;
+      activeUser.current = userId;
       setSession(nextSession);
-      if (nextSession?.user) {
-        loadProfile(nextSession.user.id);
-      } else {
+      if (changed || !userId) {
+        ++profileRequest.current;
         setProfile(null);
       }
+      if (!userId) { setLoading(false); return; }
+      if (changed) setLoading(true);
+      // Supabase auth callbacks run under an auth lock. Query profiles only
+      // after the callback returns so token refresh cannot deadlock the CMS.
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        loadProfile(userId).finally(() => {
+          if (mounted && activeUser.current === userId) setLoading(false);
+        });
+      }, 0);
+    };
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      applySession(nextSession);
     });
-
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error && mounted) { setLoading(false); return; }
+      if (!activeUser.current) applySession(data.session);
+    }).catch(() => { if (mounted) setLoading(false); });
     return () => {
       mounted = false;
+      clearTimeout(timer);
+      invalidateProfile();
       subscription.unsubscribe();
     };
-  }, [loadProfile]);
+  }, [loadProfile, invalidateProfile]);
 
   const signIn = useCallback(async (email, password) => {
     if (!supabase) throw new Error("Supabase is not configured");
@@ -76,13 +90,16 @@ export function AuthProvider({ children }) {
       password,
     });
     if (error) throw error;
-    await loadProfile(data.user.id);
+    // The auth event loads the profile after releasing the auth lock.
     return data;
-  }, [loadProfile]);
+  }, []);
 
   const signOut = useCallback(async () => {
     if (!supabase) return;
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    activeUser.current = null;
+    ++profileRequest.current;
     setProfile(null);
     setSession(null);
   }, []);

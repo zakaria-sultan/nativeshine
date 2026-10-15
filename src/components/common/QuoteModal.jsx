@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { X, Loader2 } from "lucide-react";
 import { useServices } from "../../context/ServicesContext";
 import { useToast } from "../../context/ToastContext";
@@ -7,6 +7,7 @@ import {
   validateQuoteForm,
   hasValidationErrors,
 } from "../../lib/contactFormValidation";
+import { useSiteContent } from "../../context/SiteContentContext";
 import { submitEnquiryEmail } from "../../lib/submitEnquiryEmail";
 
 const emptyForm = () => ({
@@ -18,6 +19,7 @@ const emptyForm = () => ({
 });
 
 const QuoteModal = ({ isOpen, onClose }) => {
+  const { settings } = useSiteContent();
   const { services: servicesData } = useServices();
   const { showToast } = useToast();
   const [formData, setFormData] = useState(emptyForm);
@@ -33,6 +35,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!settings) return;
     const errors = validateQuoteForm(formData);
     setFieldErrors(errors);
     if (hasValidationErrors(errors)) {
@@ -42,7 +45,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
 
     setIsSending(true);
     try {
-      await submitEnquiryEmail(formData, { formLabel: "Get a Quote (modal)" });
+      await submitEnquiryEmail(formData, { formLabel: "Get a Quote (modal)", recipient: settings.email });
       showToast(
         "Thank you! Your message has been sent successfully.",
         "success",
@@ -76,7 +79,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <motion.div
+        <Motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -84,7 +87,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
           className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"
         />
 
-        <motion.div
+        <Motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -94,6 +97,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
             <button
               type="button"
               onClick={handleClose}
+              aria-label="Close quote form"
               disabled={isSending}
               className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors disabled:opacity-50"
             >
@@ -114,7 +118,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
                   required
                   type="text"
                   placeholder="Your Name"
-                  disabled={isSending}
+                  disabled={isSending || !settings}
                   className="w-full px-6 py-4 bg-slate-50 border border-slate-100 focus:border-[#0ea5e9] focus:outline-none transition-colors font-medium disabled:opacity-60"
                   value={formData.name}
                   onChange={(e) => {
@@ -136,7 +140,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
                     type="email"
                     placeholder="Email Address"
                     autoComplete="email"
-                    disabled={isSending}
+                    disabled={isSending || !settings}
                     className="w-full px-6 py-4 bg-slate-50 border border-slate-100 focus:border-[#0ea5e9] focus:outline-none transition-colors font-medium disabled:opacity-60"
                     value={formData.email}
                     onChange={(e) => {
@@ -157,7 +161,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
                     type="tel"
                     placeholder="Phone Number"
                     autoComplete="tel"
-                    disabled={isSending}
+                    disabled={isSending || !settings}
                     className="w-full px-6 py-4 bg-slate-50 border border-slate-100 focus:border-[#0ea5e9] focus:outline-none transition-colors font-medium disabled:opacity-60"
                     value={formData.phone}
                     onChange={(e) => {
@@ -179,7 +183,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
               <div>
                 <select
                   required
-                  disabled={isSending}
+                  disabled={isSending || !settings}
                   className="w-full px-6 py-4 bg-slate-50 border border-slate-100 focus:border-[#0ea5e9] focus:outline-none transition-colors font-medium appearance-none disabled:opacity-60"
                   value={formData.service}
                   onChange={(e) => {
@@ -206,7 +210,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
                   required
                   rows={4}
                   placeholder="Tell us about your project..."
-                  disabled={isSending}
+                  disabled={isSending || !settings}
                   className="w-full px-6 py-4 bg-slate-50 border border-slate-100 focus:border-[#0ea5e9] focus:outline-none transition-colors font-medium resize-none disabled:opacity-60"
                   value={formData.message}
                   onChange={(e) => {
@@ -225,7 +229,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
 
             <button
               type="submit"
-              disabled={isSending}
+              disabled={isSending || !settings}
               className="w-full bg-[#0ea5e9] text-white py-5 font-black uppercase tracking-widest text-xs hover:bg-slate-900 transition-all shadow-xl shadow-cyan-500/20 disabled:opacity-70 disabled:pointer-events-none inline-flex items-center justify-center gap-2"
             >
               {isSending ? (
@@ -238,7 +242,7 @@ const QuoteModal = ({ isOpen, onClose }) => {
               )}
             </button>
           </form>
-        </motion.div>
+        </Motion.div>
       </div>
     </AnimatePresence>
   );

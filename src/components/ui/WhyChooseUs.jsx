@@ -1,6 +1,6 @@
 import React from "react";
 import { ShieldCheck, Target, Clock, Zap } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 
 const reasons = [
   {
@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {reasons.map((reason, i) => (
-            <motion.div
+            <Motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -65,7 +65,7 @@ const WhyChooseUs = () => {
               <p className="text-slate-500 font-bold text-sm leading-relaxed">
                 {reason.description}
               </p>
-            </motion.div>
+            </Motion.div>
           ))}
         </div>
       </div>

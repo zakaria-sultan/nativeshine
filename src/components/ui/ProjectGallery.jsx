@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 
 const projects = [
@@ -41,7 +41,7 @@ const ProjectGallery = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {projects.map((project, i) => (
-                        <motion.div
+                        <Motion.div
                             key={i}
                             initial={{ opacity: 0, scale: 0.95 }}
                             whileInView={{ opacity: 1, scale: 1 }}
@@ -59,7 +59,7 @@ const ProjectGallery = () => {
                                 <span className="text-primary-light font-black text-xs uppercase tracking-widest mb-2 block">{project.category}</span>
                                 <h4 className="text-2xl font-black text-white">{project.title}</h4>
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     ))}
                 </div>
             </div>

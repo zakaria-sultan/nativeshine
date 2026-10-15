@@ -1,20 +1,14 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { resolveRecentWorkImages } from "../../lib/resolveRecentWorkImages";
 import FastImage from "../common/FastImage";
 
 /**
  * Per-service “Our Recent Works” grid (6 samples, 2×3 on large screens).
- * Prefers `images` from CMS; falls back to static asset resolution.
+ * Uses database images only; an empty gallery stays empty.
  */
 const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
-  const images = useMemo(() => {
-    if (Array.isArray(imagesProp) && imagesProp.filter(Boolean).length > 0) {
-      return imagesProp.filter(Boolean);
-    }
-    return resolveRecentWorkImages(serviceSlug);
-  }, [imagesProp, serviceSlug]);
+  const images = useMemo(() => (imagesProp ?? []).filter(Boolean), [imagesProp]);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -113,7 +107,7 @@ const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
 
       <AnimatePresence>
         {lightboxOpen && currentSrc && (
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -146,7 +140,7 @@ const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
               <ChevronRight size={28} strokeWidth={2.5} />
             </button>
 
-            <motion.div
+            <Motion.div
               initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.96, opacity: 0 }}
@@ -173,7 +167,7 @@ const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
 
               <div className="relative flex min-h-[40vh] items-center justify-center overflow-hidden rounded-sm border-4 border-white bg-black/40 shadow-2xl">
                 <AnimatePresence mode="wait" initial={false}>
-                  <motion.img
+                  <Motion.img
                     key={lightboxIndex}
                     src={currentSrc}
                     alt={`${serviceTitle} enlarged preview ${lightboxIndex + 1}`}
@@ -185,8 +179,8 @@ const RecentWorks = ({ serviceSlug, serviceTitle, images: imagesProp }) => {
                   />
                 </AnimatePresence>
               </div>
-            </motion.div>
-          </motion.div>
+            </Motion.div>
+          </Motion.div>
         )}
       </AnimatePresence>
     </section>

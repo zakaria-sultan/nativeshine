@@ -312,6 +312,9 @@ async function ensureUser(admin, { email, password, full_name, role }) {
 }
 
 async function main() {
+  if (process.env.ALLOW_CMS_BOOTSTRAP !== 'true') {
+    throw new Error('Bootstrap is disabled to protect client edits and deletions. Set ALLOW_CMS_BOOTSTRAP=true only for a new, empty database.');
+  }
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {
@@ -325,6 +328,9 @@ async function main() {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
+  const existing = await supabase.from('services').select('id', { count: 'exact', head: true });
+  if (existing.error) throw existing.error;
+  if (existing.count > 0) throw new Error('This database already has services. Use the CMS; do not overwrite client content with seeds.');
   console.log("Seeding services…");
   for (let i = 0; i < SERVICES.length; i++) {
     const s = SERVICES[i];

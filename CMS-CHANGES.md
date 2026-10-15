@@ -1,0 +1,69 @@
+# CMS changes — 15 October 2026
+
+## Waxa la beddelay
+
+- Testimonials-ka public-ka hadda waxay isticmaalaan database rows oo keliya.
+  Default quotes iyo service/gallery fallbacks waa laga saaray waddada public-ka.
+  Marka quote/sawir/adeeg la tirtiro ama la unpublish-gareeyo, static content
+  dib uguma buuxsamo booskaas.
+- Save/delete waxaa la xaqiijiyaa iyadoo database-ku soo celinayo row-ga uu
+  beddelay. Edit duug ah oo lagu sameeyo record qof kale beddelay waa la diidaa,
+  waxaana la muujiyaa fariin reload ah. Settings iyo slides-na sidaas ayay yihiin.
+- Auth profile queries waxaa dib loogu dhigay marka auth callback-ku dhammaado,
+  si token refresh uusan ugu dhegin auth lock. Requests hore ma beddeli karaan
+  natiijo cusub. Editor initial-load races waa la xannibay.
+- Public tabs waxay xogta dib u akhriyaan focus/reconnect, 60-second polling iyo
+  admin saves ee isla browser-ka. Network failure ma soo celiyo defaults.
+- `/admin/homepage`: add/edit/delete, title/subtitle/description, background image
+  URL ama upload, order iyo published/draft. Sawirrada iyo qoraallada hadda jira
+  waxaa database-ka lagu geliyey hal mar.
+- `/admin/settings`: office phone, mobile/WhatsApp, enquiry email, address iyo
+  office hours. Contact page, mobile header, footer WhatsApp iyo labada enquiry
+  form waxay wada isticmaalaan isla settings-ka. Google Map query-gu wuxuu ka
+  samaysmaa isla address-ka; looma baahna embed code gaar ah.
+- FastImage hadda wuu raacaa URL cusub marka props-ku beddelmaan. Image file
+  cleanup-ku database writes ayuu ka dambeeyaa; files wali slide/service kale
+  isticmaalo lama tirtiro. Failed upload save wuxuu isku dayaa rollback cleanup.
+- Signup metadata kama dhigi karto qof admin/super. Database-ku wuxuu ilaaliyaa
+  super-kii ugu dambeeyey. Own-profile RLS recursion waa la saaray. User API-ga
+  wuxuu hubiyaa profile setup iyo own-super protection; Vercel/Vite/Edge waxay
+  wadaagaan implementation.
+- Lint errors waa la saxay. CMS routes iyo image compression waxaa la kala
+  raray si public bundle-ku u yaraado. Dependencies waxaa lagu sameeyey
+  compatible security updates. About paragraph-kii soo noqnoqday waa la saaray.
+- Seed scripts-ka waxaa laga ilaaliyey inay si kama' ah u overwrite-gareeyaan
+  client content. Setup-ku ma overwrite-gareeyo .env hore u jira.
+
+## Xaqiijinta
+
+Natiijada ugu dambaysa: lint iyo production build way gudbeen; 6 unit tests,
+12 Chrome tests, live persistence/API checks iyo SQL permissions checks way
+gudbeen. `npm audit fix` kadib npm wuxuu soo sheegay 0 vulnerabilities. Browser
+bundle-ka waxaa laga xaqiijiyey inuusan ku jirin server service-role key.
+
+- Unit checks: mapping, empty data, validation, map/phone/WhatsApp URLs,
+  configured email, email-service failures iyo basic API authorization.
+- Chrome regression suite: testimonial edit/delete, reload, simulated elapsed
+  time iyo expired-token refresh, outage recovery, gallery deletion, shared
+  contact settings, mobile layout, map query, both enquiry forms, hero CRUD,
+  hero uploads, cross-tab refresh, read-only roles iyo stale-write rejection.
+- Real Supabase test: temporary admin, private service/slide/testimonial,
+  create/edit/delete, fresh-session reads, actual token refresh, optimistic-write
+  conflict, image uploads in both buckets iyo shared user-management API.
+  Fixtures-ka waa la tirtiraa; existing testimonials/settings waa la barbar
+  dhigaa snapshot-koodii hore.
+- `tests/database.sql`: signup role safety, last-super protection, own-profile
+  update, admin edits/deletes iyo anonymous/read-only RLS; rollback-only.
+- SQL migration waxaa marka hore lagu tijaabiyey transaction rollback leh,
+  kadibna waa la apply-gareeyey. Existing client content lama seed-gareyn.
+
+## Xadka
+
+Code-ku wuxuu u baahan yahay deployment-ka Vercel si website-ka production-ku u
+isticmaalo sixitaannada. Session-kan frontend deploy ma samayn. Email delivery
+mailbox dhab ah looma dirin; new recipient wuxuu u baahan karaa FormSubmit
+activation. Saacadda browser-ka waa la dedejiyey oo token expiry waa la
+simulate-gareeyey; lama sugin saacad dhab ah. File cleanup-ku waa best effort
+haddii Storage uu fashilmo; database content-ku dib uguma soo noqdo arrintaas.
+
+Warbixintii hore ee `WEBSITE-AUDIT.md` waa snapshot ka hor sixitaannadan.

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X, Phone } from "lucide-react";
 
+import { useSiteContent } from "../../context/SiteContentContext";
+import { phoneHref } from "../../lib/siteContent";
 import { useServices } from "../../context/ServicesContext";
 
 const Header = ({ onOpenQuote }) => {
+  const { settings } = useSiteContent();
   const { services: servicesData } = useServices();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(() => window.scrollY > 20);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
@@ -19,12 +22,6 @@ const Header = ({ onOpenQuote }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    setIsServicesOpen(false);
-    setIsMobileMenuOpen(false);
-    setIsMobileServicesOpen(false);
-  }, [location]);
 
   useEffect(() => {
     if (!isMobileMenuOpen) return;
@@ -80,18 +77,18 @@ const Header = ({ onOpenQuote }) => {
         <div className="lg:hidden bg-emerald-900 text-white border-b border-emerald-950/40">
           <div className="flex flex-col items-center justify-center gap-1.5 py-2 px-4 text-center">
             <a
-              href="tel:02036421152"
+              href={phoneHref(settings?.office_phone)}
               className="inline-flex items-center gap-2 text-[11px] font-bold tracking-wide hover:text-emerald-100 transition-colors"
             >
               <Phone size={14} className="shrink-0 opacity-90" aria-hidden />
-              020 3642 1152
+              {settings?.office_phone}
             </a>
             <a
-              href="tel:07777143488"
+              href={phoneHref(settings?.mobile_phone)}
               className="inline-flex items-center gap-2 text-[11px] font-bold tracking-wide hover:text-emerald-100 transition-colors"
             >
               <Phone size={14} className="shrink-0 opacity-90" aria-hidden />
-              07777 143488
+              {settings?.mobile_phone}
             </a>
           </div>
         </div>
@@ -150,7 +147,7 @@ const Header = ({ onOpenQuote }) => {
                   {link.dropdown && (
                     <AnimatePresence>
                       {isServicesOpen && (
-                        <motion.div
+                        <Motion.div
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 8 }}
@@ -167,7 +164,7 @@ const Header = ({ onOpenQuote }) => {
                               {service.title}
                             </Link>
                           ))}
-                        </motion.div>
+                        </Motion.div>
                       )}
                     </AnimatePresence>
                   )}
@@ -198,7 +195,7 @@ const Header = ({ onOpenQuote }) => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            <motion.button
+            <Motion.button
               type="button"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -209,7 +206,7 @@ const Header = ({ onOpenQuote }) => {
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
-            <motion.div
+            <Motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -259,7 +256,7 @@ const Header = ({ onOpenQuote }) => {
                         </button>
                         <AnimatePresence>
                           {isMobileServicesOpen && (
-                            <motion.div
+                            <Motion.div
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
@@ -276,7 +273,7 @@ const Header = ({ onOpenQuote }) => {
                                   {service.title}
                                 </Link>
                               ))}
-                            </motion.div>
+                            </Motion.div>
                           )}
                         </AnimatePresence>
                       </>
@@ -308,7 +305,7 @@ const Header = ({ onOpenQuote }) => {
                   Get a Free Quote
                 </button>
               </div>
-            </motion.div>
+            </Motion.div>
           </>
         )}
       </AnimatePresence>

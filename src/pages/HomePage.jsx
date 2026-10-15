@@ -1,54 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import { useServices } from "../context/ServicesContext";
+import { useSiteContent } from "../context/SiteContentContext";
 import FastImage from "../components/common/FastImage";
 import {
   ChevronRight,
   ChevronLeft,
   ArrowRight,
-  X,
 } from "lucide-react";
 
 const HomePage = () => {
-  const { services: servicesData, homeHero } = useServices();
+  const { services: servicesData } = useServices();
+  const { slides } = useSiteContent();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const slides = [
-    {
-      title: "BRINGING NEW LIFE TO YOUR FLOORS AND WALLS",
-      subtitle: "FLOOR RESTORATION",
-      image: homeHero.slide1,
-      description:
-        "Our extensive knowledge and experience in floor restoration, combined with advanced tools and modern techniques, ensure your floors and walls look as good as new.",
-    },
-    {
-      title: "PRESERVING LONDON'S ARCHITECTURAL HERITAGE",
-      subtitle: "FACADE CLEANING",
-      image: homeHero.slide2,
-      description:
-        "Specialist steam cleaning and restoration services for commercial and residential properties across the capital.",
-    },
-  ];
+  const activeIndex = slides.length ? currentSlide % slides.length : 0;
+  const activeSlide = slides[activeIndex];
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () =>
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
-  const marqueeText =
-    "STRATEGIC PARTNERSHIPS COMING SOON  • NEW COLLABORATIONS UNDERWAY • ";
-
   return (
     <div className="flex w-full flex-col bg-white">
       {/* Hero: fixed height (550px) for all viewports — avoids vh/md blowups with width=1280 meta */}
-      <section
+      {activeSlide && <section
         id="top"
         className="relative min-h-[320px] sm:min-h-[400px] lg:!h-[500px] lg:min-h-0 bg-slate-900 overflow-hidden flex flex-col mt-0"
       >
         <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
+          <Motion.div
+            key={activeSlide.id}
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
@@ -57,42 +39,43 @@ const HomePage = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
             <FastImage
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
+              src={activeSlide.image_url}
+              alt={activeSlide.title}
               width={1600}
               quality={75}
               loading="eager"
               fetchPriority="high"
               className="ns-hero-bg w-full h-full object-cover object-top"
             />
-          </motion.div>
+          </Motion.div>
         </AnimatePresence>
 
         <div className="relative z-20 flex flex-1 flex-col justify-center py-6 sm:py-8 container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
         className="max-w-2xl bg-white/10 backdrop-blur-md p-4 sm:p-6 md:p-10 border-l-4 md:border-l-8 border-[#0ea5e9] w-full"
           >
             <h4 className="text-[#0ea5e9] font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs md:text-sm mb-2 sm:mb-3 md:mb-4">
-              {slides[currentSlide].subtitle}
+              {activeSlide.subtitle}
             </h4>
             <h1 className="text-2xl leading-tight sm:text-3xl md:text-5xl lg:text-6xl font-black text-white mb-3 sm:mb-4 md:mb-6 uppercase tracking-tighter font-montserrat">
-              {slides[currentSlide].title}
+              {activeSlide.title}
             </h1>
             <p className="text-xs sm:text-sm md:text-lg text-slate-200 mb-5 sm:mb-6 md:mb-8 leading-relaxed font-medium md:line-clamp-none">
-              {slides[currentSlide].description}
+              {activeSlide.description}
             </p>
-          </motion.div>
+          </Motion.div>
         </div>
 
         <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
           {slides.map((_, i) => (
             <button
+              aria-label={`Go to slide ${i + 1}`}
               key={i}
               onClick={() => setCurrentSlide(i)}
-              className={`w-3 h-3 rounded-full transition-all ${currentSlide === i ? "bg-[#00AEEF] w-10" : "bg-white/50"}`}
+              className={`w-3 h-3 rounded-full transition-all ${activeIndex === i ? "bg-[#00AEEF] w-10" : "bg-white/50"}`}
             />
           ))}
         </div>
@@ -113,12 +96,12 @@ const HomePage = () => {
         >
           <ChevronRight />
         </button>
-      </section>
+      </section>}
 
       {/* Infinite Text Marquee — flush to hero (no top margin)
       <section className="mt-0 py-4 bg-white border-y border-slate-100 overflow-hidden flex items-center">
         <div className="relative flex whitespace-nowrap">
-          <motion.div
+          <Motion.div
             className="flex items-center"
             animate={{ x: [0, -1000] }}
             transition={{
@@ -137,8 +120,8 @@ const HomePage = () => {
             >
               {marqueeText} {marqueeText} {marqueeText}
             </span>
-          </motion.div>
-          <motion.div
+          </Motion.div>
+          <Motion.div
             className="flex items-center absolute left-full"
             animate={{ x: [0, -1000] }}
             transition={{
@@ -157,7 +140,7 @@ const HomePage = () => {
             >
               {marqueeText} {marqueeText} {marqueeText}
             </span>
-          </motion.div>
+          </Motion.div>
         </div>
       </section> */}
 
@@ -177,7 +160,7 @@ const HomePage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 w-full">
-          {servicesData.map((service, i) => (
+          {servicesData.map((service) => (
             <Link
               key={service.slug}
               to={`/services/${service.slug}`}
@@ -216,59 +199,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Lightbox Modal - Medium Centered */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
-            onClick={() => setSelectedImage(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative max-w-2xl w-full bg-white rounded-sm overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="absolute top-4 right-4 text-slate-900 hover:text-[#00AEEF] transition-colors p-2 z-[110] bg-white/80 backdrop-blur-sm rounded-full"
-                onClick={() => setSelectedImage(null)}
-              >
-                <X size={24} />
-              </button>
 
-              <img
-                src={selectedImage.image}
-                alt={selectedImage.title}
-                className="w-full h-[400px] object-cover"
-              />
-              <div className="p-8">
-                <span className="text-[#00AEEF] text-xs font-black uppercase tracking-widest mb-2 block">
-                  {selectedImage.category}
-                </span>
-                <h4 className="text-slate-900 text-3xl font-black uppercase tracking-tighter">
-                  {selectedImage.title}
-                </h4>
-                <p className="text-slate-500 mt-4 font-medium leading-relaxed italic">
-                  Professional restoration and maintenance services for
-                  prestigious architectural landmarks across London.
-                </p>
-                <div className="mt-8 flex justify-end">
-                  <button
-                    onClick={() => setSelectedImage(null)}
-                    className="text-xs font-black uppercase tracking-widest px-6 py-3 border-2 border-slate-100 hover:border-[#00AEEF] text-slate-400 hover:text-[#00AEEF] transition-all"
-                  >
-                    Close Preview
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

@@ -15,7 +15,8 @@ export default function FastImage({
   ...rest
 }) {
   const optimized = src ? optimizedImageUrl(src, { width, quality }) : "";
-  const [current, setCurrent] = useState(optimized || src || "");
+  const [failedSource, setFailedSource] = useState(null);
+  const current = failedSource === optimized ? src : optimized || src;
 
   if (!src) return null;
 
@@ -29,7 +30,7 @@ export default function FastImage({
       className={className}
       onError={() => {
         if (current !== src) {
-          setCurrent(src);
+          setFailedSource(optimized);
         }
       }}
       {...rest}
