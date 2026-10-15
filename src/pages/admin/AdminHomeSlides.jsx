@@ -1,3 +1,4 @@
+import { useConfirm } from '../../context/ConfirmContext';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -49,6 +50,7 @@ function SlideEditor({ initial, canEdit, onSaved, onCancel }) {
 }
 
 export default function AdminHomeSlides() {
+  const confirmDelete = useConfirm();
   const { canEdit } = useAuth();
   const { showToast } = useToast();
   const [slides, setSlides] = useState(null);
@@ -65,7 +67,7 @@ export default function AdminHomeSlides() {
   }, []);
   useEffect(() => { void load(); }, [load]);
   const remove = async slide => {
-    if (!canEdit || !window.confirm('Delete this homepage slide?')) return;
+    if (!canEdit || deleting || !await confirmDelete('Delete this homepage slide?')) return;
     setDeleting(slide.id);
     try {
       await deleteHomeSlide(supabase, slide);

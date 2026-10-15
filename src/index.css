@@ -84,3 +84,42 @@ html {
   object-fit: cover;
   object-position: top center;
 }
+
+/* One shared wordmark for the header, mobile drawer and footer. */
+.ns-wordmark {
+  font-synthesis: weight style;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ns-header-brand {
+  width: min(350px, calc(100% - 56px));
+  max-width: calc(100% - 56px);
+  flex-shrink: 0;
+}
+
+.ns-menu-wordmark {
+  width: min(100%, 260px);
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .ns-header-brand {
+    width: clamp(215px, 30vw, 350px);
+    max-width: 35%;
+  }
+}
+
+.ns-uploaded-wordmark,
+.ns-brand-placeholder {
+  aspect-ratio: 480 / 110;
+  object-fit: contain;
+}
+
+.ns-company-logo {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+}

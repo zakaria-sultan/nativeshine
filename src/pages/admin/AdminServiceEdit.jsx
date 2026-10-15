@@ -1,3 +1,4 @@
+import { useConfirm } from '../../context/ConfirmContext';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Upload, Trash2, Plus } from "lucide-react";
@@ -37,6 +38,7 @@ const emptyTestimonial = () => ({
 });
 
 export default function AdminServiceEdit() {
+  const confirmDelete = useConfirm();
   const { id } = useParams();
   const isNew = id === "new";
   const { canEdit } = useAuth();
@@ -192,8 +194,9 @@ export default function AdminServiceEdit() {
 
   const onDeleteTestimonial = async (row) => {
     if (!canEdit || savingTestimonial) return;
-    if (!window.confirm("Delete this testimonial?")) return;
+    if (!await confirmDelete("Delete this testimonial?")) return;
     try {
+      setSavingTestimonial(true);
       await deleteServiceTestimonial(row);
       setTestimonials((prev) => prev.filter((t) => t.id !== row.id));
       if (draftTestimonial.id === row.id) {
@@ -203,7 +206,7 @@ export default function AdminServiceEdit() {
       showToast("Testimonial deleted", "success");
     } catch (err) {
       showToast(contentSaveError(err), "error");
-    }
+    } finally { setSavingTestimonial(false); }
   };
 
   const onUpload = async (kind, slot, file) => {
@@ -245,11 +248,12 @@ export default function AdminServiceEdit() {
   };
 
   const onRemoveImage = async (kind, slot) => {
-    if (!canEdit) return;
+    if (!canEdit || uploading) return;
     const existing = findImage(images, kind, slot);
     if (!existing) return;
-    if (!window.confirm("Remove this image?")) return;
+    if (!await confirmDelete("Remove this image?")) return;
     try {
+      setUploading(true);
       await deleteServiceImage(existing);
       setImages((prev) =>
         prev.filter((img) => !(img.kind === kind && img.slot === slot)),
@@ -258,7 +262,7 @@ export default function AdminServiceEdit() {
       showToast("Image removed", "success");
     } catch (err) {
       showToast(err.message || "Remove failed", "error");
-    }
+    } finally { setUploading(false); }
   };
 
   const recentOccupied = useMemo(() => occupiedRecentSlots(images), [images]);
@@ -326,6 +330,7 @@ export default function AdminServiceEdit() {
               <button
                 type="button"
                 onClick={() => onRemoveImage(kind, slot)}
+                disabled={uploading}
                 className="inline-flex items-center gap-1.5 border border-rose-100 px-2.5 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50"
               >
                 <Trash2 size={14} /> Remove
@@ -641,6 +646,7 @@ export default function AdminServiceEdit() {
                           <button
                             type="button"
                             onClick={() => onDeleteTestimonial(t)}
+                            disabled={savingTestimonial}
                             className="inline-flex items-center gap-1 border border-rose-100 px-2.5 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50"
                           >
                             <Trash2 size={14} /> Delete

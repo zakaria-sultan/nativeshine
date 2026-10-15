@@ -9,8 +9,10 @@ import {
   ExternalLink,
   MapPin,
   Images,
+  Image as ImageIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 
 const linkClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-sm px-3 py-2.5 text-sm font-bold transition-colors ${
@@ -20,8 +22,22 @@ const linkClass = ({ isActive }) =>
   }`;
 
 export default function AdminLayout() {
+  const { showToast } = useToast();
+  const [signingOut, setSigningOut] = React.useState(false);
   const { profile, signOut, isSuper, loading, session, configured } = useAuth();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await signOut();
+      showToast("Signed out successfully");
+      navigate("/admin/login");
+    } catch (error) {
+      showToast(error.message || "Could not sign out. Please try again.", "error");
+    } finally { setSigningOut(false); }
+  };
 
   if (!configured) {
     return (
@@ -49,12 +65,7 @@ export default function AdminLayout() {
     return <Navigate to="/admin/login" replace />;
   }
 
-  if (!profile) return <div className="p-8" role="alert">Your account profile could not be loaded. <button onClick={() => window.location.reload()} className="underline">Try again</button> <button onClick={signOut} className="underline">Sign out</button></div>;
-
-  const handleLogout = async () => {
-    await signOut();
-    navigate("/admin/login");
-  };
+  if (!profile) return <div className="p-8" role="alert">Your account profile could not be loaded. <button onClick={() => window.location.reload()} className="underline">Try again</button> <button onClick={handleLogout} disabled={signingOut} className="underline">Sign out</button></div>;
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
@@ -82,6 +93,7 @@ export default function AdminLayout() {
               <Briefcase size={18} /> Services
             </NavLink>
             <NavLink to="/admin/homepage" className={linkClass}><Images size={18} /> Homepage slides</NavLink>
+            <NavLink to="/admin/branding" className={linkClass}><ImageIcon size={18} /> Company branding</NavLink>
             <NavLink to="/admin/settings" className={linkClass}><MapPin size={18} /> Contact & location</NavLink>
             {isSuper ? (
               <NavLink to="/admin/users" className={linkClass}>
@@ -102,6 +114,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={handleLogout}
+              disabled={signingOut}
               className="flex w-full items-center gap-3 rounded-sm px-3 py-2.5 text-left text-sm font-bold text-rose-600 hover:bg-rose-50"
             >
               <LogOut size={18} /> Sign out

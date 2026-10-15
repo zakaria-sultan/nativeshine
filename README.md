@@ -12,7 +12,7 @@ npm run dev
 ```
 
 Public pages: `/`, `/about`, `/contact`, `/services/:slug`.
-Client CMS: `/admin/login`, `/admin/services`, `/admin/homepage`, `/admin/settings`.
+Client CMS: `/admin/login`, `/admin/services`, `/admin/homepage`, `/admin/settings`, `/admin/branding`.
 Super administrators also manage `/admin/users`. The Vite dev server includes the
 same `/api/admin-users` handler used on Vercel; `vercel dev` is optional.
 
@@ -40,6 +40,7 @@ Optional real-project checks (requires the server-only key in `.env`):
 ```sh
 npm run test:live
 supabase db query --linked --file tests/database.sql
+supabase db query --linked --file tests/branding-database.sql
 ```
 
 The live script creates temporary private services, testimonials, slides and

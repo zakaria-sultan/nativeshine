@@ -36,8 +36,8 @@
 
 ## Xaqiijinta
 
-Natiijada ugu dambaysa: lint iyo production build way gudbeen; 6 unit tests,
-12 Chrome tests, live persistence/API checks iyo SQL permissions checks way
+Natiijada ugu dambaysa: lint iyo production build way gudbeen; 8 unit tests,
+18 Chrome tests, live persistence/API checks iyo SQL permissions checks way
 gudbeen. `npm audit fix` kadib npm wuxuu soo sheegay 0 vulnerabilities. Browser
 bundle-ka waxaa laga xaqiijiyey inuusan ku jirin server service-role key.
 
@@ -67,3 +67,49 @@ simulate-gareeyey; lama sugin saacad dhab ah. File cleanup-ku waa best effort
 haddii Storage uu fashilmo; database content-ku dib uguma soo noqdo arrintaas.
 
 Warbixintii hore ee `WEBSITE-AUDIT.md` waa snapshot ka hor sixitaannadan.
+
+## Company branding
+
+`/admin/branding` wuxuu client admin-ka siinayaa laba upload: company icon iyo
+company wordmark (magaca/hal-ku-dhegga oo dhan). Save wuxuu wada beddelaa header,
+mobile drawer iyo footer; icon-ku sidoo kale wuxuu beddelaa favicon-ka.
+`Restore original` wuxuu soo celiyaa icon-kii hore ama SVG wordmark-ka hadda la
+habeeyey. Default-ka jira lama beddelin ilaa client-ku save sameeyo.
+
+PNG, JPEG iyo WebP ilaa 5 MB ayaa la aqbalaa; PNG/WebP transparency iyo original
+quality waa la ilaaliyaa. Sawir dhaawacmay waa la diidaa kahor upload.
+Save-ku wuxuu beddelaa branding fields oo keliya, wuxuuna isticmaalaa
+`updated_at` si aanu edit duug ahi u overwrite-gareyn mid cusub. Failed writes
+waxay nadiifiyaan uploads-ka aan la isticmaalin; haddii response-ku lumo kadib
+commit, file wali database-ku tixraacayo lama tirtiro. Files slide ama service
+kale isticmaalo sidoo kale waa la ilaaliyaa.
+
+Migration `20261015123000_company_branding.sql` wuxuu ku daraa `logo_url`,
+`logo_storage_path`, `wordmark_url`, `wordmark_storage_path` isla `site_settings`.
+Wuxuu adeegsadaa RLS-ka hadda jira iyo `site-images` bucket-ka.
+`tests/branding-database.sql` wuxuu tijaabiyaa admin save/reset, public reads,
+read-only/anonymous restrictions iyo URL validation, dhammaantood rollback leh.
+Browser tests-ku waxay hubiyaan upload bytes, shared rendering, cross-tab refresh,
+reload, mobile layout, reset, invalid files, stale/failed saves iyo lost responses.
+
+## Admin notifications iyo delete confirmation
+
+Admin-ku wuxuu wada isticmaalaa success/error toasts oo la xiri karo, mid walbana
+wuxuu leeyahay waqti u gaar ah (success 5 seconds, error 8 seconds). Toast cusub
+ma kordhiyo waqtiga kuwii hore. Login iyo logout sidoo kale waxay muujiyaan
+natiijada hawsha; logout failure ma muujiyo success.
+
+Services, testimonials, service images, homepage slides iyo users waxay wada
+isticmaalaan confirmation dialog leh Cancel/Delete. Cancel ayaa focus-ka hela,
+Escape iyo bannaanka dialog-ka waxay kansalaan, focus-kuna wuxuu ku noqdaa
+button-kii furay haddii uu weli jiro. Browser modal-ku wuxuu xaddidaa keyboard
+focus-ka, background scrolling-na waa la joojiyaa. Delete requests-ka waxaa laga
+ilaaliyey clicks kale inta ay socdaan; failure-ku wuxuu muujiyaa error toast.
+
+Browser regression tests waxay daboolaan delete/cancel, keyboard iyo mobile
+layout, failed delete iyo retry, user delete request pending, toast timing iyo
+logout. Tests-ku waxay isticmaalaan database/API mocks; live client data lama
+tirtirin tijaabooyinkan.
+
+Company icon-ka wuxuu hadda circular uga muuqdaa header, mobile drawer, footer
+iyo admin preview; wordmark-ka silver border-kiisa sidoo kale waa la xoojiyey.

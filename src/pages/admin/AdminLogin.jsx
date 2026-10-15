@@ -3,7 +3,10 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import PasswordField from "../../components/admin/PasswordField";
 
+import { useToast } from "../../context/ToastContext";
+
 export default function AdminLogin() {
+  const { showToast } = useToast();
   const { signIn, session, loading, configured } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -31,9 +34,11 @@ export default function AdminLogin() {
     setSubmitting(true);
     try {
       await signIn(email.trim(), password);
+      showToast("Signed in successfully");
       navigate("/admin");
     } catch (err) {
       setError(err.message || "Login failed");
+      showToast(err.message || "Login failed", "error");
     } finally {
       setSubmitting(false);
     }

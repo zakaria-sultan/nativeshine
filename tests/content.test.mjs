@@ -57,3 +57,25 @@ test('admin API rejects unsupported methods and missing authorization', async ()
   assert.equal((await handleAdminUsers({ method: 'POST', env: {} })).status, 500);
   assert.equal((await handleAdminUsers({ method: 'POST', env: { SUPABASE_URL: 'https://example.supabase.co', SUPABASE_ANON_KEY: 'anon', SUPABASE_SERVICE_ROLE_KEY: 'service' } })).status, 401);
 });
+
+test('branding accepts transparent image formats and rejects unsupported or oversized files', async () => {
+  const { validateBrandImage } = await import('../src/lib/branding.js');
+  assert.doesNotThrow(() => validateBrandImage({ type: 'image/png', size: 1024 }));
+  assert.doesNotThrow(() => validateBrandImage({ type: 'image/webp', size: 1024 }));
+  assert.throws(() => validateBrandImage({ type: 'text/html', size: 1024 }), /PNG/);
+  assert.throws(() => validateBrandImage({ type: 'image/png', size: 6 * 1024 * 1024 }), /5 MB/);
+});
+
+test('branding reset patches only branding fields and honors edit version', async () => {
+  const { saveCompanyBranding } = await import('../src/lib/brandingApi.js');
+  let patch;
+  const filters = {};
+  const query = {
+    eq(key, value) { filters[key] = value; return this; }, select() { return this; },
+    async single() { return { data: { id: true, logo_url: '/logo.jpeg', logo_storage_path: null }, error: null }; },
+  };
+  const client = { from: () => ({ update(value) { patch = value; return query; } }) };
+  await saveCompanyBranding(client, { updated_at: 'version', email: 'keep@example.com' }, { logo: { reset: true } });
+  assert.deepEqual(patch, { logo_url: '/logo.jpeg', logo_storage_path: null });
+  assert.equal(filters.updated_at, 'version');
+});

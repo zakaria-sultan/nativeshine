@@ -35,13 +35,15 @@ export function ToastProvider({ children }) {
 
   const showToast = useCallback((message, type = "success") => {
     const id = Date.now() + Math.random();
-    setToasts((prev) => [...prev.slice(-4), { message, type, id }]);
+    const expiresAt = Date.now() + (type === "error" ? 8000 : 5000);
+    setToasts((prev) => [...prev.slice(-4), { message, type, id, expiresAt }]);
+    return id;
   }, []);
 
   React.useEffect(() => {
     if (!toasts.length) return undefined;
     const timers = toasts.map((t) =>
-      setTimeout(() => dismiss(t.id), 4200),
+      setTimeout(() => dismiss(t.id), Math.max(0, t.expiresAt - Date.now())),
     );
     return () => timers.forEach(clearTimeout);
   }, [toasts, dismiss]);
@@ -57,12 +59,14 @@ export function ToastProvider({ children }) {
                 return (
                   <Motion.div
                     key={toast.id}
+                    data-toast-id={toast.id}
                     role="alert"
+                    aria-atomic="true"
                     initial={{ opacity: 0, y: 18, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ type: "spring", damping: 24, stiffness: 320 }}
-                    className={`pointer-events-auto relative overflow-hidden rounded-lg border bg-white px-4 py-3 pr-10 shadow-xl shadow-slate-900/15 ${style.border}`}
+                    className={`pointer-events-auto relative overflow-hidden rounded-xl border bg-white px-4 py-4 pr-10 shadow-xl shadow-slate-900/15 ${style.border}`}
                   >
                     <div className={`absolute inset-x-0 top-0 h-0.5 ${style.bar}`} />
                     <div className="flex items-start gap-3">
@@ -71,9 +75,10 @@ export function ToastProvider({ children }) {
                         size={22}
                         aria-hidden
                       />
-                      <p className="text-sm font-semibold leading-snug text-slate-800">
+                      <div className="min-w-0 flex-1"><p className="mb-1 text-xs font-black uppercase tracking-wider text-slate-500">{toast.type === "error" ? "Something went wrong" : toast.type === "info" ? "Notice" : "Success"}</p>
+                      <p className="break-words text-sm font-semibold leading-snug text-slate-800">
                         {toast.message}
-                      </p>
+                      </p></div>
                     </div>
                     <button
                       type="button"

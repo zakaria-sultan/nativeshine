@@ -54,3 +54,12 @@ Storage rows are deleted before unused files, and replaced uploads are rolled
 back when the database write fails. Files still referenced by homepage slides or
 other service images are preserved. Storage cleanup failures are logged; they do
 not restore deleted content or break surviving database references.
+
+## Company branding migration
+
+`20261015123000_company_branding.sql` adds the icon and wordmark fields to
+`site_settings`, preserving the existing `/logo.jpeg` and built-in SVG wordmark
+as defaults. It uses the existing `site-images` bucket and admin/super RLS.
+Client controls are at `/admin/branding`. Uploads keep original PNG/WebP
+transparency and accept PNG/JPEG/WebP files up to 5 MB. The frontend must be
+redeployed to expose these new controls.

@@ -1,3 +1,4 @@
+import { useConfirm } from '../../context/ConfirmContext';
 import React, { useCallback, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Plus, Trash2, Save } from "lucide-react";
@@ -14,8 +15,10 @@ const emptyCreate = () => ({
 });
 
 export default function AdminUsers() {
+  const confirmDelete = useConfirm();
   const { isSuper, user } = useAuth();
   const { showToast } = useToast();
+  const [busy, setBusy] = useState(false);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [createForm, setCreateForm] = useState(emptyCreate);
@@ -68,7 +71,8 @@ export default function AdminUsers() {
 
   const onSaveUser = async (id) => {
     const draft = edits[id];
-    if (!draft) return;
+    if (!draft || busy) return;
+    setBusy(true);
     try {
       await invokeAdminUsers("update", {
         id,
@@ -84,18 +88,20 @@ export default function AdminUsers() {
       await load();
     } catch (err) {
       showToast(err.message || "Update failed", "error");
-    }
+    } finally { setBusy(false); }
   };
 
   const onDelete = async (id, email) => {
-    if (!window.confirm(`Delete user ${email}?`)) return;
+    if (busy) return;
+    if (!await confirmDelete(`Delete user ${email}?`)) return;
     try {
+      setBusy(true);
       await invokeAdminUsers("delete", { id });
       showToast("User deleted", "success");
       await load();
     } catch (err) {
       showToast(err.message || "Delete failed", "error");
-    }
+    } finally { setBusy(false); }
   };
 
   return (
@@ -198,6 +204,7 @@ export default function AdminUsers() {
                     <button
                       type="button"
                       onClick={() => onDelete(u.id, u.email)}
+                      disabled={busy}
                       className="inline-flex items-center gap-1 text-xs font-bold text-rose-600 hover:underline"
                     >
                       <Trash2 size={14} /> Delete
@@ -260,6 +267,7 @@ export default function AdminUsers() {
                 <button
                   type="button"
                   onClick={() => onSaveUser(u.id)}
+                  disabled={busy}
                   className="mt-4 inline-flex items-center gap-2 border border-slate-200 px-3 py-2 text-xs font-black uppercase tracking-widest text-slate-700 hover:border-[#0ea5e9] hover:text-[#0ea5e9]"
                 >
                   <Save size={14} /> Save changes

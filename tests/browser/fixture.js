@@ -8,13 +8,15 @@ export async function mockDatabase(context, { role = 'admin' } = {}) {
     failReads: false,
     refreshes: 0,
     denied: false,
-    settings: [{ id: true, office_phone: '020 3642 1152', mobile_phone: '07777 143488', email: 'info@nativeshine.co.uk', address: '9 Roswick Albany street\nLondon nw1 4bj', office_hours: 'Mon - Fri: 08:00 - 18:00', updated_at: timestamp() }],
+    settings: [{ id: true, logo_url: '/logo.jpeg', logo_storage_path: null, wordmark_url: null, wordmark_storage_path: null, office_phone: '020 3642 1152', mobile_phone: '07777 143488', email: 'info@nativeshine.co.uk', address: '9 Roswick Albany street\nLondon nw1 4bj', office_hours: 'Mon - Fri: 08:00 - 18:00', updated_at: timestamp() }],
     slides: [{ id: 'slide-one', title: 'ORIGINAL HERO TITLE', subtitle: 'ORIGINAL SUBTITLE', description: 'Original description', image_url: 'https://images.test/hero-one.jpg', storage_path: null, sort_order: 1, is_published: true, updated_at: timestamp() }, { id: 'slide-two', title: 'SECOND HERO TITLE', subtitle: 'SECOND SUBTITLE', description: 'Second description', image_url: 'https://images.test/hero-two.jpg', storage_path: null, sort_order: 2, is_published: true, updated_at: timestamp() }],
     services: [{ id: 'service-one', title: 'Test cleaning', slug: 'test-cleaning', content: 'Service description', sort_order: 1, is_published: true, updated_at: timestamp() }],
     testimonials: [{ id: 'quote-one', service_id: 'service-one', quote_text: 'Original database testimonial', client_name: 'Original client', initials: 'OC', sort_order: 0, updated_at: timestamp() }],
     images: [{ id: 'image-one', service_id: 'service-one', kind: 'hero', slot: 1, url: 'https://images.test/service.jpg' }],
     enquiries: [],
     uploads: [],
+    uploadBodies: [],
+    removedFiles: [],
   };
   const user = { id: uid, email: 'editor@example.com', role: 'authenticated', aud: 'authenticated', app_metadata: {}, user_metadata: {} };
   const token = () => `${Buffer.from('{}').toString('base64url')}.${Buffer.from(JSON.stringify({ sub: uid, role: 'authenticated', exp: Math.floor((Date.now() + (state.nowOffset || 0)) / 1000) + 3600 })).toString('base64url')}.test`;
@@ -36,7 +38,12 @@ export async function mockDatabase(context, { role = 'admin' } = {}) {
     if (url.pathname.includes('/auth/v1/user')) return route.fulfill({ json: user });
     if (url.pathname.includes('/auth/v1/logout')) return route.fulfill({ json: {} });
     if (url.pathname.includes('/storage/')) {
-      if (request.method() === 'POST') state.uploads.push(url.pathname);
+      if (request.method() === 'GET') return route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect x="8" y="8" width="48" height="48" fill="#0088cc"/></svg>' });
+      if (request.method() === 'POST') {
+        state.uploads.push(url.pathname);
+        state.uploadBodies.push(request.postDataBuffer());
+      }
+      if (request.method() === 'DELETE') state.removedFiles.push(...(request.postDataJSON()?.prefixes ?? []));
       return route.fulfill({ json: { Key: 'test-upload', path: 'test-upload' } });
     }
     const name = url.pathname.split('/').pop();
@@ -45,6 +52,7 @@ export async function mockDatabase(context, { role = 'admin' } = {}) {
     if (!key) return route.fulfill({ status: 404, json: { message: `Unknown fixture route ${name}` } });
     const isRead = request.method() === 'GET';
     if (isRead && state.failReads) return route.fulfill({ status: 503, json: { message: 'Temporary database failure' } });
+    if (name === 'site_settings' && !isRead && state.failBrandSave) return route.fulfill({ status: 403, json: { message: 'Branding save denied' } });
     if (!isRead && (state.denied || role === 'user')) return route.fulfill({ status: 403, json: { message: 'Permission denied' } });
     const matches = row => [...url.searchParams].every(([field, value]) => {
       if (!value.startsWith('eq.')) return true;
@@ -61,6 +69,10 @@ export async function mockDatabase(context, { role = 'admin' } = {}) {
       rows = state[key].filter(matches);
       state[key] = state[key].filter(row => !matches(row));
     } else rows = state[key].filter(matches);
+    if (name === 'site_settings' && request.method() === 'PATCH' && state.loseSaveResponse) {
+      state.loseSaveResponse = false;
+      return route.fulfill({ status: 500, json: { message: 'Response lost after commit' } });
+    }
     rows = structuredClone(rows);
     if (name === 'services') rows.forEach(row => {
       row.service_images = state.images.filter(image => image.service_id === row.id);
@@ -79,4 +91,7 @@ export async function login(page) {
   await page.getByLabel('Password', { exact: true }).fill('test-password');
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
   await page.waitForURL('**/admin');
+  const welcome = page.getByRole('alert').filter({ hasText: 'Signed in successfully' });
+  await welcome.getByRole('button', { name: 'Dismiss notification' }).click();
+  await welcome.waitFor({ state: 'detached' });
 }
